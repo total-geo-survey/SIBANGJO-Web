@@ -102,12 +102,12 @@
         });
 
 	// Geolocation API
-    	map.locate({setView:true, maxZoom: 33})
+    	map.locate({setView:true, zoom: 14})
     	function onLocationFound(e){
         	var radius = e.accuracy.toFixed(3);
         	var locationMarker = L.marker(e.latlng).addTo(map)
           	    .bindPopup('Anda berada di sekitar ' + radius + ' meter dari titik ini').openPopup()
-        	var locationCircle = L.circle(e.latlng, {radius: 2000}).addTo(map);
+        	var locationCircle = L.circle(e.latlng, radius).addTo(map);
     	}
 
     	map.on('locationfound', onLocationFound);
