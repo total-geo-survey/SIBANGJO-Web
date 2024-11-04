@@ -391,7 +391,7 @@
         var controlLayers = L.control.layers(baseMaps, overlay, {
         	collapsed: false,
         	position: 'topright'
-	}).addTo(map)
+	}).addTo(map);
 
 	map.on('click', function(e){
         	console.log(e.latlng)
@@ -405,7 +405,7 @@
 	}).addTo(map);
 
 	// Geolocation API
-    	map.locate({setView:true, maxZoom: 33}
+    	map.locate({setView:true, maxZoom: 19})
     	function onLocationFound(e){
         	var radius = e.accuracy.toFixed(3);
         	var locationMarker = L.marker(e.latlng).addTo(map)
@@ -416,8 +416,7 @@
     	map.on('locationfound', onLocationFound);
 	function onLocationError(e){
         	window.alert(e.message)
-    	}
-	    
+    	}	    
     	map.on('locationerror', onLocationError);
     </script>
 
