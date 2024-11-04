@@ -403,6 +403,22 @@
 		doubleLine: "true",
 		showSubunits: "true"
 	}).addTo(map);
+
+	// Geolocation API
+    	map.locate({setView:true, maxZoom: 33}
+    	function onLocationFound(e){
+        	var radius = e.accuracy.toFixed(3);
+        	var locationMarker = L.marker(e.latlng).addTo(map)
+          	    .bindPopup('Anda berada di sekitar ' + radius + ' meter dari titik ini!').openPopup()
+        	var locationCircle = L.circle(e.latlng, radius).addTo(map);
+    	}
+
+    	map.on('locationfound', onLocationFound);
+	function onLocationError(e){
+        	window.alert(e.message)
+    	}
+	    
+    	map.on('locationerror', onLocationError);
     </script>
 
     <!-- Bootstrap Bill Turner -->
