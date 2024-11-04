@@ -102,7 +102,7 @@
         });
 
 	// Geolocation API
-    	map.locate({setView:true, zoom: 14})
+    	map.locate({setView:false, zoom: 14})
     	function onLocationFound(e){
         	var radius = e.accuracy.toFixed(3);
         	var locationMarker = L.marker(e.latlng).addTo(map)
