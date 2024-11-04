@@ -101,11 +101,17 @@
             zoomDelta: 0.5
         });
 
+	// Custom Icon
+	const myCustomIcon = L.icon({
+        	iconUrl: './Data/pin.png',
+        	iconSize: [30,30]
+    	})
+	    
 	// Geolocation API
     	map.locate({setView:false, zoom: 14})
     	function onLocationFound(e){
         	var radius = e.accuracy.toFixed(3);
-        	var locationMarker = L.marker(e.latlng).addTo(map)
+        	var locationMarker = L.marker(e.latlng, {icon: myCustomIcon}).addTo(map)
           	    .bindPopup('Anda berada di sekitar ' + radius + ' meter dari titik ini').openPopup()
         	var locationCircle = L.circle(e.latlng, radius).addTo(map);
     	}
