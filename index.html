@@ -120,6 +120,45 @@
         });
 
         // Symbology + Action
+	var kelurahan = 
+        L.geoJSON(Kelurahan,{
+            style: function(feature) {
+                switch (feature.properties.NAME_3) {
+                    case 'Danurejan': return {color: "#ffffff", opacity: 1};
+                    case 'Gedong Tengen': return {color: "#66ccff", opacity: 1};
+                    case 'Gondokusuman': return {color: "#99ccff", opacity: 1};
+                    case 'Gondomanan': return {color: "#cc99ff", opacity: 1};
+                    case 'Jetis': return {color: "#ff99ff", opacity: 1};
+                    case 'Kotagede': return {color: "#ff99cc", opacity: 1};
+                    case 'Kraton': return {color: "#ff9999", opacity: 1};
+                    case 'Mantrijeron': return {color: "#ffcc99", opacity: 1};
+                    case 'Mergangsan': return {color: "#ffff99", opacity: 1};
+                    case 'Ngampilan': return {color: "#ccff99", opacity: 1};
+                    case 'Pakualaman': return {color: "#99ff99", opacity: 1};
+                    case 'Tegalrejo': return {color: "#99ffcc", opacity: 1};
+                    case 'Umbulharjo': return {color: "#66ffff", opacity: 1};
+                    case 'Wirobrajan': return {color: "#bfbfbf", opacity: 1};
+                }
+            },
+
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(
+                'Kemantren' + '<br>' +
+                '<strong>' +
+                feature.properties.NAME_3 +
+                '</strong><br><br>'+
+                'Kelurahan' + '<br>' +
+                '<strong>' +
+                feature.properties.NAME_4 +
+                '</strong><br><br>'+
+                'Luas (Km^2)' + '<br>' +
+                '<strong>' +
+                feature.properties.Luas +
+                '</strong>'
+                );
+            }
+        }).addTo(map);
+	    
         var bangunan = 
         L.geoJSON(mergedv01,{
             style: function(feature) {
@@ -328,45 +367,6 @@
                 'Alamat' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
                 feature.properties.alamat +
-                '</strong>'
-                );
-            }
-        }).addTo(map);
-
-	var kelurahan = 
-        L.geoJSON(Kelurahan,{
-            style: function(feature) {
-                switch (feature.properties.NAME_3) {
-                    case 'Danurejan': return {color: "#ffffff", opacity: 1};
-                    case 'Gedong Tengen': return {color: "#66ccff", opacity: 1};
-                    case 'Gondokusuman': return {color: "#99ccff", opacity: 1};
-                    case 'Gondomanan': return {color: "#cc99ff", opacity: 1};
-                    case 'Jetis': return {color: "#ff99ff", opacity: 1};
-                    case 'Kotagede': return {color: "#ff99cc", opacity: 1};
-                    case 'Kraton': return {color: "#ff9999", opacity: 1};
-                    case 'Mantrijeron': return {color: "#ffcc99", opacity: 1};
-                    case 'Mergangsan': return {color: "#ffff99", opacity: 1};
-                    case 'Ngampilan': return {color: "#ccff99", opacity: 1};
-                    case 'Pakualaman': return {color: "#99ff99", opacity: 1};
-                    case 'Tegalrejo': return {color: "#99ffcc", opacity: 1};
-                    case 'Umbulharjo': return {color: "#66ffff", opacity: 1};
-                    case 'Wirobrajan': return {color: "#bfbfbf", opacity: 1};
-                }
-            },
-
-            onEachFeature: function (feature, layer) {
-                layer.bindTooltip(
-                'Kemantren' + '<br>' +
-                '<strong>' +
-                feature.properties.NAME_3 +
-                '</strong><br><br>'+
-                'Kelurahan' + '<br>' +
-                '<strong>' +
-                feature.properties.NAME_4 +
-                '</strong><br><br>'+
-                'Luas (Km^2)' + '<br>' +
-                '<strong>' +
-                feature.properties.Luas +
                 '</strong>'
                 );
             }
