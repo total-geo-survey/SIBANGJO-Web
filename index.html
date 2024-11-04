@@ -97,7 +97,13 @@
             zoomControl: true,
             maxZoom: 33,
             minZoom: 1,
-        });     
+	    zoomSnap: 0.25,
+            zoomDelta: 0.25,
+        });
+
+	mymap.on('zoom', function(e){
+        	console.log.apply(e.target)
+    	})
         
         // Basemap Source
         var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
