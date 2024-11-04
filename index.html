@@ -142,7 +142,7 @@
             },
 
             onEachFeature: function (feature, layer) {
-                layer.bindPopup(
+                layer.bindTooltip(
                 'Kemantren' + '<br>' +
                 '<strong>' +
                 feature.properties.NAME_3 +
@@ -381,12 +381,19 @@
 
         // Add Layer
         var overlay = {
-            "Batas Administrasi": kelurahan,
-            "Data Bangunan": pringgokusuman
+            "<b>Batas Administrasi</b>": kelurahan,
+            "<b>Data Bangunan</b>": pringgokusuman
         };
 
         // Merge Layer & Basemap
-        L.control.layers(baseMaps,overlay).addTo(map) 
+        L.control.layers(baseMaps, overlay, {
+        	collapsed: false,
+        	position: 'topright')
+	}).addTo(map)
+
+	map.on('click', function(e){
+        	console.log(e.latlng)
+    	})
 
         // Add Scale	
 	    var graphicScale = L.control.graphicScale({
