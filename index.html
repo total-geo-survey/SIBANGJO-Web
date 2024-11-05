@@ -409,10 +409,7 @@
         };
 
         // Merge Layer & Basemap
-        var controlLayers = L.control.layers(baseMaps, overlay, {
-        	collapsed: false,
-        	position: 'topright'
-	}).addTo(map);
+        var controlLayers = L.control.layers(baseMaps, overlay).addTo(map);
 
 	map.on('click', function(e){
         	console.log(e.latlng)
