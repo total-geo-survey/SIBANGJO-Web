@@ -86,7 +86,7 @@
     <center>
         <div id="map"></div>
         <script src="Kelurahan.js"></script>
-        <script src="mergedv01.js"></script>
+        <script src="bgnv01.js"></script>
     </center>
 
     <!-- Map Script -->
@@ -183,10 +183,10 @@
         }).addTo(map);
 	    
         var bangunan = 
-        L.geoJSON(mergedv01,{
+        L.geoJSON(bgnv01,{
             style: function(feature) {
                 switch (feature.properties.remark) {
-                    case 'Rumah': return {
+                    case 'Fungsi Hunian': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -198,19 +198,7 @@
                         fillColor: "#ff8000",
                         interactive: true,
                     };
-                    case 'Fasilitas Pemerintahan': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#ff0000",
-                        interactive: true,
-                    };
-                    case 'Fasilitas Kesehatan': return {
+                    case 'Fungsi Keagamaan': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -222,7 +210,7 @@
                         fillColor: "#80ff00",
                         interactive: true,
                     };
-                    case 'Fasilitas Keamanan': return {
+                    case 'Fungsi Usaha': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -234,7 +222,7 @@
                         fillColor: "#00ffff",
                         interactive: true,
                     };
-                    case 'Fasilitas Transportasi': return {
+                    case 'Fungsi Sosial dan Budaya': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -246,31 +234,7 @@
                         fillColor: "#ffff00",
                         interactive: true,
                     };
-                    case 'Fasilitas Umum': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#00ff00",
-                        interactive: true,
-                    };
-                    case 'Bank': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#0000ff",
-                        interactive: true,
-                    };
-                    case 'Sekolah': return {
+                    case 'Fasilitas Khusus': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -282,55 +246,7 @@
                         fillColor: "#ff00ff",
                         interactive: true,
                     };
-                    case 'Hotel': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#00ff80",
-                        interactive: true,
-                    };
-                    case 'Rumah Makan': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#0080ff",
-                        interactive: true,
-                    };
-                    case 'Tempat Usaha': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#ff007f",
-                        interactive: true,
-                    };
-                    case 'Tempat Ibadah': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#7f00ff",
-                        interactive: true,
-                    };
-                    case 'Utilitas': return {
+                    case 'Fasilitas Ganda Campuran': return {
                         opacity: 1,
                         color: "rgba(35,35,35,1.0)",
                         dashArray: "",
@@ -340,18 +256,6 @@
                         fill: true,
                         fillOpacity: 1,
                         fillColor: "#808080",
-                        interactive: true,
-                    };
-                    case 'Fasilitas Olahraga': return {
-                        opacity: 1,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 1.0,
-                        fill: true,
-                        fillOpacity: 1,
-                        fillColor: "#9988bf",
                         interactive: true,
                     };
                 }
