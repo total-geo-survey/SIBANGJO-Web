@@ -110,7 +110,7 @@
 	// Geolocation API
     	map.locate({setView:false, zoom: 14})
     	function onLocationFound(e){
-        	var radius = e.accuracy.toFixed(3);
+        	var radius = e.accuracy.toFixed(2);
         	var locationMarker = L.marker(e.latlng, {icon: myCustomIcon}).addTo(map)
           	    .bindPopup('Anda berada di sekitar ' + radius + ' meter dari titik ini').openPopup()
         	var locationCircle = L.circle(e.latlng, radius).addTo(map);
