@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Total Geo Survey">
     <link rel="shortcut icon" href="building.png">
-    <title> Sistem Informasi Bangunan Jogja </title>
+    <title> SIBANGJO </title>
 
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,400italic,300italic,300,500italic,700,700italic,900,900italic'
@@ -86,7 +86,7 @@
     <center>
         <div id="map"></div>
         <script src="Kelurahan.js"></script>
-        <script src="bgnv01.js"></script>
+        <script src="bgnv02.js"></script>
     </center>
 
     <!-- Map Script -->
@@ -183,7 +183,7 @@
         }).addTo(map);
 	    
         var bangunan = 
-        L.geoJSON(bgnv01,{
+        L.geoJSON(bgnv02,{
             style: function(feature) {
                 switch (feature.properties.remark) {
                     case 'Fungsi Hunian': return {
@@ -195,7 +195,7 @@
                         weight: 0.5,
                         fill: true,
                         fillOpacity: 0.8,
-                        fillColor: "#ffa000",
+                        fillColor: "#ffff00",
                         interactive: true,
                     };
                     case 'Fungsi Keagamaan': return {
@@ -207,7 +207,7 @@
                         weight: 0.5,
                         fill: true,
                         fillOpacity: 0.8,
-                        fillColor: "#80ff00",
+                        fillColor: "#5f005f",
                         interactive: true,
                     };
                     case 'Fungsi Usaha': return {
@@ -219,7 +219,7 @@
                         weight: 0.5,
                         fill: true,
                         fillOpacity: 0.8,
-                        fillColor: "#00ffff",
+                        fillColor: "#ff4646",
                         interactive: true,
                     };
                     case 'Fungsi Sosial dan Budaya': return {
@@ -231,7 +231,7 @@
                         weight: 0.5,
                         fill: true,
                         fillOpacity: 0.8,
-                        fillColor: "#ffff00",
+                        fillColor: "#9b9b9b",
                         interactive: true,
                     };
                     case 'Fungsi Khusus': return {
@@ -243,19 +243,7 @@
                         weight: 0.5,
                         fill: true,
                         fillOpacity: 0.8,
-                        fillColor: "#ff00ff",
-                        interactive: true,
-                    };
-                    case 'Fungsi Ganda Campuran': return {
-                        opacity: 0.8,
-                        color: "rgba(35,35,35,1.0)",
-                        dashArray: "",
-                        lineCap: "butt",
-                        lineJoin: "miter",
-                        weight: 0.5,
-                        fill: true,
-                        fillOpacity: 0.8,
-                        fillColor: "#808080",
+                        fillColor: "#9b00ff",
                         interactive: true,
                     };
                 }
@@ -265,7 +253,7 @@
                 layer.bindPopup(
                 'ID Bangunan' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
-                feature.properties.id_reg + feature.properties.id_remark + feature.properties.id_obj +
+                feature.properties.id_reg + '.' + feature.properties.id_remark + '.' + feature.properties.id_obj +
                 '</strong><br><br>'+
                 'Fungsi Bangunan' + '&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
@@ -275,21 +263,9 @@
                 '<strong>' +
                 feature.properties.name +
                 '</strong><br><br>'+
-                'No IMB' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                'Berizin' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
-                feature.properties.no_imb +
-                '</strong><br><br>'+
-                'No SLF' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong>' +
-                feature.properties.no_slf +
-                '</strong><br><br>'+
-                'Pemilik Bangunan' + '&nbsp;&nbsp;' +
-                '<strong>' +
-                feature.properties.pemilik +
-                '</strong><br><br>'+
-                'Luas (m^2)' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong>' +
-                feature.properties.luas +
+                feature.properties.izin +
                 '</strong><br><br>'+
                 'Alamat' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
