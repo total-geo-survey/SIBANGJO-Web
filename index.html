@@ -86,6 +86,7 @@
     <center>
         <div id="map"></div>
         <script src="Kelurahan.js"></script>
+	<script src="jalan_merge.js"></script>
         <script src="bgnv02.js"></script>
     </center>
 
@@ -123,7 +124,7 @@
     	map.on('locationerror', onLocationError);
 	    
         // Basemap Source
-	var imageUrl = 'https://p-tok1.pcloud.com/cfZk90KD3ZEEx35b7Z8A397ZZeb27XkZ3VZZWWRZZkuUkJZcQZWRZCFZNJZmQZ4HZGRZ3zZ4LZLRZ2pZHzZVHZs8ZNBmhLM8kWHFLaX5ShRLXVbVuj307/baseortho.png',
+	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13Zirsppb7Z8A397ZZBX17XkZ3VZZWWRZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZpRAIfkkNNHhRMphDS0RcGk5DIPSy/Base50uncom.png',
             imageBounds = [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]];
         var real = L.imageOverlay(imageUrl, imageBounds,{
             attribution: 'WebGIS by &copy; <a href="https://totalgeosurvey.com/">PT Total Geo Survey </a>',
@@ -283,6 +284,26 @@
             }
         }).addTo(map);
 
+	var jln = 
+        L.geoJSON(jalan_merge,{
+            style: function(feature) {
+                switch (feature.properties.Material) {
+                    case 'Jalan Aspal': return {
+                        opacity: 0,
+                        color: "rgba(35,35,35,1.0)",
+                        dashArray: "",
+                        lineCap: "butt",
+                        lineJoin: "miter",
+                        weight: 0.1,
+                        fill: true,
+                        fillOpacity: 1,
+                        fillColor: "ff0000",
+                        interactive: true,
+                    };
+                }
+            }
+	}).addTo(map);
+
         // Add Basemap
         var baseMaps = {
             "Aerial Imagery": real,
@@ -294,6 +315,7 @@
         // Add Layer
         var overlay = {
             "<b>Batas Administrasi</b>": kelurahan,
+	    "<b>Data Jalan</b>": jln,
 	    "<b>Data Bangunan</b>": bangunan
         };
 
