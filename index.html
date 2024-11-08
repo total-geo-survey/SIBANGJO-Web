@@ -123,6 +123,14 @@
     	map.on('locationerror', onLocationError);
 	    
         // Basemap Source
+	var imageUrl = 'https://p-tok1.pcloud.com/cfZk90KD3ZEEx35b7Z8A397ZZeb27XkZ3VZZWWRZZkuUkJZcQZWRZCFZNJZmQZ4HZGRZ3zZ4LZLRZ2pZHzZVHZs8ZNBmhLM8kWHFLaX5ShRLXVbVuj307/baseortho.png',
+            imageBounds = [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]];
+        var real = L.imageOverlay(imageUrl, imageBounds,{
+            attribution: 'WebGIS by &copy; <a href="https://totalgeosurvey.com/">PT Total Geo Survey </a>',
+            zoomControl: true,
+            maxzoom: 33,
+            minzoom: 1,
+	});
         var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
             attribution: 'WebGIS by &copy; <a href="https://totalgeosurvey.com/">PT Total Geo Survey </a>',
             zoomControl: true,
@@ -277,8 +285,9 @@
 
         // Add Basemap
         var baseMaps = {
-            "Aerial Imagery": esri,
-            "OSM Product": osm,
+            "Aerial Imagery": real,
+	    "Google Satellite": esri,
+            "Open Street Map": osm,
             "Dark Canvas": carto
         };
 
