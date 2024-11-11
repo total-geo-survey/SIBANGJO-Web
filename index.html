@@ -95,11 +95,21 @@
         }
 
 	.legend .batas {
-            background-color: white;
+            position: relative;
+	    background-color: white;
             border: 2px solid black;
 	    width: 20px;
             height: 20px;
-	    box-sizing: border-box;
+        }
+
+	.legend .batas::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid black;
         }
 
 	.navbar {
@@ -175,7 +185,7 @@
     	map.on('locationerror', onLocationError);
 	    
         // Basemap Source
-	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13Zirsppb7Z8A397ZZBX17XkZ3VZZWWRZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZpRAIfkkNNHhRMphDS0RcGk5DIPSy/Base50uncom.png',
+	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13Zirsppb7Z8A397ZZjtxkXkZ3VZZf1kZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZzDNIp3YTfwLzwuqbOKXIx0MBWQYV/Base50uncom.png',
             imageBounds = [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]];
         var real = L.imageOverlay(imageUrl, imageBounds,{
             attribution: 'WebGIS by &copy; <a href="https://totalgeosurvey.com/">PT Total Geo Survey </a>',
