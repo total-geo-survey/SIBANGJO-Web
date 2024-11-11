@@ -92,11 +92,14 @@
             width: 20px;
             height: 20px;
             display: inline-block;
+	    box-sizing: border-box;
         }
 
 	.legend .batas {
             background-color: white;
-            border: 3px solid black;
+            border: 2px solid black;
+	    width: 20px;
+            height: 20px;
         }
 
 	.navbar {
@@ -343,6 +346,7 @@
 
 	// Map Legend
         var legend = L.control({position: 'bottomleft'});
+	    
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<strong>&nbsp;&nbsp;LEGENDA&nbsp;&nbsp;</strong><br>' +
