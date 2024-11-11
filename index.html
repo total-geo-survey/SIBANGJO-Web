@@ -330,6 +330,13 @@
 			'Fungsi Khusus'
 		];
 		div.innerHTML = '<div><b>Legenda</b></div>';
+		for (var i = 0; i < grades.length; i++){
+			div.innerHTML += '<i style = 'background:'
+			+ remark(grades[i] + '&nbsp;&nbsp;</i>&nbsp;&nbsp;'
+			+ labels[i] + '<br />';
+		}
+		return div;
+	}
 	legend.addTo(map);
 	    
         // Merge Layer & Basemap
