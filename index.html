@@ -90,7 +90,7 @@
 <body>
     <!-- Add Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-        <a class="navbar-brand" href="#"> SIBANGJO: SISTEM INFORMASI BANGUNAN JOGJA </a>
+        <a class="navbar-brand" style="text-align:center" href="#"> SIBANGJO: SISTEM INFORMASI BANGUNAN JOGJA </a>
     </nav>
 
     <!-- Add Map GeoJSON -->
@@ -308,12 +308,13 @@
         var legend = L.control({position: 'bottomleft'});
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<strong>&nbsp;&nbsp;Legenda&nbsp;&nbsp;</strong><br>' +
-                            '<div><span style="background-color: #ffff00; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Hunian </div>' +
-                            '<div><span style="background-color: #5f005f; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Keagamaan </div>' +
-		    	    '<div><span style="background-color: #ff4646; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Usaha </div>' +
-                            '<div><span style="background-color: #9b9b9b; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Sosial dan Budaya </div>' +
-                            '<div><span style="background-color: #9b00ff; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Khusus </div>';
+            div.innerHTML = '<strong>&nbsp;&nbsp;LEGENDA&nbsp;&nbsp;</strong><br>' +
+                            '<div><span style="background-color: #ffff00; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Hunian </div>' +
+                            '<div><span style="background-color: #5f005f; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Keagamaan </div>' +
+		    	    '<div><span style="background-color: #ff4646; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Usaha </div>' +
+                            '<div><span style="background-color: #9b9b9b; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Sosial dan Budaya </div>' +
+		    	    '<div><span style="background-color: #9b00ff; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Fungsi Khusus </div>' +
+                            '<div><span style="background-color: #ff0000; text-align:left; width: 20px; height: 20px; display: inline-block;"></span> Jaringan Jalan </div>';
             return div;
         };
         legend.addTo(map);
