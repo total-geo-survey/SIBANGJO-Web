@@ -94,11 +94,6 @@
             display: inline-block;
         }
 
-	.legend .outer {
-            background-color: rgba(255, 255, 255, 0); 
-            border: 3px solid black;
-        }
-
 	.navbar {
             background-color: #fcb712;
             padding: 10px 0;
@@ -199,20 +194,20 @@
         L.geoJSON(Kelurahan,{
             style: function(feature) {
                 switch (feature.properties.NAME_3) {
-                    case 'Danurejan': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Gedong Tengen': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Gondokusuman': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Gondomanan': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Jetis': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Kotagede': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Kraton': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Mantrijeron': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Mergangsan': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Ngampilan': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Pakualaman': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Tegalrejo': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Umbulharjo': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
-                    case 'Wirobrajan': return {color: "#000000", opacity: 1, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Danurejan': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Gedong Tengen': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Gondokusuman': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Gondomanan': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Jetis': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Kotagede': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Kraton': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Mantrijeron': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Mergangsan': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Ngampilan': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Pakualaman': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Tegalrejo': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Umbulharjo': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
+                    case 'Wirobrajan': return {color: "#000000", opacity: 0.5, fill: true, fillColor: "#bfbfbf", fillOpacity: 0.1};
                 }
             },
 
@@ -347,7 +342,7 @@
                             '<div><span style="background-color: #9b9b9b; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Fungsi Sosial dan Budaya </div>' +
 		    	    '<div><span style="background-color: #9b00ff; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Fungsi Khusus </div>' +
 		            '<div><span style="background-color: #ff0000; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Jaringan Jalan </div>' +
-                            '<div><span style="outer"></span> Batas Administrasi Kelurahan </div>';
+                            '<div><span style="background-color: #ffffff; border:black; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Batas Administrasi Kelurahan </div>';
             return div;
         };
         legend.addTo(map);
