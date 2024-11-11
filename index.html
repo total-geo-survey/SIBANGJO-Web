@@ -72,7 +72,7 @@
         {   scroll-behavior: smooth;
         }
 
-        #map { height: calc(100vh - 55px);
+        #map { height: calc(100vh - 56px);
              }
 	    
 	.legend {
@@ -92,6 +92,11 @@
             width: 20px;
             height: 20px;
             display: inline-block;
+        }
+
+	.legend .outlines {
+            background-color: rgba(255, 255, 255, 0.5); 
+            border: 3px solid black;
         }
 
 	.navbar {
@@ -342,7 +347,7 @@
                             '<div><span style="background-color: #9b9b9b; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Fungsi Sosial dan Budaya </div>' +
 		    	    '<div><span style="background-color: #9b00ff; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Fungsi Khusus </div>' +
 		            '<div><span style="background-color: #ff0000; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Jaringan Jalan </div>' +
-                            '<div><span style="background-color: #000000; text-align:left; width: 10px; height: 10px; display: inline-block;"></span> Batas Administrasi Kelurahan </div>';
+                            '<div><span style="background-color: #outlines"></span> Batas Administrasi Kelurahan </div>';
             return div;
         };
         legend.addTo(map);
