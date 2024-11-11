@@ -102,7 +102,7 @@
             zoomDelta: 0.5
         });
 
-	// Custom Icon
+	// Custom Icon Geolocation
 	const myCustomIcon = L.icon({
         	iconUrl: './Data/pin.png',
         	iconSize: [30,30]
@@ -308,6 +308,30 @@
 	    "<b>Data Bangunan</b>": bangunan
         };
 
+	// Legend Main Layer
+	var legend = L.control({
+		position: 'buttomleft'
+	]);
+
+	legend.onAdd = function(map{
+		var div = L.DomUtil.create('div','legend');
+		var labels = [
+			"Fungsi Hunian",
+			"Fungsi Kegamaan",
+			"Fungsi Usaha",
+			"Fungsi Sosial dan Budaya",
+			"Fungsi Khusus"
+		];
+		var grades = [
+			'Fungsi Hunian',
+			'Fungsi Kegamaan',
+			'Fungsi Usaha',
+			'Fungsi Sosial dan Budaya',
+			'Fungsi Khusus'
+		];
+		div.innerHTML = '<div><b>Legenda</b></div>';
+	legend.addTo(map);
+	    
         // Merge Layer & Basemap
         var controlLayers = L.control.layers(baseMaps, overlay).addTo(map);
 
