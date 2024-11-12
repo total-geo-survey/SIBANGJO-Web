@@ -58,7 +58,13 @@
     </script>
     <script src="./Leaflet.GraphicScale.min.js">
     </script>
-    
+
+    <!-- MBTiles Library -->
+    <script src="https://unpkg.com/sql.js@0.3.2/js/sql.js">
+    </script>
+    <script src="https://unpkg.com/Leaflet.TileLayer.MBTiles@1.0.0/Leaflet.TileLayer.MBTiles.js">
+    </script>
+	
     <!-- Add Map -->
     <style>
         html, body, section
@@ -175,6 +181,11 @@
     	map.on('locationerror', onLocationError);
 	    
         // Basemap Source
+	var mbt = L.tileLayer.mbTiles('http://u.pc.cd/xMF', {
+            zoomControl: true,
+            maxZoom: 20,
+            minZoom: 10,  
+        });
 	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13Zirsppb7Z8A397ZZjtxkXkZ3VZZf1kZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZzDNIp3YTfwLzwuqbOKXIx0MBWQYV/Base50uncom.png',
             imageBounds = [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]];
         var real = L.imageOverlay(imageUrl, imageBounds,{
@@ -363,6 +374,7 @@
 	    
         // Add Basemap
         var baseMaps = {
+	    "Ortofoto Kota Jogja Mozaik": mbt,
             "Ortofoto Kota Jogja 2023": real,
 	    "ESRI Google Satellite": esri,
             "Open Street Map": osm,
