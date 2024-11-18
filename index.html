@@ -193,7 +193,7 @@
             minZoom: 13,  
         });*/
 	    
-	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13ZDzTLnb7Z39o97ZZzkvVXkZ3VZZaeRZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZLRHQxy9xP6f4jWVgeVp6rm7fPUuV/Base50uncom.png',
+	var imageUrl = 'https://p-tok1.pcloud.com/cfZ8sHG13ZDzTLnb7Z39o97ZZHM40XkZ3VZZf1kZZU23IFZcLZOLZlYZVHZCpZGzZd4ZgRZJ4ZOHZA4ZkzZJ8ZvzZ4GoEF6D6d05DUht8LsC1yymnA8fy/Base50uncom.png',
             imageBounds = [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]];
         var real = L.imageOverlay(imageUrl, imageBounds,{
             attribution: 'WebGIS by &copy; <a href="https://totalgeosurvey.com/">PT Total Geo Survey </a>',
@@ -327,7 +327,7 @@
                 }
             },
 
-            onEachFeature: function (feature, layer) {
+            onEachFeature: function (feature, layer) {     
                 layer.bindPopup(
                 'ID Bangunan' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
