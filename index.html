@@ -131,15 +131,15 @@
 <body>
     <!-- Add Navigation Bar -->
     <div class="navbar">
-	<img src="LogoPUPR.png">
+	<img src="logoPUPR.png">
         SIBANGJO: SISTEM INFORMASI BANGUNAN JOGJA
     </div>
 
     <!-- Add Map GeoJSON -->
     <center>
         <div id="map"></div>
-        <script src="Kelurahan.js"></script>
-	    <script src="jalan_merge.js"></script>
+        <script src="kelurahan.js"></script>
+	    <script src="jalan.js"></script>
         <script src="danurejan.js"></script>
         <script src="gedongtengen.js"></script>
         <script src="gondokusuman.js"></script>
@@ -205,7 +205,7 @@
         });
 
         // Layer Administrasi
-        var kelurahan = L.geoJSON(Kelurahan, {
+        var kelurahan = L.geoJSON(kelurahan, {
             style: {
                 color: "#000000",
                 opacity: 0.3,
@@ -251,7 +251,7 @@
                 fill: true,
                 fillOpacity: 0.8,
                 interactive: true,
-                fillColor: styles[feature.properties.remark]?.fillColor || "#ffffff"
+                fillColor: styles[feature.properties.fungsi]?.fillColor || "#ffffff"
             };
         }
     
@@ -260,15 +260,15 @@
             layer.bindPopup(
                 'ID Bangunan' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
-                feature.properties.id_reg + '.' + feature.properties.id_remark + '.' + feature.properties.id_obj +
+                feature.properties.id_kel + '.' + feature.properties.id_fungsi + '.' + feature.properties.id_objek +
                 '</strong><br><br>'+
                 'Fungsi Bangunan' + '&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
-                feature.properties.remark +
+                feature.properties.fungsi +
                 '</strong><br><br>'+
                 'Keterangan' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
-                feature.properties.name +
+                feature.properties.keterangan +
                 '</strong><br><br>'+
                 'Berizin' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong>' +
@@ -296,10 +296,10 @@
         var tegalrejoLayer = addGeoJSONToMap(tegalrejo).addTo(map);
     
         // Layer Jalan
-        var jalanLayer = L.geoJSON(jalan_merge,{
+        var jalanLayer = L.geoJSON(jalan,{
             style: function(feature) {
-                switch (feature.properties.Material) {
-                    case 'Jalan Aspal': return {color: "#ff0000", opacity: 0.1, fillOpacity: 0.5};
+                switch (feature.properties.id) {
+                    case 0: return {color: "#ff0000", opacity: 0.1, fillOpacity: 0.5};
                 }
             }
         }).addTo(map);
