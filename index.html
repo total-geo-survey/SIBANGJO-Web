@@ -39,9 +39,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css"
         integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
     <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js"
         integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s=" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+	<script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
 	
     <!-- Add Map -->
     <style>
@@ -342,7 +344,18 @@
     
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         L.control.scale({ position: 'topright' }).addTo(map);
-    
+        
+        // Tambahkan kontrol fullscreen
+        L.control.fullscreen({
+            position: 'topleft', 
+            title: {
+                'false': 'Masuk Layar Penuh', 
+                'true': 'Keluar Layar Penuh'
+            },
+            forceSeparateButton: true,
+            fullscreenElement: false
+        }).addTo(map);    
+        
         // Click event to log coordinates
         map.on('click', function (e) {
             console.log(e.latlng);
