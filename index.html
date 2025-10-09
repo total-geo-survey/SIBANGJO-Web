@@ -147,6 +147,7 @@
         <script src="gondokusuman.js"></script>
         <script src="jetis.js"></script>
         <script src="tegalrejo.js"></script>
+		<script src="wirobrajan.js"></script>
     </center>
 
     <!-- Map Script -->
@@ -296,6 +297,7 @@
         var gondokusumanLayer = addGeoJSONToMap(gondokusuman).addTo(map);
         var jetisLayer = addGeoJSONToMap(jetis).addTo(map);
         var tegalrejoLayer = addGeoJSONToMap(tegalrejo).addTo(map);
+		var wirobrajanLayer = addGeoJSONToMap(wirobrajan).addTo(map);
     
         // Layer Jalan
         var jalanLayer = L.geoJSON(jalan,{
@@ -339,7 +341,8 @@
             "<b>Kemantren Gedong Tengen": gedongtengenLayer,
             "<b>Kemantren Gondokusuman": gondokusumanLayer,
             "<b>Kemantren Jetis": jetisLayer,
-            "<b>Kemantren Tegalrejo": tegalrejoLayer
+            "<b>Kemantren Tegalrejo": tegalrejoLayer,
+			"<b>Kemantren Wirobrajan": wirobrajanLayer
         };
     
         L.control.layers(baseMaps, overlayMaps).addTo(map);
@@ -370,5 +373,6 @@
     
 </body>
 </html>
+
 
 
