@@ -313,10 +313,10 @@
     
         // Layer Jalan
         var jalanLayer = L.geoJSON(jalan,{
-            style: function(feature) {
-                switch (feature.properties.id) {
-                    case 0: return {color: "#ff0000", opacity: 0.1, fillOpacity: 0.5};
-                }
+            style: {
+                fillColor: "#ff0000",
+                fillOpacity: 0.5,
+                stroke: false
             }
         }).addTo(map);
     
