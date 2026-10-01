@@ -1246,17 +1246,25 @@
        10. UI: SIDEBAR, TAB, TOOLS
        ------------------------------------------------------------------ */
     function toggleSidebar(force) {
-        const hide = force !== undefined ? force : !document.body.classList.contains('sb-hidden');
-        document.body.classList.toggle('sb-hidden', hide);
-        $('#txtPanel').textContent = hide ? 'Tampilkan Panel' : 'Sembunyikan Panel';
-        $('#icPanel').innerHTML = hide ? '<path d="M8 4l10 8-10 8z"/>' : '<path d="M16 4 6 12l10 8z"/>';
-        setTimeout(() => map.invalidateSize(), 320);
+    const hide = force !== undefined
+        ? force
+        : !document.body.classList.contains('sb-hidden');
+
+    document.body.classList.toggle('sb-hidden', hide);
+
+    const btn = $('#btnMenu');
+    if (btn) {
+        btn.title = hide
+            ? 'Tampilkan Panel'
+            : 'Sembunyikan Panel';
     }
+
+    setTimeout(() => map.invalidateSize(), 320);
+}
     function closeSidebarMobile() { if (window.innerWidth <= 768) toggleSidebar(true); }
 
     function bindUI() {
         $('#btnMenu').addEventListener('click', () => toggleSidebar());
-        $('#btnPanel').addEventListener('click', () => toggleSidebar());
         if (window.innerWidth <= 768) toggleSidebar(true);
 
         $$('.tabs button').forEach(b => b.addEventListener('click', () => {
