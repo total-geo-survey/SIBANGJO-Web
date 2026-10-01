@@ -638,12 +638,12 @@
     const tileOpt = { maxZoom: 22, maxNativeZoom: 19 };
     const basemaps = {
         ortho: L.layerGroup([
-            L.tileLayer(ESRI_URL, { ...tileOpt, attribution: ATTR + ' | Imagery &copy; Esri' }),
+            L.tileLayer(ESRI_URL, { ...tileOpt, attribution: 'Imagery &copy; Esri' }),
             L.imageOverlay(CFG.ortho.url, CFG.ortho.bounds, { pane: 'orthoPane', attribution: 'Ortofoto Kota Jogja 2023' })
         ]),
-        esri: L.tileLayer(ESRI_URL, { ...tileOpt, attribution: ATTR + ' | Imagery &copy; Esri' }),
-        osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ...tileOpt, attribution: ATTR + ' | &copy; OpenStreetMap contributors' }),
-        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, maxNativeZoom: 20, subdomains: 'abcd', attribution: ATTR + ' | &copy; OpenStreetMap &copy; CARTO' })
+        esri: L.tileLayer(ESRI_URL, { ...tileOpt, attribution: 'Imagery &copy; Esri' }),
+        osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ...tileOpt, attribution: '&copy; OpenStreetMap contributors' }),
+        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, maxNativeZoom: 20, subdomains: 'abcd', attribution: '&copy; OpenStreetMap &copy; CARTO' })
     };
     let currentBase = 'esri';
     basemaps.esri.addTo(map);
