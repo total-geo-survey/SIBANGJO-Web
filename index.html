@@ -30,7 +30,7 @@
         --or:#F28C00; --or-d:#D67A00; --ye:#FCB715; --ye-soft:#FFF5DB;
         --bk:#141414; --ink:#262626; --mut:#707070; --line:#ECE6DA;
         --bg:#F7F5F0; --wh:#FFFFFF;
-        --hdr:64px; --sbw:380px; --r:14px;
+        --hdr:64px; --sbw:350px; --r:14px;
         --sh:0 6px 20px rgba(0,0,0,.10);
     }
     *{box-sizing:border-box}
@@ -40,10 +40,10 @@
 
     /* ---------- HEADER ---------- */
     .app-header{height:var(--hdr);display:flex;align-items:center;gap:14px;padding:0 18px;
-        background:#ffc232;
-        color:#fff;position:relative;z-index:1200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-    .hdr-btn{width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.22);
-        background:rgba(255,255,255,.10);color:#fff;display:grid;place-items:center;flex:0 0 auto;transition:.2s}
+        background:#ffb4004d;
+        color:#000000;position:relative;z-index:1200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .hdr-btn{width:40px;height:40px;border-radius:10px;border:1px solid rgba(0,0,0);
+        background:rgba(255,255,255,.10);color:#000000;display:grid;place-items:center;flex:0 0 auto;transition:.2s}
     .hdr-btn:hover{background:var(--or)}
     .hdr-logos{display:flex;gap:8px;align-items:center}
     .hdr-logos img{height:40px;width:auto;max-width:56px;object-fit:contain;background:#fff;border-radius:8px;padding:3px}
@@ -462,15 +462,6 @@
 
     <div id="toast"></div>
 
-    <!-- ===================================================================
-         MAP SCRIPT
-         Data GeoJSON tetap berupa file .js (kelurahan.js, jalan.js, dst.)
-         dan dimuat bertahap dengan progress bar. Skema kolom TIDAK diubah:
-         - kelurahan : NAME_3 (kemantren), NAME_4 (kelurahan), Luas
-         - bangunan  : id_kel, id_fungsi, id_objek, fungsi, keterangan, izin, alamat
-         Nama kemantren/kelurahan per bangunan diturunkan otomatis (file sumber
-         + point-in-polygon), hanya di memori browser.
-         =================================================================== -->
     <script>
     (function () {
     'use strict';
@@ -487,7 +478,6 @@
         },
         kelurahanFile: 'kelurahan.js',
         jalanFile: 'jalan.js',
-        // file data bangunan per kemantren -> variabel global yang didefinisikan file tsb
         kemantren: [
             { nama: 'Danurejan',    file: 'danurejan.js',    get: () => typeof danurejan    !== 'undefined' ? danurejan    : null },
             { nama: 'Gedong Tengen',file: 'gedongtengen.js', get: () => typeof gedongtengen !== 'undefined' ? gedongtengen : null },
@@ -631,7 +621,6 @@
     /* ------------------------------------------------------------------
        3. PETA & BASEMAP
        ------------------------------------------------------------------ */
-    const ATTR = 'WebGIS by &copy; <a href="https://totalgeosurvey.com/" target="_blank">PT Total Geo Survey</a>';
     const map = L.map('map', {
         center: CFG.center, zoom: CFG.zoom, zoomControl: false,
         maxZoom: 22, minZoom: 10, zoomSnap: 0.5, zoomDelta: 0.5,
@@ -1291,10 +1280,8 @@
             state.sym = b.dataset.sym; restyleAll();
         }));
         $('#opacity').addEventListener('input', debounce(e => { state.opacity = +e.target.value; restyleAll(); }, 120));
-
         $('#btnResetFilter').addEventListener('click', resetFilters);
         $('#spClear').addEventListener('click', resetFilters);
-
         $('#btnReset').addEventListener('click', () => {
             hlGroup.clearLayers(); selGroup.clearLayers(); map.closePopup();
             if (state.allBB) fitBB(state.allBB, 16); else map.setView(CFG.center, CFG.zoom);
@@ -1306,7 +1293,6 @@
             else document.exitFullscreen?.();
         });
         document.addEventListener('fullscreenchange', () => setTimeout(() => map.invalidateSize(), 200));
-
         // Geolokasi (hanya saat tombol ditekan, bukan otomatis)
         let meLayer = L.layerGroup().addTo(map);
         $('#tLocate').addEventListener('click', () => { toast('Mencari lokasi Anda…'); map.locate({ setView: true, maxZoom: 18 }); });
@@ -1317,7 +1303,6 @@
                 .bindPopup('Anda berada di sekitar ' + e.accuracy.toFixed(0) + ' meter dari titik ini').addTo(meLayer).openPopup();
         });
         map.on('locationerror', e => toast('Lokasi tidak tersedia: ' + e.message));
-
         // Label kelurahan disembunyikan saat zoom kecil
         const lbl = () => map.getContainer().classList.toggle('hide-kel-labels', map.getZoom() < 14.5);
         map.on('zoomend', lbl); lbl();
@@ -1349,7 +1334,6 @@
         bindUI();
         const steps = 1 + CFG.kemantren.length;
         let done = 0;
-
         // 1) Batas kelurahan (dibutuhkan untuk memetakan bangunan -> kelurahan)
         setLoad(3, 'Memuat batas administrasi kelurahan…');
         try {
@@ -1369,7 +1353,6 @@
             }
         } catch (err) { console.warn(err); toast('Batas kelurahan gagal dimuat'); }
         done++; setLoad(Math.round(done / steps * 100));
-
         // 2) Bangunan per kemantren, bertahap agar UI tetap responsif
         const failed = [];
         for (const k of CFG.kemantren) {
@@ -1384,7 +1367,6 @@
             done++; setLoad(Math.round(done / steps * 100));
             await tick();
         }
-
         // 3) Lengkapi kelurahan yang belum terpetakan via mayoritas id_kel
         setLoad(100, 'Menyusun indeks & statistik…'); await tick();
         const vote = new Map();
@@ -1400,13 +1382,11 @@
             }
             if (r.kelRef) r.kelRef.count++;
         }
-
         state.allBB = bbOf(state.records);
         buildFilters();
         setMode('kemantren');
         applyFilters();
         if (state.allBB) fitBB(state.allBB, 16);
-
         $('#loader').classList.add('hide');
         setTimeout(() => $('#loader').remove(), 500);
         toast(failed.length ? 'Sebagian data gagal dimuat: ' + failed.join(', ') : `${fmt(state.records.length)} bangunan berhasil dimuat`, 3500);
@@ -1416,7 +1396,5 @@
     else init();
     })();
     </script>
-    <!-- Credits: Mahandika L W N
-         Special Thanks to PT Total Geo Survey :) -->
 </body>
 </html>
