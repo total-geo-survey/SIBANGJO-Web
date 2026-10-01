@@ -51,8 +51,6 @@
     .hdr-title h1 span{color:var(--ye)}
     .hdr-title p{margin:2px 0 0;font-size:12px;opacity:.85;font-weight:500}
     .hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-    .hdr-badge{background:var(--bk);color:var(--ye);border:1px solid rgba(255,255,255,.25);border-radius:999px;
-        padding:7px 14px;font-size:13px;font-weight:700;white-space:nowrap;display:flex;gap:6px;align-items:center}
 
     /* ---------- LAYOUT ---------- */
     .app{display:flex;height:calc(100vh - var(--hdr));height:calc(100dvh - var(--hdr));position:relative}
@@ -253,8 +251,6 @@
         .hdr-logos img{height:32px}
         .hdr-title h1{font-size:17px}
         .hdr-title p{display:none}
-        .hdr-badge{padding:6px 10px;font-size:11.5px}
-        .hdr-badge .t{display:none}
         #sidebar{position:absolute;top:0;bottom:0;left:0;width:min(90vw,var(--sbw));box-shadow:8px 0 24px rgba(0,0,0,.2)}
         body.sb-hidden #sidebar{margin-left:0;transform:translateX(-105%)}
         #btnPanel .t,#btnReset .t{display:none}
@@ -285,12 +281,6 @@
         <div class="hdr-title">
             <h1>SIBANG<span>JO</span></h1>
             <p>Sistem Informasi Bangunan Jogja</p>
-        </div>
-        <div class="hdr-right">
-            <span class="hdr-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg>
-                <span class="t">Total:</span> <b id="hdrTotal">0</b> <span class="t">Bangunan</span>
-            </span>
         </div>
     </header>
 
@@ -430,7 +420,6 @@
                     </div>
                 </section>
             </div>
-            <div class="sb-foot">WebGIS by © PT Total Geo Survey · DPUPKP Kota Yogyakarta</div>
         </aside>
 
         <!-- ===== MAP ===== -->
@@ -624,7 +613,8 @@
     const map = L.map('map', {
         center: CFG.center, zoom: CFG.zoom, zoomControl: false,
         maxZoom: 22, minZoom: 10, zoomSnap: 0.5, zoomDelta: 0.5,
-        preferCanvas: true // render Canvas: jauh lebih ringan untuk ribuan poligon
+        preferCanvas: true,
+        attributionControl: false
     });
     map.createPane('orthoPane').style.zIndex = 250;
     map.createPane('roadPane').style.zIndex = 410;
@@ -638,12 +628,12 @@
     const tileOpt = { maxZoom: 22, maxNativeZoom: 19 };
     const basemaps = {
         ortho: L.layerGroup([
-            L.tileLayer(ESRI_URL, { ...tileOpt, attribution: 'Imagery &copy; Esri' }),
-            L.imageOverlay(CFG.ortho.url, CFG.ortho.bounds, { pane: 'orthoPane', attribution: 'Ortofoto Kota Jogja 2023' })
+            L.tileLayer(ESRI_URL, { ...tileOpt}),
+            L.imageOverlay(CFG.ortho.url, CFG.ortho.bounds, { pane: 'orthoPane'})
         ]),
-        esri: L.tileLayer(ESRI_URL, { ...tileOpt, attribution: 'Imagery &copy; Esri' }),
-        osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ...tileOpt, attribution: '&copy; OpenStreetMap contributors' }),
-        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, maxNativeZoom: 20, subdomains: 'abcd', attribution: '&copy; OpenStreetMap &copy; CARTO' })
+        esri: L.tileLayer(ESRI_URL, { ...tileOpt}),
+        osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ...tileOpt}),
+        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, maxNativeZoom: 20, subdomains: 'abcd'})
     };
     let currentBase = 'esri';
     basemaps.esri.addTo(map);
