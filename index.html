@@ -1177,7 +1177,7 @@
                 onClick
             }
         });
-        charts.fungsi = bar($('#chFungsi'), (e, els) => {if (els.length) {setFilter('fungsi', [charts.fungsi.data.labels[els[0].index]]);}});
+        charts.fungsi = hbar($('#chFungsi'), {onClick: (e, els) => {if (els.length) {setFilter('fungsi', [charts.fungsi.data.labels[els[0].index]]);}}});
         charts.izin = donut($('#chIzin'), (e, els) => { if (els.length) setFilter('izin', [charts.izin.data.labels[els[0].index]]); });
         charts.kem = hbar($('#chKem'), { onClick: (e, els) => { if (els.length) setFilter('kem', [charts.kem.data.labels[els[0].index]]); } });
         charts.izinKem = hbar($('#chIzinKem'), { suffix: '%', max: 100 });
