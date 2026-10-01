@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +8,11 @@
     <meta name="description" content="SIBANGJO - Sistem Informasi Bangunan Jogja">
     <link rel="shortcut icon" href="building.png">
     <title>SIBANGJO | Sistem Informasi Bangunan Jogja</title>
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Chart.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
     <style>
     :root{
@@ -774,7 +770,6 @@
     function activeFilterCount() { return F.fungsi.size + F.kem.size + F.kel.size + F.izin.size; }
     function updateCounts() {
         const n = state.visible.length, t = state.records.length, af = activeFilterCount();
-        $('#hdrTotal').textContent = fmt(t);
         $('#spVisible').textContent = fmt(n);
         $('#spTotal').textContent = fmt(t);
         $('#fiCount').textContent = fmt(n);
