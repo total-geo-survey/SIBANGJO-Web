@@ -146,7 +146,7 @@
     .analysis li::before{content:attr(data-i);position:absolute;left:9px;top:9px;width:18px;height:18px;border-radius:50%;background:var(--or);color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
     .analysis li.warn{background:#FFF4F2;border-color:#F7D3CB}
     .analysis li.warn::before{background:#E53935}
-    .stat-note{font-size:11px;color:var(--mut);margin:-4px 0 10px}
+    .stat-note{font-size:11px;color:var(--mut);margin:-2px 0 10px}
     .fl{position:absolute;z-index:1000;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--sh);
         font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;padding:6px 10px}
     button.fl:hover{border-color:var(--or);color:var(--or-d)}
@@ -173,6 +173,8 @@
     .coord-box{background:rgba(255,255,255);color:#000000;border-radius:8px;padding:5px 10px;font-size:11.5px;font-family:ui-monospace,Consolas,monospace}
     .leaflet-control-scale-line{border-color:#000000;border-radius:8px;background:#ffffff;font-family:ui-monospace,Consolas,monospace}
     .leaflet-container{font-family:inherit}
+    .leaflet-bottom.leaflet-right .leaflet-control {margin-bottom: 8px;}
+    .leaflet-bottom.leaflet-right .coord-box {margin-bottom: 8px;}
     .bld-popup .leaflet-popup-content-wrapper{border-radius:14px;padding:0;overflow:hidden}
     .bld-popup .leaflet-popup-content{margin:0;width:300px!important}
     .pp-h{padding:12px 14px;background:var(--bk);color:#fff;position:relative}
@@ -251,11 +253,11 @@
         <aside id="sidebar">
             <div class="sb-head">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
-                Panel Kontrol &amp; Filter
+                Panel Kontrol 
             </div>
             <div class="tabs">
                 <button class="active" data-tab="tabFilter">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>Peta &amp; Filter
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>Layer &amp; Filter
                 </button>
                 <button data-tab="tabStat">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Statistik
@@ -297,10 +299,10 @@
                             Peta Dasar
                         </div>
                         <div class="bm-grid" id="bmGrid">
-                            <button class="bm" data-bm="ortho"><div class="thumb t-ortho"></div><span>Ortofoto Jogja 2023</span></button>
+                            <button class="bm" data-bm="ortho"><div class="thumb t-ortho"></div><span>Ortophoto 2023</span></button>
                             <button class="bm active" data-bm="esri"><div class="thumb t-esri"></div><span>ESRI Satelit</span></button>
                             <button class="bm" data-bm="osm"><div class="thumb t-osm"></div><span>OpenStreetMap</span></button>
-                            <button class="bm" data-bm="dark"><div class="thumb t-dark"></div><span>Dark Map</span></button>
+                            <button class="bm" data-bm="topo"><div class="thumb t-topo"></div><span>OpenTopoMap</span></button>
                         </div>
                     </div>
 
@@ -310,11 +312,11 @@
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
                             Layer Data
                         </div>
-                        <label class="sw-row"><div>Bangunan / Gedung<small>Bidang bangunan seluruh kemantren</small></div>
+                        <label class="sw-row"><div>Bangunan</div>
                             <span class="switch"><input type="checkbox" id="tgBld" checked><i></i></span></label>
-                        <label class="sw-row"><div>Batas Administrasi<small>Batas kelurahan + label</small></div>
+                        <label class="sw-row"><div>Batas Administrasi Kelurahan</div>
                             <span class="switch"><input type="checkbox" id="tgKel" checked><i></i></span></label>
-                        <label class="sw-row"><div>Jaringan Jalan<small>Dimuat saat diaktifkan (hemat memori)</small></div>
+                        <label class="sw-row"><div>Jaringan Jalan</div>
                             <span class="switch"><input type="checkbox" id="tgJalan"><i></i></span></label>
                         <div class="lbl">Simbologi Bangunan</div>
                         <div class="seg2" id="symMode">
@@ -332,13 +334,13 @@
                             Kategori Bangunan
                             <span class="pill" id="filterPill" style="display:none">0 FILTER</span>
                         </div>
-                        <div class="lbl" style="margin-top:0">By Fungsi</div>
+                        <div class="lbl" style="margin-top:0">Berdasarkan Fungsi</div>
                         <div id="msFungsi"></div>
-                        <div class="lbl">By Kemantren</div>
+                        <div class="lbl">Berdasarkan Kemantren</div>
                         <div id="msKem"></div>
-                        <div class="lbl">By Kelurahan</div>
+                        <div class="lbl">Berdasarkan Kelurahan</div>
                         <div id="msKel"></div>
-                        <div class="lbl">By Status Izin</div>
+                        <div class="lbl">Berdasarkan Status Izin</div>
                         <div id="msIzin"></div>
                         <div class="filter-info">
                             <div>Tampil: <b id="fiCount">0</b> bangunan</div>
@@ -349,7 +351,7 @@
 
                 <!-- ============ TAB STATISTIK ============ -->
                 <section id="tabStat" class="tab-pane">
-                    <p class="stat-note">Statistik mengikuti filter yang sedang aktif. Klik grafik Fungsi/Kemantren untuk memfilter peta.</p>
+                    <p class="stat-note">Statistik mengikuti filter yang sedang aktif.</p>
                     <div class="kpi-grid" id="kpiGrid"></div>
 
                     <div class="card">
@@ -595,7 +597,7 @@
         ]),
         esri: L.tileLayer(ESRI_URL, { ...tileOpt}),
         osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ...tileOpt}),
-        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, maxNativeZoom: 20, subdomains: 'abcd'})
+        topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom: 17,maxNativeZoom: 17})
     };
     let currentBase = 'esri';
     basemaps.esri.addTo(map);
