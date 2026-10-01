@@ -40,7 +40,7 @@
 
     /* ---------- HEADER ---------- */
     .app-header{height:var(--hdr);display:flex;align-items:center;gap:14px;padding:0 18px;
-        background:linear-gradient(100deg,var(--bk) 0%,#262626 40%,var(--or) 80%,var(--ye) 100%);
+        background:#fcb715;
         color:#fff;position:relative;z-index:1200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
     .hdr-btn{width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.22);
         background:rgba(255,255,255,.10);color:#fff;display:grid;place-items:center;flex:0 0 auto;transition:.2s}
@@ -183,7 +183,6 @@
     .fl{position:absolute;z-index:1000;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--sh);
         font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;padding:9px 14px}
     button.fl:hover{border-color:var(--or);color:var(--or-d)}
-    #btnPanel{top:12px;left:12px}
     #btnReset{top:12px;right:64px}
     #statusPill{top:12px;left:50%;transform:translateX(-50%);font-weight:600;font-size:12.5px;padding:7px 8px 7px 14px;white-space:nowrap}
     #statusPill b{color:var(--or-d)}
@@ -257,7 +256,7 @@
         .hdr-badge .t{display:none}
         #sidebar{position:absolute;top:0;bottom:0;left:0;width:min(90vw,var(--sbw));box-shadow:8px 0 24px rgba(0,0,0,.2)}
         body.sb-hidden #sidebar{margin-left:0;transform:translateX(-105%)}
-        #btnPanel .t,#btnReset .t{display:none}
+        #btnReset .t{display:none}
         #statusPill{top:60px;font-size:11.5px}
         .legend{max-width:200px;min-width:0}
     }
@@ -275,9 +274,6 @@
 
     <!-- ===== HEADER ===== -->
     <header class="app-header">
-        <button id="btnMenu" class="hdr-btn" title="Tampilkan / Sembunyikan Panel">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
         <div class="hdr-logos">
             <img src="logoPUPR.png" alt="Logo Kementerian PUPR" title="Kementerian PUPR" onerror="this.style.display='none'">
             <img src="logoDPUPKP.png" alt="Logo DPUPKP Kota Yogyakarta" title="DPUPKP Kota Yogyakarta" onerror="this.style.display='none'">
@@ -436,11 +432,6 @@
         <!-- ===== MAP ===== -->
         <div id="mapWrap">
             <div id="map"></div>
-
-            <button id="btnPanel" class="fl">
-                <svg id="icPanel" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 4 6 12l10 8z"/></svg>
-                <span class="t" id="txtPanel">Sembunyikan Panel</span>
-            </button>
 
             <div id="statusPill" class="fl">
                 <span>Menampilkan <b id="spVisible">0</b> dari <b id="spTotal">0</b> bangunan</span>
@@ -1253,7 +1244,6 @@
     function toggleSidebar(force) {
         const hide = force !== undefined ? force : !document.body.classList.contains('sb-hidden');
         document.body.classList.toggle('sb-hidden', hide);
-        $('#txtPanel').textContent = hide ? 'Tampilkan Panel' : 'Sembunyikan Panel';
         $('#icPanel').innerHTML = hide ? '<path d="M8 4l10 8-10 8z"/>' : '<path d="M16 4 6 12l10 8z"/>';
         setTimeout(() => map.invalidateSize(), 320);
     }
@@ -1261,7 +1251,6 @@
 
     function bindUI() {
         $('#btnMenu').addEventListener('click', () => toggleSidebar());
-        $('#btnPanel').addEventListener('click', () => toggleSidebar());
         if (window.innerWidth <= 768) toggleSidebar(true);
 
         $$('.tabs button').forEach(b => b.addEventListener('click', () => {
