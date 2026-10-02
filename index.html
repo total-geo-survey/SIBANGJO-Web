@@ -1988,25 +1988,17 @@ function createKemantrenLayer(d) {
             }
         } catch (err) { console.warn(err); toast('Batas kelurahan gagal dimuat'); }
         done++; setLoad(Math.round(done / steps * 100));
-         // ============================================================
-    // 2) BATAS KEMANTREN
-    // ============================================================
-    setLoad(
-        Math.round(done / steps * 100),
-        'Memuat batas administrasi Kemantren…'
-    );
 
+    setLoad(Math.round(done / steps * 100),'Memuat batas administrasi Kemantren…');
     try {
-
         await loadScript(CFG.kemantrenFile);
-
-        const kd = typeof batasKemantren !== 'undefined'
-            ? batasKemantren
+        const kd = typeof kemantren !== 'undefined'
+            ? kemantren
             : null;
 
         if (!kd || !kd.features) {
             throw new Error(
-                'Variabel batasKemantren tidak ditemukan di ' +
+                'Variabel kemantren tidak ditemukan di ' +
                 CFG.kemantrenFile
             );
         }
@@ -2081,3 +2073,4 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
+
