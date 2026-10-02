@@ -1131,38 +1131,37 @@
 const ins = [];
 
 if (!s.n) {
+
     ins.push([
         'warn',
-        'Tidak ada bangunan yang sesuai dengan filter aktif. Coba longgarkan filter.'
+        'Tidak ada bangunan yang sesuai dengan filter aktif.'
     ]);
+
 } else {
 
     // =========================================================
     // 1. KOMPOSISI FUNGSI
     // =========================================================
     if (fArr.length) {
+
         const top1 = fArr[0];
         const top2 = fArr[1];
 
-        const top2Count = fArr
-            .slice(0, 2)
-            .reduce((sum, [, n]) => sum + n, 0);
-
-        const top2Share = pct(top2Count, s.n);
-
         let text =
-            `<b>Komposisi fungsi:</b> ` +
-            `<b>${esc(top1[0])}</b> menjadi fungsi dominan ` +
-            `dengan <b>${fmt(pct(top1[1], s.n), 1)}%</b> ` +
-            `(${fmt(top1[1])} bangunan).`;
+            `<b>Komposisi:</b> ` +
+            `<b>${esc(top1[0])}</b> mendominasi ` +
+            `<b>${fmt(pct(top1[1], s.n), 1)}%</b> ` +
+            `(${fmt(top1[1])} bangunan)`;
 
         if (top2) {
-            const gap = pct(top1[1], s.n) - pct(top2[1], s.n);
+            const top2Share = pct(
+                top1[1] + top2[1],
+                s.n
+            );
 
             text +=
-                ` Dua fungsi terbesar mencakup ` +
-                `<b>${fmt(top2Share, 1)}%</b> populasi bangunan, ` +
-                `dengan selisih dominasi <b>${fmt(gap, 1)} poin persentase</b>.`;
+                `; dua fungsi terbesar mencapai ` +
+                `<b>${fmt(top2Share, 1)}%</b>.`;
         }
 
         ins.push(['', text]);
@@ -1173,30 +1172,27 @@ if (!s.n) {
     // 2. KONSENTRASI WILAYAH
     // =========================================================
     if (kArr.length) {
+
         const top3 = kArr
             .slice(0, 3)
             .reduce((sum, [, n]) => sum + n, 0);
 
-        const top3Share = pct(top3, s.n);
         const topK = kArr[0];
 
-        let text =
+        ins.push([
+            '',
             `<b>Konsentrasi wilayah:</b> ` +
-            `<b>${esc(topK[0])}</b> memiliki jumlah bangunan terbanyak ` +
-            `(${fmt(topK[1])}; ${fmt(pct(topK[1], s.n), 1)}%).`;
-
-        if (kArr.length >= 3) {
-            text +=
-                ` Tiga kemantren teratas mencakup ` +
-                `<b>${fmt(top3Share, 1)}%</b> dari seluruh bangunan yang tampil.`;
-        }
-
-        ins.push(['', text]);
+            `<b>${esc(topK[0])}</b> memiliki ` +
+            `<b>${fmt(topK[1])}</b> bangunan ` +
+            `(${fmt(pct(topK[1], s.n), 1)}%); ` +
+            `tiga kemantren teratas mencakup ` +
+            `<b>${fmt(pct(top3, s.n), 1)}%</b> data.`
+        ]);
     }
 
 
     // =========================================================
-    // 3. KEPADATAN BANGUNAN
+    // 3. KEPADATAN
     // =========================================================
     const kelArea = new Map(
         state.kelIndex.map(k => [
@@ -1208,14 +1204,13 @@ if (!s.n) {
     const dens = [];
 
     for (const [name, n] of lArr) {
+
         const luas = kelArea.get(name);
 
         if (luas > 0) {
             dens.push([
                 name,
-                n / luas,
-                n,
-                luas
+                n / luas
             ]);
         }
     }
@@ -1223,244 +1218,58 @@ if (!s.n) {
     dens.sort((a, b) => b[1] - a[1]);
 
     if (dens.length >= 2) {
+
         const high = dens[0];
         const low = dens[dens.length - 1];
 
-        let ratio = null;
-
-        if (low[1] > 0) {
-            ratio = high[1] / low[1];
-        }
-
-        let text =
-            `<b>Kepadatan bangunan:</b> ` +
-            `<b>${esc(high[0])}</b> memiliki kepadatan tertinggi ` +
-            `(±${fmt(high[1], 0)} bangunan/km²), ` +
-            `sedangkan <b>${esc(low[0])}</b> terendah ` +
-            `(±${fmt(low[1], 0)} bangunan/km²).`;
-
-        if (ratio && isFinite(ratio)) {
-            text +=
-                ` Rasio kepadatan keduanya sekitar ` +
-                `<b>${fmt(ratio, 1)}×</b>.`;
-        }
-
-        ins.push(['', text]);
-
-    } else if (dens.length === 1) {
-
         ins.push([
             '',
-            `<b>Kepadatan bangunan:</b> ` +
-            `<b>${esc(dens[0][0])}</b> memiliki ` +
-            `±${fmt(dens[0][1], 0)} bangunan/km² pada wilayah yang tampil.`
+            `<b>Kepadatan:</b> ` +
+            `<b>${esc(high[0])}</b> tertinggi ` +
+            `(±${fmt(high[1], 0)} bangunan/km²), ` +
+            `sedangkan <b>${esc(low[0])}</b> terendah ` +
+            `(±${fmt(low[1], 0)} bangunan/km²).`
         ]);
     }
 
 
     // =========================================================
-    // 4. KONSENTRASI FUNGSI USAHA + BASELINE
-    // =========================================================
-    const usahaArr = sortDesc(s.usahaL);
-
-    const totalUsaha = [...s.usahaL.values()]
-        .reduce((sum, n) => sum + n, 0);
-
-    if (usahaArr.length && totalUsaha > 0) {
-
-        const topUsaha = usahaArr[0];
-
-        const kelTotal = s.byL.get(topUsaha[0]) || 0;
-
-        const localShare = pct(topUsaha[1], kelTotal);
-        const overallShare = pct(totalUsaha, s.n);
-
-        const delta = localShare - overallShare;
-
-        let text =
-            `<b>Konsentrasi fungsi usaha:</b> ` +
-            `<b>${esc(topUsaha[0])}</b> memiliki ` +
-            `<b>${fmt(localShare, 1)}%</b> bangunan dengan fungsi usaha. ` +
-            `Sebagai pembanding, proporsi fungsi usaha pada seluruh data ` +
-            `adalah <b>${fmt(overallShare, 1)}%</b>.`;
-
-        if (delta > 0) {
-            text +=
-                ` Artinya proporsi di wilayah tersebut ` +
-                `<b>${fmt(delta, 1)} poin persentase</b> di atas proporsi umum.`;
-        } else if (delta < 0) {
-            text +=
-                ` Artinya proporsi di wilayah tersebut ` +
-                `<b>${fmt(Math.abs(delta), 1)} poin persentase</b> di bawah proporsi umum.`;
-        }
-
-        ins.push(['', text]);
-    }
-
-
-    // =========================================================
-    // 5. CAKUPAN STATUS PERIZINAN
+    // 4. PERIZINAN & KUALITAS DATA
     // =========================================================
     const knownPermit = ok + no;
     const permitCoverage = pct(knownPermit, s.n);
 
-    if (knownPermit > 0) {
-
-        const permitRate = pct(ok, knownPermit);
-
-        let text =
-            `<b>Cakupan status perizinan:</b> data status izin tersedia ` +
-            `untuk <b>${fmt(knownPermit)}</b> dari ` +
-            `<b>${fmt(s.n)}</b> bangunan ` +
-            `(${fmt(permitCoverage, 1)}%). ` +
-            `Dari data yang tersedia tersebut, ` +
-            `<b>${fmt(permitRate, 1)}%</b> tercatat Berizin.`;
-
-        const kRates = [...s.izinK.entries()]
-            .filter(([, z]) => z.d >= 30)
-            .map(([k, z]) => [
-                k,
-                pct(z.y, z.d),
-                z.d
-            ])
-            .sort((a, b) => b[1] - a[1]);
-
-        if (kRates.length >= 2) {
-            const high = kRates[0];
-            const low = kRates[kRates.length - 1];
-
-            text +=
-                ` Pada kemantren dengan minimal 30 data status, ` +
-                `rentang proporsi Berizin berada pada ` +
-                `<b>${fmt(low[1], 1)}%–${fmt(high[1], 1)}%</b>.`;
-        }
-
-        ins.push(['', text]);
-
-    } else {
-
-        ins.push([
-            'warn',
-            `<b>Cakupan status perizinan:</b> belum tersedia data ` +
-            `status Berizin/Belum Berizin pada bangunan yang tampil ` +
-            `(${fmt(permitCoverage, 1)}% memiliki status terisi). ` +
-            `Karena itu tingkat perizinan belum dapat dihitung secara representatif.`
-        ]);
-    }
-
-
-    // =========================================================
-    // 6. DOKUMENTASI PBG & SLF
-    // =========================================================
-    const pbgRows = state.visible.filter(
+    const pbgCount = state.visible.filter(
         r =>
             r.p &&
             r.p.no_pbg != null &&
             String(r.p.no_pbg).trim() !== ''
-    );
+    ).length;
 
-    const slfRows = state.visible.filter(
+    const slfCount = state.visible.filter(
         r =>
             r.p &&
             r.p.no_slf != null &&
             String(r.p.no_slf).trim() !== ''
-    );
-
-    const pbgCount = pbgRows.length;
-    const slfCount = slfRows.length;
-
-    const pbgCoverage = pct(pbgCount, s.n);
-    const slfCoverage = pct(slfCount, s.n);
-
-    const pbgNoDate = pbgRows.filter(
-        r =>
-            !r.p.tgl_pbg ||
-            String(r.p.tgl_pbg).trim() === ''
     ).length;
 
-    const slfNoDate = slfRows.filter(
-        r =>
-            !r.p.tgl_slf ||
-            String(r.p.tgl_slf).trim() === ''
-    ).length;
-
-    let docText =
-        `<b>Dokumentasi perizinan:</b> nomor PBG terdokumentasi pada ` +
-        `<b>${fmt(pbgCount)}</b> bangunan ` +
-        `(${fmt(pbgCoverage, 2)}%), sedangkan nomor SLF pada ` +
-        `<b>${fmt(slfCount)}</b> bangunan ` +
-        `(${fmt(slfCoverage, 2)}%).`;
-
-    const incompleteDocs = [];
-
-    if (pbgNoDate > 0) {
-        incompleteDocs.push(
-            `<b>${fmt(pbgNoDate)}</b> PBG tanpa tanggal`
-        );
-    }
-
-    if (slfNoDate > 0) {
-        incompleteDocs.push(
-            `<b>${fmt(slfNoDate)}</b> SLF tanpa tanggal`
-        );
-    }
-
-    if (incompleteDocs.length) {
-        docText +=
-            ` Ditemukan pula ` +
-            incompleteDocs.join(' dan ') +
-            ` sehingga kelengkapan dokumentasi masih perlu diperiksa.`;
-    }
-
-    ins.push([
-        (pbgCount === 0 && slfCount === 0) ? 'warn' : '',
-        docText
-    ]);
-
-
-    // =========================================================
-    // 7. KUALITAS / KELENGKAPAN DATA
-    // =========================================================
-    const unmapped = s.byL.get(UNMAPPED) || 0;
-    const undefinedF = s.byF.get('Tidak Terdefinisi') || 0;
-
-    const qualityItems = [];
-
-    if (unmapped > 0) {
-        qualityItems.push(
-            `<b>${fmt(unmapped)}</b> bangunan belum terpetakan ke kelurahan`
-        );
-    }
-
-    if (undefinedF > 0) {
-        qualityItems.push(
-            `<b>${fmt(undefinedF)}</b> bangunan belum memiliki klasifikasi fungsi`
-        );
-    }
-
-    if (knownPermit < s.n) {
-        qualityItems.push(
-            `<b>${fmt(s.n - knownPermit)}</b> bangunan belum memiliki status izin terklasifikasi`
-        );
-    }
-
-    if (qualityItems.length) {
+    if (knownPermit === 0) {
 
         ins.push([
             'warn',
-            `<b>Kualitas data:</b> ` +
-            qualityItems.join('; ') +
-            `. Temuan ini sebaiknya menjadi prioritas pembaruan data sebelum ` +
-            `digunakan untuk analisis kepatuhan atau evaluasi perizinan.`
+            `<b>Perizinan:</b> status izin belum tersedia ` +
+            `(${fmt(permitCoverage, 1)}% data terisi); ` +
+            `PBG ${fmt(pbgCount)} dan SLF ${fmt(slfCount)}.`
         ]);
 
     } else {
 
         ins.push([
             '',
-            `<b>Kualitas data:</b> seluruh bangunan yang tampil ` +
-            `memiliki klasifikasi fungsi, keterkaitan wilayah administrasi, ` +
-            `dan status izin yang dapat dianalisis.`
+            `<b>Perizinan:</b> status tersedia pada ` +
+            `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
+            `<b>${fmt(pct(ok, knownPermit), 1)}%</b> ` +
+            `dari data tersebut tercatat Berizin.`
         ]);
     }
 }
@@ -1686,6 +1495,7 @@ $('#analysis').innerHTML = ins
     </script>
 </body>
 </html>
+
 
 
 
