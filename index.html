@@ -137,7 +137,7 @@
     .kpi.k-dark .kv{color:var(--ink);}
     .kpi.k-dark .ks{color:var(--mut);}
     .kpi .kl{display:block;font-size:10px;line-height:1.2;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:#77736C;margin:0;white-space:normal;}
-    .kpi .kv{display:block;margin-top:5px;font-size:17px;line-height:1.15;font-weight:750;color:#262626; word-break:normal; overflow-wrap:anywhere;}
+    .kpi .kv{display:block;margin-top:5px;font-size:15px;line-height:1.15;font-weight:750;color:#262626; word-break:normal; overflow-wrap:anywhere;}
     .kpi .kv:not(.sm){letter-spacing:-.25px;}
     .kpi .kv.sm{line-height:1.15;font-weight:700;}
     .kpi .ks{margin-top:4px; font-size:10px; line-height:1.3;color:#85817A;white-space:normal;}
@@ -1141,27 +1141,37 @@ if (!s.n) {
 
     // =========================================================
     // 1. KOMPOSISI FUNGSI
+    // Advanced:
+    // - fungsi dominan
+    // - fungsi kedua
+    // - kontribusi gabungan dua fungsi terbesar
     // =========================================================
     if (fArr.length) {
 
         const top1 = fArr[0];
         const top2 = fArr[1];
 
+        const top1Pct = pct(top1[1], s.n);
+
         let text =
-            `<b>Komposisi:</b> ` +
-            `<b>${esc(top1[0])}</b> mendominasi ` +
-            `<b>${fmt(pct(top1[1], s.n), 1)}%</b> ` +
-            `(${fmt(top1[1])} bangunan)`;
+            `<b>${esc(top1[0])}</b> mendominasi dengan ` +
+            `<b>${fmt(top1Pct, 1)}%</b> dari ${fmt(s.n)} bangunan`;
 
         if (top2) {
-            const top2Share = pct(
+
+            const top2Pct = pct(top2[1], s.n);
+            const top2TotalPct = pct(
                 top1[1] + top2[1],
                 s.n
             );
 
             text +=
-                `; dua fungsi terbesar mencapai ` +
-                `<b>${fmt(top2Share, 1)}%</b>.`;
+                `, disusul <b>${esc(top2[0])}</b> ` +
+                `(${fmt(top2Pct, 1)}%). ` +
+                `Dua fungsi terbesar mencakup ` +
+                `<b>${fmt(top2TotalPct, 1)}%</b> data.`;
+        } else {
+            text += '.';
         }
 
         ins.push(['', text]);
@@ -1169,30 +1179,72 @@ if (!s.n) {
 
 
     // =========================================================
-    // 2. KONSENTRASI WILAYAH
+    // 2. KONSENTRASI KEMANTREN
+    // Advanced:
+    // - kemantren terbesar
+    // - kontribusi terhadap total
+    // - konsentrasi Top 3
     // =========================================================
     if (kArr.length) {
 
-        const top3 = kArr
-            .slice(0, 3)
-            .reduce((sum, [, n]) => sum + n, 0);
-
         const topK = kArr[0];
 
-        ins.push([
-            '',
-            `<b>Konsentrasi wilayah:</b> ` +
-            `<b>${esc(topK[0])}</b> memiliki ` +
-            `<b>${fmt(topK[1])}</b> bangunan ` +
-            `(${fmt(pct(topK[1], s.n), 1)}%); ` +
-            `tiga kemantren teratas mencakup ` +
-            `<b>${fmt(pct(top3, s.n), 1)}%</b> data.`
-        ]);
+        const top3Count = kArr
+            .slice(0, 3)
+            .reduce(
+                (sum, [, n]) => sum + n,
+                0
+            );
+
+        const top3Pct = pct(
+            top3Count,
+            s.n
+        );
+
+        const lowK = kArr[kArr.length - 1];
+
+        let text =
+            `Kemantren dengan bangunan terbanyak adalah ` +
+            `<b>${esc(topK[0])}</b> ` +
+            `(${fmt(topK[1])}; ${fmt(pct(topK[1], s.n), 1)}%)`;
+
+        if (kArr.length >= 3) {
+
+            text +=
+                `; tiga kemantren teratas mencakup ` +
+                `<b>${fmt(top3Pct, 1)}%</b> data.`;
+        } else {
+
+            text += '.';
+        }
+
+        // Hanya tambahkan wilayah paling sedikit jika tidak terlalu
+        // repetitif dengan wilayah terbesar.
+        if (
+            kArr.length >= 5 &&
+            topK[0] !== lowK[0]
+        ) {
+            text =
+                `Kemantren terbanyak adalah ` +
+                `<b>${esc(topK[0])}</b> ` +
+                `(${fmt(topK[1])}; ${fmt(pct(topK[1], s.n), 1)}%), ` +
+                `sedangkan paling sedikit ` +
+                `<b>${esc(lowK[0])}</b> ` +
+                `(${fmt(lowK[1])}). ` +
+                `Tiga teratas mencakup ` +
+                `<b>${fmt(top3Pct, 1)}%</b> data.`;
+        }
+
+        ins.push(['', text]);
     }
 
 
     // =========================================================
-    // 3. KEPADATAN
+    // 3. KEPADATAN KELURAHAN
+    // Advanced:
+    // - jumlah bangunan
+    // - luas wilayah
+    // - bangunan/km2
     // =========================================================
     const kelArea = new Map(
         state.kelIndex.map(k => [
@@ -1208,14 +1260,19 @@ if (!s.n) {
         const luas = kelArea.get(name);
 
         if (luas > 0) {
-            dens.push([
+
+            dens.push({
                 name,
-                n / luas
-            ]);
+                density: n / luas,
+                count: n,
+                area: luas
+            });
         }
     }
 
-    dens.sort((a, b) => b[1] - a[1]);
+    dens.sort(
+        (a, b) => b.density - a.density
+    );
 
     if (dens.length >= 2) {
 
@@ -1224,54 +1281,153 @@ if (!s.n) {
 
         ins.push([
             '',
-            `<b>Kepadatan:</b> ` +
-            `<b>${esc(high[0])}</b> tertinggi ` +
-            `(±${fmt(high[1], 0)} bangunan/km²), ` +
-            `sedangkan <b>${esc(low[0])}</b> terendah ` +
-            `(±${fmt(low[1], 0)} bangunan/km²).`
+            `Kelurahan terpadat: ` +
+            `<b>${esc(high.name)}</b> dengan ` +
+            `±${fmt(high.density, 0)} bangunan/km²; ` +
+            `terendah <b>${esc(low.name)}</b> ` +
+            `(±${fmt(low.density, 0)}/km²).`
+        ]);
+
+    } else if (dens.length === 1) {
+
+        ins.push([
+            '',
+            `Kepadatan bangunan pada wilayah yang tampil ` +
+            `tercatat sekitar ` +
+            `<b>${fmt(dens[0].density, 0)} bangunan/km²</b> ` +
+            `di ${esc(dens[0].name)}.`
         ]);
     }
 
 
     // =========================================================
-    // 4. PERIZINAN & KUALITAS DATA
+    // 4. FUNGSI USAHA vs BASELINE
+    // Advanced:
+    // - kelurahan dengan proporsi usaha tertinggi
+    // - baseline seluruh data
+    // - selisih percentage point
     // =========================================================
-    const knownPermit = ok + no;
-    const permitCoverage = pct(knownPermit, s.n);
+    const usahaArr = sortDesc(s.usahaL);
 
-    const pbgCount = state.visible.filter(
+    const totalUsaha = [...s.usahaL.values()]
+        .reduce(
+            (sum, n) => sum + n,
+            0
+        );
+
+    if (
+        usahaArr.length &&
+        totalUsaha > 0
+    ) {
+
+        const topUsaha = usahaArr[0];
+
+        const totalKel = s.byL.get(
+            topUsaha[0]
+        ) || 0;
+
+        if (totalKel > 0) {
+
+            const localPct = pct(
+                topUsaha[1],
+                totalKel
+            );
+
+            const overallPct = pct(
+                totalUsaha,
+                s.n
+            );
+
+            const gap = localPct - overallPct;
+
+            let text =
+                `Proporsi fungsi usaha tertinggi di ` +
+                `<b>${esc(topUsaha[0])}</b> ` +
+                `(${fmt(localPct, 1)}% bangunannya), ` +
+                `dibandingkan <b>${fmt(overallPct, 1)}%</b> ` +
+                `pada seluruh data`;
+
+            if (Math.abs(gap) >= 0.1) {
+
+                text +=
+                    `; selisih ` +
+                    `<b>${gap >= 0 ? '+' : ''}${fmt(gap, 1)}` +
+                    ` poin persentase</b>.`;
+            } else {
+                text += '.';
+            }
+
+            ins.push(['', text]);
+        }
+    }
+
+
+    // =========================================================
+    // 5. STATUS IZIN + KUALITAS DATA
+    // Advanced:
+    // - coverage status izin
+    // - rate Berizin jika tersedia
+    // - PBG
+    // - SLF
+    // - tetap membedakan "tidak ada data" dengan "belum berizin"
+    // =========================================================
+
+    const knownPermit = ok + no;
+
+    const permitCoverage = pct(
+        knownPermit,
+        s.n
+    );
+
+    const pbgRows = state.visible.filter(
         r =>
             r.p &&
             r.p.no_pbg != null &&
             String(r.p.no_pbg).trim() !== ''
-    ).length;
+    );
 
-    const slfCount = state.visible.filter(
+    const slfRows = state.visible.filter(
         r =>
             r.p &&
             r.p.no_slf != null &&
             String(r.p.no_slf).trim() !== ''
-    ).length;
+    );
 
-    if (knownPermit === 0) {
+    const pbgCount = pbgRows.length;
+    const slfCount = slfRows.length;
 
-        ins.push([
-            'warn',
-            `<b>Perizinan:</b> status izin belum tersedia ` +
-            `(${fmt(permitCoverage, 1)}% data terisi); ` +
-            `PBG ${fmt(pbgCount)} dan SLF ${fmt(slfCount)}.`
-        ]);
+    let text = '';
+
+    if (knownPermit > 0) {
+
+        const permitRate = pct(
+            ok,
+            knownPermit
+        );
+
+        text =
+            `Status izin tersedia pada ` +
+            `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
+            `dari data tersebut ` +
+            `<b>${fmt(permitRate, 1)}%</b> tercatat Berizin.`;
 
     } else {
 
-        ins.push([
-            '',
-            `<b>Perizinan:</b> status tersedia pada ` +
-            `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
-            `<b>${fmt(pct(ok, knownPermit), 1)}%</b> ` +
-            `dari data tersebut tercatat Berizin.`
-        ]);
+        text =
+            `Status izin belum tersedia pada data bangunan ` +
+            `yang tampil.`;
     }
+
+    text +=
+        ` PBG terdokumentasi <b>${fmt(pbgCount)}</b> ` +
+        `dan SLF <b>${fmt(slfCount)}</b>.`;
+
+    ins.push([
+        knownPermit === 0
+            ? 'warn'
+            : '',
+        text
+    ]);
 }
 
 $('#analysis').innerHTML = ins
@@ -1495,6 +1651,7 @@ $('#analysis').innerHTML = ins
     </script>
 </body>
 </html>
+
 
 
 
