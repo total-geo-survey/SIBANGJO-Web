@@ -1127,7 +1127,9 @@
                     ), 1) + '% dari yang tampil'
                     : 'Nomor SLF belum tersedia'
             );
-// ---- Analisis otomatis
+// =============================================================
+// ANALISIS OTOMATIS
+// =============================================================
 const ins = [];
 
 if (!s.n) {
@@ -1141,10 +1143,6 @@ if (!s.n) {
 
     // =========================================================
     // 1. KOMPOSISI FUNGSI
-    // Advanced:
-    // - fungsi dominan
-    // - fungsi kedua
-    // - kontribusi gabungan dua fungsi terbesar
     // =========================================================
     if (fArr.length) {
 
@@ -1156,7 +1154,7 @@ if (!s.n) {
             s.n
         );
 
-        let text =
+        let functionText =
             `<b>${esc(top1[0])}</b> mendominasi dengan ` +
             `<b>${fmt(top1Pct, 1)}%</b> dari ` +
             `${fmt(s.n)} bangunan`;
@@ -1173,7 +1171,7 @@ if (!s.n) {
                 s.n
             );
 
-            text +=
+            functionText +=
                 `, disusul <b>${esc(top2[0])}</b> ` +
                 `(${fmt(top2Pct, 1)}%). ` +
                 `Dua fungsi terbesar mencakup ` +
@@ -1181,25 +1179,18 @@ if (!s.n) {
 
         } else {
 
-            text += '.';
+            functionText += '.';
         }
 
         ins.push([
             '',
-            text
+            functionText
         ]);
     }
 
 
     // =========================================================
     // 2. SEBARAN BANGUNAN
-    // Advanced:
-    // - kemantren dengan jumlah terbesar
-    // - proporsi terhadap seluruh data
-    // - kontribusi Top 3 Kemantren
-    //
-    // Tidak menampilkan wilayah paling sedikit agar analisis
-    // tidak repetitif dan tetap ringkas.
     // =========================================================
     if (kArr.length) {
 
@@ -1217,7 +1208,7 @@ if (!s.n) {
             s.n
         );
 
-        let text =
+        let distributionText =
             `Sebaran bangunan tertinggi berada di ` +
             `<b>${esc(topK[0])}</b> ` +
             `dengan ${fmt(topK[1])} bangunan ` +
@@ -1225,28 +1216,22 @@ if (!s.n) {
 
         if (kArr.length >= 3) {
 
-            text +=
+            distributionText +=
                 ` Tiga kemantren teratas mencakup ` +
                 `<b>${fmt(top3Pct, 1)}%</b> data.`;
         }
 
         ins.push([
             '',
-            text
+            distributionText
         ]);
     }
 
 
     // =========================================================
     // 3. KARAKTERISTIK BANGUNAN
-    // Advanced:
-    // - cakupan data luas bangunan
-    // - rata-rata luas bangunan
-    // - sumber atribut: ar_bgn_dg
-    //
-    // Hanya nilai numerik > 0 yang dihitung.
+    // Menggunakan field ar_bgn_dg
     // =========================================================
-
     const areaRows = state.visible
         .map(r => {
 
@@ -1277,13 +1262,16 @@ if (!s.n) {
                 0
             ) / areaRows.length;
 
-        ins.push([
-            '',
+        const areaText =
             `Data luas bangunan tersedia pada ` +
             `<b>${fmt(areaCoverage, 1)}%</b> ` +
             `bangunan yang tampil, dengan rata-rata ` +
             `<b>${fmt(avgArea, 1)} m²</b> ` +
-            `dari ${fmt(areaRows.length)} bangunan yang memiliki nilai luas.`
+            `dari ${fmt(areaRows.length)} bangunan yang memiliki nilai luas.`;
+
+        ins.push([
+            '',
+            areaText
         ]);
 
     } else {
@@ -1298,15 +1286,8 @@ if (!s.n) {
 
     // =========================================================
     // 4. KUALITAS & KELENGKAPAN DATA
-    // Advanced:
-    // - kelengkapan pemilik
-    // - kelengkapan alamat
-    // - kelengkapan gabungan identitas
-    //
-    // Tidak menggunakan field hasil turunan seperti r.kel/r.kem,
-    // tetapi mengevaluasi atribut sumber pada r.p.
+    // Menggunakan field pemilik dan alamat
     // =========================================================
-
     let ownerCount = 0;
     let addressCount = 0;
     let identityComplete = 0;
@@ -1351,7 +1332,7 @@ if (!s.n) {
         s.n
     );
 
-    let text =
+    let identityText =
         `Kelengkapan identitas pemilik dan alamat ` +
         `mencapai <b>${fmt(identityCoverage, 1)}%</b> ` +
         `dari data yang tampil`;
@@ -1361,7 +1342,7 @@ if (!s.n) {
         addressCount > 0
     ) {
 
-        text +=
+        identityText +=
             `; data pemilik terisi ` +
             `<b>${fmt(ownerCoverage, 1)}%</b> ` +
             `dan alamat ` +
@@ -1369,7 +1350,7 @@ if (!s.n) {
 
     } else {
 
-        text +=
+        identityText +=
             `. Data identitas masih belum tersedia.`;
     }
 
@@ -1377,20 +1358,13 @@ if (!s.n) {
         identityCoverage < 50
             ? 'warn'
             : '',
-        text
+        identityText
     ]);
 
 
     // =========================================================
     // 5. STATUS PERIZINAN
-    // Advanced:
-    // - cakupan status izin
-    // - proporsi Berizin dari data yang memiliki status
-    // - dokumentasi PBG
-    // - dokumentasi SLF
-    // - membedakan "tidak ada data" dengan "belum berizin"
     // =========================================================
-
     const knownPermit =
         ok + no;
 
@@ -1429,11 +1403,11 @@ if (!s.n) {
         slfRows.length;
 
 
-    let text = '';
+    let permitText = '';
 
 
     // ---------------------------------------------------------
-    // Jika status izin tersedia
+    // Status izin tersedia
     // ---------------------------------------------------------
     if (knownPermit > 0) {
 
@@ -1442,7 +1416,7 @@ if (!s.n) {
             knownPermit
         );
 
-        text =
+        permitText =
             `Status izin tersedia pada ` +
             `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
             `dari data tersebut ` +
@@ -1452,20 +1426,17 @@ if (!s.n) {
     }
 
     // ---------------------------------------------------------
-    // Jika seluruh status izin kosong
+    // Status izin belum tersedia
     // ---------------------------------------------------------
     else {
 
-        text =
+        permitText =
             `Status izin belum tersedia pada data bangunan ` +
             `yang tampil.`;
     }
 
 
-    // ---------------------------------------------------------
-    // Tambahkan dokumentasi PBG & SLF
-    // ---------------------------------------------------------
-    text +=
+    permitText +=
         ` PBG terdokumentasi ` +
         `<b>${fmt(pbgCount)}</b> ` +
         `dan SLF ` +
@@ -1476,7 +1447,7 @@ if (!s.n) {
         knownPermit === 0
             ? 'warn'
             : '',
-        text
+        permitText
     ]);
 }
 
@@ -1705,6 +1676,7 @@ $('#analysis').innerHTML = ins
     </script>
 </body>
 </html>
+
 
 
 
