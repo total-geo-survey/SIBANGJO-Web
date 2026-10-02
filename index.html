@@ -151,8 +151,65 @@
     .kpi .kv{font-size:16px;}
     .kpi .kv.sm{font-size:15px;}
     .kpi .ks{font-size:9.5px;}}
-    .chart-box{position:relative;height:230px}
-    .chart-box.tall{height:300px}
+/* =========================================================
+   CHART
+   ========================================================= */
+.chart-box{
+    position:relative;
+    height:230px;
+    width:100%;
+}
+
+.chart-box.tall{
+    height:300px;
+}
+
+/* =========================================================
+   CHART EMPTY STATE
+   Dipakai ketika data belum tersedia / belum dapat dihitung
+   ========================================================= */
+.chart-empty{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+    color:var(--mut);
+    pointer-events:none;
+}
+
+.chart-empty > div{
+    max-width:240px;
+}
+
+.chart-empty strong{
+    display:block;
+    color:#55514B;
+    font-size:12px;
+    line-height:1.4;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.chart-empty small{
+    display:block;
+    color:#96928A;
+    font-size:10.5px;
+    line-height:1.5;
+    font-weight:500;
+}
+
+/* Saat chart kosong, canvas disembunyikan */
+.chart-box.is-empty canvas{
+    display:none !important;
+}
+
+/* Empty state untuk chart tinggi */
+.chart-box.tall .chart-empty{
+    padding:30px;
+}
     .analysis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
     .analysis li{font-size:12.5px;line-height:1.5;padding:9px 10px 9px 34px;border-radius:10px;background:#FBFAF7;border:1px solid var(--line);position:relative}
     .analysis li::before{content:attr(data-i);position:absolute;left:9px;top:9px;width:18px;height:18px;border-radius:50%;background:var(--or);color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
@@ -361,39 +418,209 @@
                     </div>
                 </section>
 
-                <!-- ============ TAB STATISTIK ============ -->
-                <section id="tabStat" class="tab-pane">
-                    <p class="stat-note">Statistik mengikuti filter yang sedang aktif.</p>
-                    <div class="kpi-grid" id="kpiGrid"></div>
+<!-- ============ TAB STATISTIK ============ -->
+<section id="tabStat" class="tab-pane">
 
-                    <div class="card">
-                        <div class="card-t">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
-                            Analisis Otomatis
-                        </div>
-                        <ul class="analysis" id="analysis"></ul>
-                    </div>
+    <p class="stat-note">
+        Statistik mengikuti filter yang sedang aktif.
+    </p>
 
-                    <div class="card">
-                        <div class="card-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 6"/></svg>Komposisi Fungsi Bangunan</div>
-                        <div class="chart-box tall"><canvas id="chFungsi"></canvas></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Status Perizinan</div>
-                        <div class="chart-box"><canvas id="chIzin"></canvas></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Jumlah Bangunan per Kemantren</div>
-                        <div class="chart-box tall"><canvas id="chKem"></canvas></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Tingkat Berizin per Kemantren (%)</div>
-                        <div class="chart-box tall"><canvas id="chIzinKem"></canvas></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>10 Kelurahan dengan Bangunan Terbanyak</div>
-                        <div class="chart-box tall"><canvas id="chKel"></canvas></div>
-                    </div>
+    <!-- KPI -->
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+
+    <!-- =====================================================
+         ANALISIS OTOMATIS
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
+            </svg>
+
+            Analisis Otomatis
+        </div>
+
+        <ul class="analysis" id="analysis"></ul>
+
+    </div>
+
+
+    <!-- =====================================================
+         1. KOMPOSISI FUNGSI
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 3v9l6 6"/>
+            </svg>
+
+            Komposisi Fungsi Bangunan
+        </div>
+
+        <div class="chart-box tall">
+            <canvas id="chFungsi"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         2. STATUS PERIZINAN
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="m8 12 3 3 5-6"/>
+            </svg>
+
+            Status Perizinan
+        </div>
+
+        <div class="chart-box">
+            <canvas id="chIzin"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         3. JUMLAH BANGUNAN PER KEMANTREN
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+            </svg>
+
+            Jumlah Bangunan per Kemantren
+        </div>
+
+        <div class="chart-box tall">
+            <canvas id="chKem"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         4. TINGKAT BERIZIN PER KEMANTREN
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+            </svg>
+
+            Tingkat Berizin per Kemantren (%)
+        </div>
+
+        <div class="chart-box tall">
+            <canvas id="chIzinKem"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         5. KELURAHAN TERBANYAK
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+            </svg>
+
+            10 Kelurahan dengan Bangunan Terbanyak
+        </div>
+
+        <div class="chart-box tall">
+            <canvas id="chKel"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         6. KARAKTERISTIK LUAS BANGUNAN
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M4 19 19 4"/>
+                <path d="M5 5h14v14"/>
+            </svg>
+
+            Karakteristik Luas Bangunan
+        </div>
+
+        <div class="chart-box">
+            <canvas id="chLuas"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         7. KELENGKAPAN DATA
+         ===================================================== -->
+    <div class="card">
+
+        <div class="card-t">
+            <svg width="15" height="15"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.4">
+                <path d="M4 5h16v14H4z"/>
+                <path d="m8 12 3 3 5-6"/>
+            </svg>
+
+            Kelengkapan Data Utama
+        </div>
+
+        <div class="chart-box">
+            <canvas id="chKelengkapan"></canvas>
+        </div>
+
+    </div>
                 </section>
             </div>
         </aside>
@@ -1065,24 +1292,72 @@
         }
     }
 
-    /* ------------------------------------------------------------------
-       9. STATISTIK & ANALISIS OTOMATIS
-       ------------------------------------------------------------------ */
-    function computeStats(list) {
-        const s = { n: list.length, area: 0, byF: new Map(), byK: new Map(), byL: new Map(), byI: new Map(), izinK: new Map(), usahaL: new Map() };
-        const inc = (m, k) => m.set(k, (m.get(k) || 0) + 1);
-        for (const r of list) {
-            s.area += r.area;
-            inc(s.byF, r.fungsi); inc(s.byK, r.kem); inc(s.byL, r.kel || UNMAPPED); inc(s.byI, r.izin);
-            const z = s.izinK.get(r.kem) || { t: 0, y: 0, d: 0 };
-            z.t++; if (r.izin === 'Berizin') z.y++; if (r.izin === 'Berizin' || r.izin === 'Belum Berizin') z.d++;
-            s.izinK.set(r.kem, z);
-            if (r.fungsi === 'Fungsi Usaha') inc(s.usahaL, r.kel || UNMAPPED);
+/* ------------------------------------------------------------------
+   9. STATISTIK & ANALISIS OTOMATIS
+   ------------------------------------------------------------------ */
+
+function computeStats(list) {
+
+    const s = {
+        n: list.length,
+        area: 0,
+
+        byF: new Map(),
+        byK: new Map(),
+        byL: new Map(),
+        byI: new Map(),
+
+        izinK: new Map()
+    };
+
+    const inc = (m, k) => {
+        if (!k) k = 'Tidak Terdefinisi';
+        m.set(k, (m.get(k) || 0) + 1);
+    };
+
+    for (const r of list) {
+
+        s.area += Number(r.area) || 0;
+
+        inc(s.byF, r.fungsi);
+        inc(s.byK, r.kem);
+        inc(s.byL, r.kel || UNMAPPED);
+        inc(s.byI, r.izin);
+
+        const z =
+            s.izinK.get(r.kem) ||
+            {
+                t: 0,
+                y: 0,
+                d: 0
+            };
+
+        z.t++;
+
+        if (r.izin === 'Berizin') {
+            z.y++;
         }
-        return s;
+
+        if (
+            r.izin === 'Berizin' ||
+            r.izin === 'Belum Berizin'
+        ) {
+            z.d++;
+        }
+
+        s.izinK.set(r.kem, z);
     }
-    const sortDesc = m => [...m.entries()].sort((a, b) => b[1] - a[1]);
-    const charts = {};
+
+    return s;
+}
+
+
+const sortDesc = m =>
+    [...m.entries()]
+        .sort((a, b) => b[1] - a[1]);
+
+
+const charts = {};
 
     function kpi(label, value, sub, dark, small) {
         return `<div class="kpi${dark ? ' k-dark' : ''}"><div class="kl">${label}</div><div class="kv${small ? ' sm' : ''}">${value}</div>${sub ? `<div class="ks">${sub}</div>` : ''}</div>`;
@@ -1471,6 +1746,95 @@ $('#analysis').innerHTML = ins
         setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
         const top10 = lArr.slice(0, 10);
         setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#141414');
+        // =============================================================
+// 6. KARAKTERISTIK LUAS BANGUNAN
+// =============================================================
+
+const areaClass = {
+    '< 100 m²': 0,
+    '100–300 m²': 0,
+    '300–500 m²': 0,
+    '500–1.000 m²': 0,
+    '> 1.000 m²': 0
+};
+
+for (const r of state.visible) {
+
+    const p = r.p || {};
+    const area = Number(p.ar_bgn_dg);
+
+    if (!Number.isFinite(area) || area <= 0) {
+        continue;
+    }
+
+    if (area < 100) {
+        areaClass['< 100 m²']++;
+    } else if (area < 300) {
+        areaClass['100–300 m²']++;
+    } else if (area < 500) {
+        areaClass['300–500 m²']++;
+    } else if (area < 1000) {
+        areaClass['500–1.000 m²']++;
+    } else {
+        areaClass['> 1.000 m²']++;
+    }
+}
+
+setChart(
+    charts.luas,
+    Object.keys(areaClass),
+    Object.values(areaClass),
+    '#F28C00'
+);
+
+
+// =============================================================
+// 7. KELENGKAPAN DATA UTAMA
+// =============================================================
+
+const dataFields = [
+    {
+        label: 'Pemilik',
+        key: 'pemilik'
+    },
+    {
+        label: 'Alamat',
+        key: 'alamat'
+    },
+    {
+        label: 'PBG',
+        key: 'no_pbg'
+    },
+    {
+        label: 'SLF',
+        key: 'no_slf'
+    }
+];
+
+const completeness = dataFields.map(field => {
+
+    const filled = state.visible.filter(r => {
+
+        const p = r.p || {};
+        const value = p[field.key];
+
+        return value != null &&
+               String(value).trim() !== '';
+    }).length;
+
+    return [
+        field.label,
+        s.n ? +pct(filled, s.n).toFixed(1) : 0
+    ];
+
+});
+
+setChart(
+    charts.kelengkapan,
+    completeness.map(x => x[0]),
+    completeness.map(x => x[1]),
+    '#555'
+);
     }
     function setChart(ch, labels, data, colors) {
         ch.data.labels = labels; ch.data.datasets[0].data = data; ch.data.datasets[0].backgroundColor = colors; ch.update();
@@ -1507,6 +1871,16 @@ $('#analysis').innerHTML = ins
         charts.kem = hbar($('#chKem'), { onClick: (e, els) => { if (els.length) setFilter('kem', [charts.kem.data.labels[els[0].index]]); } });
         charts.izinKem = hbar($('#chIzinKem'), { suffix: '%', max: 100 });
         charts.kel = hbar($('#chKel'), { onClick: (e, els) => { if (els.length) setFilter('kel', [charts.kel.data.labels[els[0].index]]); } });
+charts.luas = hbar($('#chLuas'), {
+    suffix: '',
+    onClick: null
+});
+
+charts.kelengkapan = hbar($('#chKelengkapan'), {
+    suffix: '%',
+    max: 100,
+    onClick: null
+});    
     }
 
     /* ------------------------------------------------------------------
@@ -1676,6 +2050,7 @@ $('#analysis').innerHTML = ins
     </script>
 </body>
 </html>
+
 
 
 
