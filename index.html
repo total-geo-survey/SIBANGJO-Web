@@ -935,13 +935,6 @@
         if (b.dataset.act === 'near') { const r = state.records[+b.dataset.rid]; if (r) focusRecord(r); }
     });
     
-    function norm(v) {
-        return String(v ?? '')
-            .trim()
-            .replace(/\s+/g, ' ')
-            .toLowerCase();
-    }
-    
     function match(r) {
         return (!F.fungsi.size || F.fungsi.has(r.fungsi)) &&
                (!F.kem.size || F.kem.has(r.kem)) &&
@@ -2048,6 +2041,7 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
+
 
 
 
