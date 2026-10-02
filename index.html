@@ -151,9 +151,6 @@
     .kpi .kv{font-size:16px;}
     .kpi .kv.sm{font-size:15px;}
     .kpi .ks{font-size:9.5px;}}
-/* =========================================================
-   CHART
-   ========================================================= */
 .chart-box{
     position:relative;
     height:230px;
@@ -163,11 +160,6 @@
 .chart-box.tall{
     height:300px;
 }
-
-/* =========================================================
-   CHART EMPTY STATE
-   Dipakai ketika data belum tersedia / belum dapat dihitung
-   ========================================================= */
 .chart-empty{
     position:absolute;
     inset:0;
@@ -201,12 +193,10 @@
     font-weight:500;
 }
 
-/* Saat chart kosong, canvas disembunyikan */
 .chart-box.is-empty canvas{
     display:none !important;
 }
 
-/* Empty state untuk chart tinggi */
 .chart-box.tall .chart-empty{
     padding:30px;
 }
@@ -385,6 +375,12 @@
                             <span class="switch"><input type="checkbox" id="tgBld" checked><i></i></span></label>
                         <label class="sw-row"><div>Batas Administrasi Kelurahan</div>
                             <span class="switch"><input type="checkbox" id="tgKel" checked><i></i></span></label>
+                        <label class="sw-row"><div>Batas Administrasi Kemantren</div>
+                            <span class="switch">
+                                <input type="checkbox" id="tgKem" checked>
+                                <i></i>
+                            </span>
+                        </label>
                         <label class="sw-row"><div>Jaringan Jalan</div>
                             <span class="switch"><input type="checkbox" id="tgJalan"><i></i></span></label>
                         <div class="lbl">Simbologi Bangunan</div>
@@ -645,6 +641,7 @@
             bounds: [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]]
         },
         kelurahanFile: 'kelurahan.js',
+        kemantrenFile: 'kemantren.geojson',
         jalanFile: 'jalan.js',
         kemantren: [
             { nama: 'Danurejan',    file: 'danurejan.js',    get: () => typeof danurejan    !== 'undefined' ? danurejan    : null },
@@ -1973,6 +1970,7 @@ charts.luas = hbar($('#chLuas'), {
     </script>
 </body>
 </html>
+
 
 
 
