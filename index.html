@@ -935,12 +935,14 @@
         if (b.dataset.act === 'near') { const r = state.records[+b.dataset.rid]; if (r) focusRecord(r); }
     });
     
-    function match(r) {
-        return (!F.fungsi.size || F.fungsi.has(r.fungsi)) &&
-               (!F.kem.size || F.kem.has(r.kem)) &&
-               (!F.kel.size || F.kel.has(r.kel)) &&
-               (!F.izin.size || F.izin.has(norm(r.izin)));
-    }
+function match(r) {
+    const izin = izinCat(r.izin);
+
+    return (!F.fungsi.size || F.fungsi.has(r.fungsi)) &&
+           (!F.kem.size || F.kem.has(r.kem)) &&
+           (!F.kel.size || F.kel.has(r.kel)) &&
+           (!F.izin.size || F.izin.has(izin));
+}
     function applyFilters(opt = {}) {
         const vis = [];
         for (const r of state.records) {
@@ -1062,7 +1064,37 @@
         msKel.setOptions(kelOptions());
 
         const ic = countBy(recs, 'izin');
-        msIzin = MultiSelect($('#msIzin'), { allText: 'Semua Status', onChange: s => { F.izin = s; applyFilters({ fit: true }); } });
+        msIzin = MultiSelect($('#msIzin'), {
+    allText: 'Semua Status',
+
+    onChange: s => {
+        console.log('=== FILTER IZIN ===');
+        console.log('Dipilih:', [...s]);
+
+        console.log(
+            'Status data:',
+            [...new Set(state.records.map(r => izinCat(r.izin)))]
+        );
+
+        F.izin = s;
+
+        applyFilters({ fit: true });
+
+        console.log(
+            'Jumlah terlihat:',
+            state.visible.length,
+            '/',
+            state.records.length
+        );
+
+        console.log(
+            'Jumlah Tidak Ada Data:',
+            state.records.filter(
+                r => izinCat(r.izin) === 'Tidak Ada Data'
+            ).length
+        );
+    }
+});
         msIzin.setOptions([...ic.entries()].sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ value: k, label: k, count: n, color: colorIzin(k) })));
     }
     function setFilter(key, values) {
@@ -2041,6 +2073,7 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
+
 
 
 
