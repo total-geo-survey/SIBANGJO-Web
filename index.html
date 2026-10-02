@@ -1084,13 +1084,11 @@
 
         $('#kpiGrid').innerHTML =
             kpi('Total Bangunan', fmt(s.n), s.n === T ? 'Seluruh data' : fmt(pct(s.n, T), 1) + '% dari ' + fmt(T), true) +
+            kpi('Fungsi Dominan', topF ? esc(topF[0].replace('Fungsi ', '')) : '-', topF ? fmt(pct(topF[1], s.n), 1) + '% · ' + fmt(topF[1]) + ' bangunan' : '', false, true) +
             kpi('Berizin', fmt(ok), fmt(pct(ok, s.n), 1) + '% dari yang tampil') +
             kpi('Belum Berizin', fmt(no), fmt(pct(no, s.n), 1) + '%' + (na ? ' · ' + fmt(na) + ' tanpa data' : '')) +
-            kpi('Fungsi Dominan', topF ? esc(topF[0].replace('Fungsi ', '')) : '-', topF ? fmt(pct(topF[1], s.n), 1) + '% · ' + fmt(topF[1]) + ' bangunan' : '', false, true) +
             kpi('Kemantren Terbanyak', topK ? esc(topK[0]) : '-', topK ? fmt(topK[1]) + ' bangunan' : '', false, true) +
             kpi('Kelurahan Tercakup', fmt(lArr.length), fmt(s.byK.size) + ' kemantren') +
-            kpi('Est. Luas Tapak', fmt(s.area / 10000, 1) + ' ha', 'Akumulasi luas footprint') +
-            kpi('Rata-rata Tapak', fmt(s.n ? s.area / s.n : 0, 1) + ' m²', 'per bangunan');
 
         // ---- Analisis otomatis
         const ins = [];
@@ -1351,3 +1349,4 @@
     </script>
 </body>
 </html>
+
