@@ -127,6 +127,7 @@
     .sw-dot{width:11px;height:11px;border-radius:3px;border:1px solid rgba(0,0,0,.25);flex:0 0 auto}
     .filter-info{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px}
     .filter-info b{color:var(--or-d)}
+    .kem-line {border-top: 2px solid #2563eb;}
     .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px; margin-bottom:12px;}
     .kpi{ position:relative;min-width:0;min-height:86px;padding:11px 12px 10px 14px;background:#fff;border:1px solid #E6E0D6;border-radius:11px;overflow:hidden;box-shadow:0 1px 2px rgba(40,32,20,.03);transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;}
     .kpi::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:0 4px 4px 0;background:var(--or);}
@@ -376,11 +377,7 @@
                         <label class="sw-row"><div>Batas Administrasi Kelurahan</div>
                             <span class="switch"><input type="checkbox" id="tgKel" checked><i></i></span></label>
                         <label class="sw-row"><div>Batas Administrasi Kemantren</div>
-                            <span class="switch">
-                                <input type="checkbox" id="tgKem" checked>
-                                <i></i>
-                            </span>
-                        </label>
+                            <span class="switch"><input type="checkbox" id="tgKem" checked><i></i></span></label>
                         <label class="sw-row"><div>Jaringan Jalan</div>
                             <span class="switch"><input type="checkbox" id="tgJalan"><i></i></span></label>
                         <div class="lbl">Simbologi Bangunan</div>
@@ -641,7 +638,7 @@
             bounds: [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]]
         },
         kelurahanFile: 'kelurahan.js',
-        kemantrenFile: 'kemantren.geojson',
+        kemantrenFile: 'kemantren.js',
         jalanFile: 'jalan.js',
         kemantren: [
             { nama: 'Danurejan',    file: 'danurejan.js',    get: () => typeof danurejan    !== 'undefined' ? danurejan    : null },
@@ -840,7 +837,7 @@
         statsDirty: true, allBB: null
     };
     const F = { fungsi: new Set(), kem: new Set(), kel: new Set(), izin: new Set() };
-    let curKem = null, kelLayer = null, roadLayer = null, roadLoading = null;
+    let curKem = null, kelLayer = null, kemLayer = null, roadLayer = null, roadLoading = null;
     const hlGroup = L.layerGroup().addTo(map);   // highlight wilayah
     const selGroup = L.layerGroup().addTo(map);  // bangunan terpilih / pin
 
@@ -882,7 +879,92 @@
             state.records.push(r);
         }
     }).addTo(map);
+/* ------------------------------------------------------------------
+   BATAS ADMINISTRASI KEMANTREN
+   ------------------------------------------------------------------ */
 
+function createKemantrenLayer() {
+    if (typeof batasKemantren === 'undefined') {
+        console.warn('Data batas Kemantren tidak ditemukan: kemantren.js');
+        return null;
+    }
+
+    return L.geoJSON(batasKemantren, {
+        pane: 'boundaryPane',
+
+        style: {
+            color: '#2563eb',
+            weight: 2.2,
+            opacity: 0.95,
+            fill: false,
+            fillOpacity: 0
+        },
+
+        onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+
+            const nama = p.kemantren || '-';
+            const id = p.id_kem || '-';
+            const luas = p.ar_kem != null
+                ? fmt(p.ar_kem, 2) + ' m²'
+                : '-';
+
+            layer.bindTooltip(
+                `<b>Kemantren ${esc(nama)}</b>`,
+                {
+                    sticky: true,
+                    direction: 'center',
+                    className: 'kem-label'
+                }
+            );
+
+            layer.bindPopup(`
+                <div class="pp-h">
+                    <small>Batas Administrasi</small>
+                    <b>Kemantren ${esc(nama)}</b>
+                    <span class="tag">${esc(id)}</span>
+                </div>
+
+                <div class="pp-b">
+                    <div class="pp-r">
+                        <span>Nama Kemantren</span>
+                        <b>${esc(nama)}</b>
+                    </div>
+
+                    <div class="pp-r">
+                        <span>ID Kemantren</span>
+                        <b>${esc(id)}</b>
+                    </div>
+
+                    <div class="pp-r">
+                        <span>Luas</span>
+                        <b>${luas}</b>
+                    </div>
+                </div>
+            `);
+
+            layer.on('mouseover', function () {
+                this.setStyle({
+                    weight: 3,
+                    color: '#1d4ed8'
+                });
+            });
+
+            layer.on('mouseout', function () {
+                this.setStyle({
+                    weight: 2.2,
+                    color: '#2563eb'
+                });
+            });
+        }
+    });
+}
+
+kemLayer = createKemantrenLayer();
+
+if (kemLayer) {
+    kemLayer.addTo(map);
+}
     /* ------------------------------------------------------------------
        5. POPUP & SELEKSI
        ------------------------------------------------------------------ */
@@ -1125,6 +1207,7 @@
         h += items.map(k => `<div class="lg"><i style="background:${key === 'izin' ? colorIzin(k) : colorFungsi(k)}"></i><span>${esc(k)}</span><em>${fmt(c.get(k) || 0)}</em></div>`).join('');
         h += `<div class="lg"><i style="background:#ff0000;opacity:.6"></i><span>Jaringan Jalan</span></div>`;
         h += `<div class="lg"><i class="line"></i><span>Batas Kelurahan</span></div>`;
+        h += `<div class="lg"><i class="line kem-line"></i><span>Batas Kemantren</span></div>`;
         legendCtl._b.innerHTML = h;
     }
 
@@ -1842,6 +1925,7 @@ charts.luas = hbar($('#chLuas'), {
 
         $('#tgBld').addEventListener('change', e => { e.target.checked ? bldLayer.addTo(map) : map.removeLayer(bldLayer); });
         $('#tgKel').addEventListener('change', e => { if (kelLayer) e.target.checked ? kelLayer.addTo(map) : map.removeLayer(kelLayer); });
+        $('#tgKem')?.addEventListener('change', e => {if (!kemLayer) return; if (e.target.checked) {if (!map.hasLayer(kemLayer)) {kemLayer.addTo(map);}} else {if (map.hasLayer(kemLayer)) {map.removeLayer(kemLayer);}}});
         $('#tgJalan').addEventListener('change', async e => {
             if (!e.target.checked) { if (roadLayer) map.removeLayer(roadLayer); return; }
             try { (await ensureJalan()).addTo(map); }
@@ -1970,6 +2054,7 @@ charts.luas = hbar($('#chLuas'), {
     </script>
 </body>
 </html>
+
 
 
 
