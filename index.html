@@ -934,15 +934,19 @@
         if (b.dataset.act === 'copy') { navigator.clipboard?.writeText(b.dataset.val).then(() => toast('Koordinat disalin: ' + b.dataset.val)); }
         if (b.dataset.act === 'near') { const r = state.records[+b.dataset.rid]; if (r) focusRecord(r); }
     });
-
-    /* ------------------------------------------------------------------
-       6. FILTER
-       ------------------------------------------------------------------ */
+    
+    function norm(v) {
+        return String(v ?? '')
+            .trim()
+            .replace(/\s+/g, ' ')
+            .toLowerCase();
+    }
+    
     function match(r) {
         return (!F.fungsi.size || F.fungsi.has(r.fungsi)) &&
                (!F.kem.size || F.kem.has(r.kem)) &&
                (!F.kel.size || F.kel.has(r.kel)) &&
-               (!F.izin.size || F.izin.has(r.izin));
+               (!F.izin.size || F.izin.has(norm(r.izin)));
     }
     function applyFilters(opt = {}) {
         const vis = [];
@@ -2044,6 +2048,7 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
+
 
 
 
