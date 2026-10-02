@@ -879,92 +879,7 @@
             state.records.push(r);
         }
     }).addTo(map);
-/* ------------------------------------------------------------------
-   BATAS ADMINISTRASI KEMANTREN
-   ------------------------------------------------------------------ */
 
-function createKemantrenLayer() {
-    if (typeof batasKemantren === 'undefined') {
-        console.warn('Data batas Kemantren tidak ditemukan: kemantren.js');
-        return null;
-    }
-
-    return L.geoJSON(batasKemantren, {
-        pane: 'boundaryPane',
-
-        style: {
-            color: '#2563eb',
-            weight: 2.2,
-            opacity: 0.95,
-            fill: false,
-            fillOpacity: 0
-        },
-
-        onEachFeature: (feature, layer) => {
-            const p = feature.properties || {};
-
-            const nama = p.kemantren || '-';
-            const id = p.id_kem || '-';
-            const luas = p.ar_kem != null
-                ? fmt(p.ar_kem, 2) + ' m²'
-                : '-';
-
-            layer.bindTooltip(
-                `<b>Kemantren ${esc(nama)}</b>`,
-                {
-                    sticky: true,
-                    direction: 'center',
-                    className: 'kem-label'
-                }
-            );
-
-            layer.bindPopup(`
-                <div class="pp-h">
-                    <small>Batas Administrasi</small>
-                    <b>Kemantren ${esc(nama)}</b>
-                    <span class="tag">${esc(id)}</span>
-                </div>
-
-                <div class="pp-b">
-                    <div class="pp-r">
-                        <span>Nama Kemantren</span>
-                        <b>${esc(nama)}</b>
-                    </div>
-
-                    <div class="pp-r">
-                        <span>ID Kemantren</span>
-                        <b>${esc(id)}</b>
-                    </div>
-
-                    <div class="pp-r">
-                        <span>Luas</span>
-                        <b>${luas}</b>
-                    </div>
-                </div>
-            `);
-
-            layer.on('mouseover', function () {
-                this.setStyle({
-                    weight: 3,
-                    color: '#1d4ed8'
-                });
-            });
-
-            layer.on('mouseout', function () {
-                this.setStyle({
-                    weight: 2.2,
-                    color: '#2563eb'
-                });
-            });
-        }
-    });
-}
-
-kemLayer = createKemantrenLayer();
-
-if (kemLayer) {
-    kemLayer.addTo(map);
-}
     /* ------------------------------------------------------------------
        5. POPUP & SELEKSI
        ------------------------------------------------------------------ */
@@ -1963,7 +1878,71 @@ charts.luas = hbar($('#chLuas'), {
         const lbl = () => map.getContainer().classList.toggle('hide-kel-labels', map.getZoom() < 14.5);
         map.on('zoomend', lbl); lbl();
     }
+/* ------------------------------------------------------------------
+   BATAS ADMINISTRASI KEMANTREN
+   ------------------------------------------------------------------ */
+function createKemantrenLayer(d) {
+    if (!d || !d.features) {
+        throw new Error('Data batas Kemantren tidak valid');
+    }
 
+    return L.geoJSON(d, {
+        pane: 'boundaryPane',
+        interactive: false,
+
+        style: {
+            color: '#2563eb',
+            weight: 2.2,
+            opacity: 0.95,
+            fill: false,
+            fillOpacity: 0
+        },
+
+        onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+
+            const nama = p.kemantren || '-';
+            const id = p.id_kem || '-';
+            const luas = p.ar_kem != null
+                ? fmt(p.ar_kem, 2) + ' m²'
+                : '-';
+
+            layer.bindTooltip(
+                `<b>Kemantren ${esc(nama)}</b>`,
+                {
+                    permanent: true,
+                    direction: 'center',
+                    className: 'kem-label'
+                }
+            );
+
+            layer.bindPopup(`
+                <div class="pp-h">
+                    <small>Batas Administrasi</small>
+                    <b>Kemantren ${esc(nama)}</b>
+                    <span class="tag">${esc(id)}</span>
+                </div>
+
+                <div class="pp-b">
+                    <div class="pp-r">
+                        <span>Nama Kemantren</span>
+                        <b>${esc(nama)}</b>
+                    </div>
+
+                    <div class="pp-r">
+                        <span>ID Kemantren</span>
+                        <b>${esc(id)}</b>
+                    </div>
+
+                    <div class="pp-r">
+                        <span>Luas</span>
+                        <b>${luas}</b>
+                    </div>
+                </div>
+            `);
+        }
+    });
+}
     /* ------------------------------------------------------------------
        11. PEMUATAN DATA
        ------------------------------------------------------------------ */
@@ -2009,6 +1988,54 @@ charts.luas = hbar($('#chLuas'), {
             }
         } catch (err) { console.warn(err); toast('Batas kelurahan gagal dimuat'); }
         done++; setLoad(Math.round(done / steps * 100));
+         // ============================================================
+    // 2) BATAS KEMANTREN
+    // ============================================================
+    setLoad(
+        Math.round(done / steps * 100),
+        'Memuat batas administrasi Kemantren…'
+    );
+
+    try {
+
+        await loadScript(CFG.kemantrenFile);
+
+        const kd = typeof batasKemantren !== 'undefined'
+            ? batasKemantren
+            : null;
+
+        if (!kd || !kd.features) {
+            throw new Error(
+                'Variabel batasKemantren tidak ditemukan di ' +
+                CFG.kemantrenFile
+            );
+        }
+
+        kemLayer = createKemantrenLayer(kd);
+
+        if (kemLayer) {
+            kemLayer.addTo(map);
+        }
+
+    } catch (err) {
+
+        console.error(
+            'Gagal memuat batas Kemantren:',
+            err
+        );
+
+        toast(
+            'Batas Kemantren gagal dimuat'
+        );
+    }
+
+    done++;
+
+    setLoad(
+        Math.round(done / steps * 100)
+    );
+
+    await tick();
         // 2) Bangunan per kemantren, bertahap agar UI tetap responsif
         const failed = [];
         for (const k of CFG.kemantren) {
@@ -2054,17 +2081,3 @@ charts.luas = hbar($('#chLuas'), {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
