@@ -128,6 +128,24 @@
     .filter-info{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px}
     .filter-info b{color:var(--or-d)}
     .kem-line {border-top: 2px solid #2563eb;}
+        .kem-label {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    color: #303030 !important;
+    font-size: 11px;
+    font-weight: 700;
+    text-shadow:
+        0 1px 2px #fff,
+        1px 0 2px #fff,
+        -1px 0 2px #fff,
+        0 -1px 2px #fff;
+}
+
+.kem-label::before {
+    display: none !important;
+}
     .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px; margin-bottom:12px;}
     .kpi{ position:relative;min-width:0;min-height:86px;padding:11px 12px 10px 14px;background:#fff;border:1px solid #E6E0D6;border-radius:11px;overflow:hidden;box-shadow:0 1px 2px rgba(40,32,20,.03);transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;}
     .kpi::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:0 4px 4px 0;background:var(--or);}
@@ -1878,9 +1896,6 @@ charts.luas = hbar($('#chLuas'), {
         const lbl = () => map.getContainer().classList.toggle('hide-kel-labels', map.getZoom() < 14.5);
         map.on('zoomend', lbl); lbl();
     }
-/* ------------------------------------------------------------------
-   BATAS ADMINISTRASI KEMANTREN
-   ------------------------------------------------------------------ */
 function createKemantrenLayer(d) {
     if (!d || !d.features) {
         throw new Error('Data batas Kemantren tidak valid');
@@ -1890,8 +1905,9 @@ function createKemantrenLayer(d) {
         pane: 'boundaryPane',
         interactive: false,
 
+        // Batas Kemantren = abu-abu / kehitaman
         style: {
-            color: '#2563eb',
+            color: '#3f3f3f',
             weight: 2.2,
             opacity: 0.95,
             fill: false,
@@ -1900,19 +1916,15 @@ function createKemantrenLayer(d) {
 
         onEachFeature: (feature, layer) => {
             const p = feature.properties || {};
-
-            const nama = p.kemantren || '-';
-            const id = p.id_kem || '-';
-            const luas = p.ar_kem != null
-                ? fmt(p.ar_kem, 2) + ' m²'
-                : '-';
+            const nama = p.kemantren || '';
 
             layer.bindTooltip(
-                `<b>Kemantren ${esc(nama)}</b>`,
+                esc(nama),
                 {
                     permanent: true,
                     direction: 'center',
-                    className: 'kem-label'
+                    className: 'kem-label',
+                    opacity: 1
                 }
             );
 
@@ -1920,23 +1932,20 @@ function createKemantrenLayer(d) {
                 <div class="pp-h">
                     <small>Batas Administrasi</small>
                     <b>Kemantren ${esc(nama)}</b>
-                    <span class="tag">${esc(id)}</span>
+                    <span class="tag">${esc(p.id_kem || '-')}</span>
                 </div>
-
                 <div class="pp-b">
                     <div class="pp-r">
                         <span>Nama Kemantren</span>
                         <b>${esc(nama)}</b>
                     </div>
-
                     <div class="pp-r">
                         <span>ID Kemantren</span>
-                        <b>${esc(id)}</b>
+                        <b>${esc(p.id_kem || '-')}</b>
                     </div>
-
                     <div class="pp-r">
                         <span>Luas</span>
-                        <b>${luas}</b>
+                        <b>${p.ar_kem != null ? fmt(p.ar_kem, 2) + ' m²' : '-'}</b>
                     </div>
                 </div>
             `);
@@ -2073,4 +2082,5 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
+
 
