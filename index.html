@@ -1753,7 +1753,8 @@ function createKemantrenLayer(d) {
         buildFilters();
         setMode('kemantren');
         applyFilters();
-        if (state.allBB) fitBB(state.allBB, 16);
+        map.setView(CFG.center, CFG.zoom);
+        map.invalidateSize();
         $('#loader').classList.add('hide');
         setTimeout(() => $('#loader').remove(), 500);
         toast(failed.length ? 'Sebagian data gagal dimuat: ' + failed.join(', ') : `${fmt(state.records.length)} bangunan berhasil dimuat`, 3500);
