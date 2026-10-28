@@ -1579,8 +1579,10 @@ setChart(
         $('#btnResetFilter').addEventListener('click', resetFilters);
         $('#spClear').addEventListener('click', resetFilters);
         $('#btnReset').addEventListener('click', () => {
-            hlGroup.clearLayers(); selGroup.clearLayers(); map.closePopup();
-            if (state.allBB) fitBB(state.allBB, 16); else map.setView(CFG.center, CFG.zoom);
+            hlGroup.clearLayers();
+            selGroup.clearLayers();
+            map.closePopup();
+            map.setView(CFG.center, CFG.zoom);
         });
         $('#tZoomIn').addEventListener('click', () => map.zoomIn());
         $('#tZoomOut').addEventListener('click', () => map.zoomOut());
