@@ -281,7 +281,6 @@
             <div class="sb-body">
                 <!-- ============ TAB PETA & FILTER ============ -->
                 <section id="tabFilter" class="tab-pane active">
-
                     <!-- a. CARI BANGUNAN -->
                     <div class="card">
                         <div class="card-t">
@@ -305,7 +304,6 @@
                         <div class="hint" id="searchHint">Pilih kemantren untuk zoom ke wilayah dan melihat ringkasannya.</div>
                         <div class="results" id="searchResults"></div>
                     </div>
-
                     <!-- b. BASEMAP -->
                     <div class="card">
                         <div class="card-t">
@@ -319,7 +317,6 @@
                             <button class="bm" data-bm="topo"><div class="thumb t-topo"></div><span>OpenTopoMap</span></button>
                         </div>
                     </div>
-
                     <!-- LAYER -->
                     <div class="card">
                         <div class="card-t">
@@ -342,7 +339,6 @@
                         <div class="lbl">Transparansi Bangunan</div>
                         <input type="range" class="range" id="opacity" min="0.1" max="1" step="0.05" value="0.8">
                     </div>
-
                     <!-- c. KATEGORI / FILTER -->
                     <div class="card">
                         <div class="card-t">
@@ -364,23 +360,16 @@
                         </div>
                     </div>
                 </section>
-
 <!-- ============ TAB STATISTIK ============ -->
 <section id="tabStat" class="tab-pane">
-
     <p class="stat-note">
         Statistik mengikuti filter yang sedang aktif.
     </p>
-
     <!-- KPI -->
     <div class="kpi-grid" id="kpiGrid"></div>
 
-
-    <!-- =====================================================
-         ANALISIS OTOMATIS
-         ===================================================== -->
+    <!--  ANALISIS OTOMATIS -->
     <div class="card">
-
         <div class="card-t">
             <svg width="15" height="15"
                  viewBox="0 0 24 24"
@@ -389,20 +378,12 @@
                  stroke-width="2.4">
                 <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
             </svg>
-
             Analisis Otomatis
         </div>
-
         <ul class="analysis" id="analysis"></ul>
-
     </div>
-
-
-    <!-- =====================================================
-         1. KOMPOSISI FUNGSI
-         ===================================================== -->
+    <!--  1. KOMPOSISI FUNGSI -->
     <div class="card">
-
         <div class="card-t">
             <svg width="15" height="15"
                  viewBox="0 0 24 24"
@@ -412,22 +393,14 @@
                 <circle cx="12" cy="12" r="9"/>
                 <path d="M12 3v9l6 6"/>
             </svg>
-
             Komposisi Fungsi Bangunan
         </div>
-
         <div class="chart-box tall">
             <canvas id="chFungsi"></canvas>
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         2. STATUS PERIZINAN
-         ===================================================== -->
+    <!--  2. STATUS PERIZINAN -->
     <div class="card">
-
         <div class="card-t">
             <svg width="15" height="15"
                  viewBox="0 0 24 24"
@@ -437,22 +410,14 @@
                 <circle cx="12" cy="12" r="9"/>
                 <path d="m8 12 3 3 5-6"/>
             </svg>
-
             Status Perizinan
         </div>
-
         <div class="chart-box">
             <canvas id="chIzin"></canvas>
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         3. JUMLAH BANGUNAN PER KEMANTREN
-         ===================================================== -->
+    <!-- 3. JUMLAH BANGUNAN PER KEMANTREN -->
     <div class="card">
-
         <div class="card-t">
             <svg width="15" height="15"
                  viewBox="0 0 24 24"
@@ -461,14 +426,11 @@
                  stroke-width="2.4">
                 <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
             </svg>
-
             Jumlah Bangunan per Kemantren
         </div>
-
         <div class="chart-box tall">
             <canvas id="chKem"></canvas>
         </div>
-
     </div>
     <div class="card">
         <div class="card-t">
@@ -500,13 +462,8 @@
             <canvas id="chKel"></canvas>
         </div>
     </div>
-
-
-    <!-- =====================================================
-         6. KARAKTERISTIK LUAS BANGUNAN
-         ===================================================== -->
+    <!--  6. KARAKTERISTIK LUAS BANGUNAN -->
     <div class="card">
-
         <div class="card-t">
             <svg width="15" height="15"
                  viewBox="0 0 24 24"
@@ -516,34 +473,26 @@
                 <path d="M4 19 19 4"/>
                 <path d="M5 5h14v14"/>
             </svg>
-
             Karakteristik Luas Bangunan
         </div>
-
         <div class="chart-box">
             <canvas id="chLuas"></canvas>
         </div>
-
     </div>
-
                 </section>
             </div>
         </aside>
-
         <!-- ===== MAP ===== -->
         <div id="mapWrap">
             <div id="map"></div>
-
             <div id="statusPill" class="fl">
                 <span>Menampilkan <b id="spVisible">0</b> dari <b id="spTotal">0</b> bangunan</span>
                 <button class="chip" id="spClear" title="Hapus semua filter">Filter aktif ✕</button>
             </div>
-
             <button id="btnReset" class="fl" title="Kembali ke tampilan awal">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
                 <span class="t">Reset Peta</span>
             </button>
-
             <div class="tools">
                 <button id="tZoomIn" title="Perbesar">+</button>
                 <button id="tZoomOut" title="Perkecil">−</button>
@@ -556,16 +505,11 @@
             </div>
         </div>
     </main>
-
     <div id="toast"></div>
-
     <script>
     (function () {
     'use strict';
-
-    /* ------------------------------------------------------------------
-       1. KONFIGURASI
-       ------------------------------------------------------------------ */
+    /* 1. KONFIGURASI */
     const CFG = {
         center: [-7.80329119, 110.37435397],
         zoom: 14,
@@ -588,10 +532,11 @@
             { nama: 'Mergangsan',   file: 'mergangsan.js',   get: () => typeof mergangsan   !== 'undefined' ? mergangsan   : null },
             { nama: 'Ngampilan',    file: 'ngampilan.js',    get: () => typeof ngampilan    !== 'undefined' ? ngampilan    : null },
             { nama: 'Pakualaman',   file: 'pakualaman.js',   get: () => typeof pakualaman   !== 'undefined' ? pakualaman   : null },
-            { nama: 'Wirobrajan',   file: 'wirobrajan.js',   get: () => typeof wirobrajan   !== 'undefined' ? wirobrajan   : null }
+            { nama: 'Wirobrajan',   file: 'wirobrajan.js',   get: () => typeof wirobrajan   !== 'undefined' ? wirobrajan   : null },
+            { nama: 'Kotagede',     file: 'kotagede.js',     get: () => typeof kotagede     !== 'undefined' ? kotagede     : null },
+            { nama: 'Umbulharjo',   file: 'umbulharjo.js',   get: () => typeof umbulharjo   !== 'undefined' ? umbulharjo   : null }
         ]
     };
-
     const FUNGSI_COLOR = {
         'Fungsi Hunian': '#ffff00',
         'Fungsi Keagamaan': '#5f005f',
@@ -602,10 +547,7 @@
     const EXTRA_COLORS = ['#00a6a6', '#2e7d32', '#795548', '#1565c0', '#ef6c00', '#c2185b', '#607d8b'];
     const IZIN_COLOR = { 'Berizin': '#1E9E4A', 'Belum Berizin': '#E53935', 'Tidak Ada Data': '#9E9E9E' };
     const UNMAPPED = 'Tidak Terpetakan';
-
-    /* ------------------------------------------------------------------
-       2. UTILITAS
-       ------------------------------------------------------------------ */
+    /* 2. UTILITAS */
     const $ = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
     const fmt = (n, d = 0) => Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits: d, minimumFractionDigits: d });
@@ -614,7 +556,6 @@
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const tick = () => new Promise(r => setTimeout(r, 0));
     const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
-
     function loadScript(src) {
         return new Promise((res, rej) => {
             const s = document.createElement('script');
@@ -630,7 +571,6 @@
         clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), ms);
     }
     function setLoad(p, txt) { $('#loadBar').style.width = p + '%'; if (txt) $('#loadText').textContent = txt; }
-
     let extraIdx = 0;
     function colorFungsi(f) {
         if (!FUNGSI_COLOR[f]) FUNGSI_COLOR[f] = EXTRA_COLORS[extraIdx++ % EXTRA_COLORS.length];
@@ -638,8 +578,6 @@
     }
     function colorIzin(c) { return IZIN_COLOR[c] || '#F28C00'; }
     function fungsiOf(p) { const v = p && p.fungsi != null ? String(p.fungsi).trim() : ''; return v || 'Tidak Terdefinisi'; }
-
-    // Normalisasi nilai kolom 'izin' -> kategori (hanya untuk tampilan/filter, data asli tidak diubah)
     function izinCat(v) {
         const s = String(v ?? '').trim().toLowerCase();
         if (!s || s === 'null' || s === '-' || s === 'nan' || s === 'undefined') return 'Tidak Ada Data';
@@ -652,8 +590,6 @@
         const cls = c === 'Berizin' ? 'b-ok' : c === 'Belum Berizin' ? 'b-no' : c === 'Tidak Ada Data' ? 'b-na' : 'b-ot';
         return `<span class="badge ${cls}">${esc(raw == null || raw === '' ? 'Tidak ada data' : raw)}</span>`;
     }
-
-    /* ---------- Geometri (koordinat GeoJSON = [lng, lat]) ---------- */
     function ringInside(x, y, ring) {
         let inside = false;
         for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -673,7 +609,6 @@
         if (g.type === 'MultiPolygon') return g.coordinates.some(p => polyInside(x, y, p));
         return false;
     }
-    // bbox, centroid (rata-rata vertex ring luar) & estimasi luas (m2)
     function geomInfo(g) {
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, sx = 0, sy = 0, n = 0, area = 0;
         const polys = !g ? [] : g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
@@ -716,9 +651,7 @@
         map.fitBounds([[bb[1], bb[0]], [bb[3], bb[2]]], { padding: [40, 40], maxZoom });
     }
 
-    /* ------------------------------------------------------------------
-       3. PETA & BASEMAP
-       ------------------------------------------------------------------ */
+    /* 3. PETA & BASEMAP */
     const map = L.map('map', {
         center: CFG.center, zoom: CFG.zoom, zoomControl: false,
         maxZoom: 22, minZoom: 10, zoomSnap: 0.5, zoomDelta: 0.5,
@@ -732,7 +665,6 @@
     map.getPane('boundaryPane').style.pointerEvents = 'none';
     map.getPane('roadPane').style.pointerEvents = 'none';
     map.getPane('hlPane').style.pointerEvents = 'none';
-
     const ESRI_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     const tileOpt = { maxZoom: 22, maxNativeZoom: 19 };
     const basemaps = {
@@ -753,8 +685,6 @@
         currentBase = key;
         $$('#bmGrid .bm').forEach(b => b.classList.toggle('active', b.dataset.bm === key));
     }
-
-    // Kontrol bawaan: skala + koordinat kursor
     L.control.scale({ position: 'bottomright', imperial: false }).addTo(map);
     const CoordCtl = L.Control.extend({
         options: { position: 'bottomright' },
@@ -763,9 +693,7 @@
     const coordCtl = new CoordCtl().addTo(map);
     map.on('mousemove', e => { coordCtl._d.textContent = e.latlng.lat.toFixed(6) + ', ' + e.latlng.lng.toFixed(6); });
 
-    /* ------------------------------------------------------------------
-       4. STATE DATA
-       ------------------------------------------------------------------ */
+    /* 4. STATE DATA */
     const bldRenderer = L.canvas({ padding: 0.5, tolerance: 3 });
     const state = {
         sym: 'fungsi', opacity: 0.8, styleVer: 0,
@@ -774,9 +702,8 @@
     };
     const F = { fungsi: new Set(), kem: new Set(), kel: new Set(), izin: new Set() };
     let curKem = null, kelLayer = null, kemLayer = null, roadLayer = null, roadLoading = null;
-    const hlGroup = L.layerGroup().addTo(map);   // highlight wilayah
-    const selGroup = L.layerGroup().addTo(map);  // bangunan terpilih / pin
-
+    const hlGroup = L.layerGroup().addTo(map);  
+    const selGroup = L.layerGroup().addTo(map);  
     function styleFor(feature) {
         const p = feature.properties || {};
         const fill = state.sym === 'izin' ? colorIzin(izinCat(p.izin)) : colorFungsi(fungsiOf(p));
@@ -785,7 +712,6 @@
             fill: true, fillColor: fill, fillOpacity: state.opacity
         };
     }
-
     function findKel(x, y) {
         for (const k of state.kelIndex) {
             const b = k.bb;
@@ -794,7 +720,6 @@
         }
         return null;
     }
-
     const bldLayer = L.geoJSON(null, {
         renderer: bldRenderer,
         style: styleFor,
@@ -816,9 +741,7 @@
         }
     }).addTo(map);
 
-    /* ------------------------------------------------------------------
-       5. POPUP & SELEKSI
-       ------------------------------------------------------------------ */
+    /* 5. POPUP & SELEKSI */
     function popupHTML(r, msg) {
         const p = r.p, fc = colorFungsi(r.fungsi);
         const gm = `https://www.google.com/maps?q=${r.c[0].toFixed(6)},${r.c[1].toFixed(6)}`;
@@ -861,7 +784,6 @@
         setTimeout(() => openBld(r, r.c, msg), 350);
         closeSidebarMobile();
     }
-
     let clickedBld = false, lastPopupClose = 0;
     bldLayer.on('click', e => {
         clickedBld = true; setTimeout(() => (clickedBld = false), 0);
@@ -886,10 +808,8 @@
         if (b.dataset.act === 'copy') { navigator.clipboard?.writeText(b.dataset.val).then(() => toast('Koordinat disalin: ' + b.dataset.val)); }
         if (b.dataset.act === 'near') { const r = state.records[+b.dataset.rid]; if (r) focusRecord(r); }
     });
-    
 function match(r) {
     const izin = izinCat(r.izin);
-
     return (!F.fungsi.size || F.fungsi.has(r.fungsi)) &&
            (!F.kem.size || F.kem.has(r.kem)) &&
            (!F.kel.size || F.kel.has(r.kel)) &&
@@ -928,7 +848,7 @@ function match(r) {
         updateLegend();
     }
 
-    /* ---------- Komponen dropdown multiselect ---------- */
+    /* Komponen dropdown multiselect */
     function MultiSelect(root, { allText, onChange }) {
         root.classList.add('ms');
         root.innerHTML = `
@@ -982,10 +902,8 @@ function match(r) {
     }
     document.addEventListener('click', e => { if (!e.target.closest('.ms')) $$('.ms.open').forEach(x => x.classList.remove('open')); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.ms.open').forEach(x => x.classList.remove('open')); });
-
     let msFungsi, msKem, msKel, msIzin;
     function countBy(list, key) { const m = new Map(); for (const r of list) m.set(r[key], (m.get(r[key]) || 0) + 1); return m; }
-
     function kelOptions() {
         const src = F.kem.size ? state.records.filter(r => F.kem.has(r.kem)) : state.records;
         const m = new Map();
@@ -1001,7 +919,6 @@ function match(r) {
         const fc = countBy(recs, 'fungsi');
         msFungsi = MultiSelect($('#msFungsi'), { allText: 'Semua Fungsi', onChange: s => { F.fungsi = s; applyFilters({ fit: true }); } });
         msFungsi.setOptions([...fc.entries()].sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ value: k, label: k, count: n, color: colorFungsi(k) })));
-
         const kc = countBy(recs, 'kem');
         msKem = MultiSelect($('#msKem'), {
             allText: 'Semua Kemantren', onChange: s => {
@@ -1011,34 +928,26 @@ function match(r) {
             }
         });
         msKem.setOptions(CFG.kemantren.filter(k => kc.has(k.nama)).map(k => ({ value: k.nama, label: k.nama, count: kc.get(k.nama) })));
-
         msKel = MultiSelect($('#msKel'), { allText: 'Semua Kelurahan', onChange: s => { F.kel = s; applyFilters({ fit: true }); } });
         msKel.setOptions(kelOptions());
-
         const ic = countBy(recs, 'izin');
         msIzin = MultiSelect($('#msIzin'), {
     allText: 'Semua Status',
-
     onChange: s => {
         console.log('=== FILTER IZIN ===');
         console.log('Dipilih:', [...s]);
-
         console.log(
             'Status data:',
             [...new Set(state.records.map(r => izinCat(r.izin)))]
         );
-
         F.izin = s;
-
         applyFilters({ fit: true });
-
         console.log(
             'Jumlah terlihat:',
             state.visible.length,
             '/',
             state.records.length
         );
-
         console.log(
             'Jumlah Tidak Ada Data:',
             state.records.filter(
@@ -1063,9 +972,7 @@ function match(r) {
         toast('Semua filter dihapus');
     }
 
-    /* ------------------------------------------------------------------
-       7. LEGENDA
-       ------------------------------------------------------------------ */
+    /* 7. LEGENDA */
     const LegendCtl = L.Control.extend({
         options: { position: 'bottomright' },
         onAdd() {
@@ -1091,9 +998,7 @@ function match(r) {
         legendCtl._b.innerHTML = h;
     }
 
-    /* ------------------------------------------------------------------
-       8. PENCARIAN
-       ------------------------------------------------------------------ */
+    /* 8. PENCARIAN */
     let searchMode = 'kemantren';
     const MODE_INFO = {
         kemantren: ['Ketik nama kemantren…', 'Pilih kemantren untuk zoom ke wilayah dan melihat ringkasannya.'],
@@ -1144,7 +1049,6 @@ function match(r) {
         $('#resClear').onclick = () => { hlGroup.clearLayers(); selGroup.clearLayers(); $('#searchResults').innerHTML = ''; };
     }
     function notFound(msg) { $('#searchResults').innerHTML = `<div class="res-empty">${esc(msg)}</div>`; }
-
     function parseCoord(q) {
         const m = q.replace(/[°]/g, '').match(/(-?\d+(?:[.,]\d+)?)\s*[,;\s]\s*(-?\d+(?:[.,]\d+)?)/);
         if (!m) return null;
@@ -1171,7 +1075,6 @@ function match(r) {
             closeSidebarMobile();
             return;
         }
-        // cari bangunan terdekat
         let best = null, bd = Infinity;
         for (const r of state.records) { const d = distM(lat, lng, r.c[0], r.c[1]); if (d < bd) { bd = d; best = r; } }
         L.marker([lat, lng], { icon: L.divIcon({ className: '', html: '<div class="pin-ic"></div>', iconSize: [22, 22], iconAnchor: [11, 22] }) }).addTo(selGroup);
@@ -1185,7 +1088,6 @@ function match(r) {
         if (best) $('#resNear').onclick = () => focusRecord(best);
         closeSidebarMobile();
     }
-
     function doSearch() {
         const q = $('#searchInput').value.trim();
         if (!q) { toast('Masukkan kata kunci pencarian'); return; }
@@ -1228,38 +1130,27 @@ function match(r) {
         }
     }
 
-/* ------------------------------------------------------------------
-   9. STATISTIK & ANALISIS OTOMATIS
-   ------------------------------------------------------------------ */
-
+/* 9. STATISTIK & ANALISIS OTOMATIS */
 function computeStats(list) {
-
     const s = {
         n: list.length,
         area: 0,
-
         byF: new Map(),
         byK: new Map(),
         byL: new Map(),
         byI: new Map(),
-
         izinK: new Map()
     };
-
     const inc = (m, k) => {
         if (!k) k = 'Tidak Terdefinisi';
         m.set(k, (m.get(k) || 0) + 1);
     };
-
     for (const r of list) {
-
         s.area += Number(r.area) || 0;
-
         inc(s.byF, r.fungsi);
         inc(s.byK, r.kem);
         inc(s.byL, r.kel || UNMAPPED);
         inc(s.byI, r.izin);
-
         const z =
             s.izinK.get(r.kem) ||
             {
@@ -1267,34 +1158,24 @@ function computeStats(list) {
                 y: 0,
                 d: 0
             };
-
         z.t++;
-
         if (r.izin === 'Berizin') {
             z.y++;
         }
-
         if (
             r.izin === 'Berizin' ||
             r.izin === 'Belum Berizin'
         ) {
             z.d++;
         }
-
         s.izinK.set(r.kem, z);
     }
-
     return s;
 }
-
-
 const sortDesc = m =>
     [...m.entries()]
         .sort((a, b) => b[1] - a[1]);
-
-
 const charts = {};
-
     function kpi(label, value, sub, dark, small) {
         return `<div class="kpi${dark ? ' k-dark' : ''}"><div class="kl">${label}</div><div class="kv${small ? ' sm' : ''}">${value}</div>${sub ? `<div class="ks">${sub}</div>` : ''}</div>`;
     }
@@ -1304,7 +1185,6 @@ const charts = {};
         const ok = s.byI.get('Berizin') || 0, no = s.byI.get('Belum Berizin') || 0, na = s.byI.get('Tidak Ada Data') || 0;
         const fArr = sortDesc(s.byF), kArr = sortDesc(s.byK), lArr = sortDesc(s.byL).filter(([k]) => k !== UNMAPPED);
         const topF = fArr[0], topK = kArr[0];
-
             $('#kpiGrid').innerHTML =
             kpi('Total Bangunan', fmt(s.n), s.n === T ? 'Seluruh data' : fmt(pct(s.n, T), 1) + '% dari ' + fmt(T), true) +
             kpi('Fungsi Dominan', topF ? esc(topF[0].replace('Fungsi ', '')) : '-', topF ? fmt(pct(topF[1], s.n), 1) + '% · ' + fmt(topF[1]) + ' bangunan' : '', false, true) +
@@ -1338,58 +1218,43 @@ const charts = {};
                     ), 1) + '% dari yang tampil'
                     : 'Nomor SLF belum tersedia'
             );
-// =============================================================
-// ANALISIS OTOMATIS
-// =============================================================
+// ANALISIS OTOMATIS // 
 const ins = [];
-
 if (!s.n) {
 
     ins.push([
         'warn',
         'Tidak ada bangunan yang sesuai dengan filter aktif.'
     ]);
-
 } else {
 
-    // =========================================================
-    // 1. KOMPOSISI FUNGSI
-    // =========================================================
+    // 1. KOMPOSISI FUNGSI //
     if (fArr.length) {
-
         const top1 = fArr[0];
         const top2 = fArr[1];
-
         const top1Pct = pct(
             top1[1],
             s.n
         );
-
         let functionText =
             `<b>${esc(top1[0])}</b> mendominasi dengan ` +
             `<b>${fmt(top1Pct, 1)}%</b> dari ` +
             `${fmt(s.n)} bangunan`;
-
         if (top2) {
-
             const top2Pct = pct(
                 top2[1],
                 s.n
             );
-
             const top2TotalPct = pct(
                 top1[1] + top2[1],
                 s.n
             );
-
             functionText +=
                 `, disusul <b>${esc(top2[0])}</b> ` +
                 `(${fmt(top2Pct, 1)}%). ` +
                 `Dua fungsi terbesar mencakup ` +
                 `<b>${fmt(top2TotalPct, 1)}%</b> data.`;
-
         } else {
-
             functionText += '.';
         }
 
@@ -1399,59 +1264,42 @@ if (!s.n) {
         ]);
     }
 
-
-    // =========================================================
-    // 2. SEBARAN BANGUNAN
-    // =========================================================
+    // 2. SEBARAN BANGUNAN  // 
     if (kArr.length) {
-
         const topK = kArr[0];
-
         const top3Count = kArr
             .slice(0, 3)
             .reduce(
                 (sum, [, n]) => sum + n,
                 0
             );
-
         const top3Pct = pct(
             top3Count,
             s.n
         );
-
         let distributionText =
             `Sebaran bangunan tertinggi berada di ` +
             `<b>${esc(topK[0])}</b> ` +
             `dengan ${fmt(topK[1])} bangunan ` +
             `(${fmt(pct(topK[1], s.n), 1)}% dari data).`;
-
         if (kArr.length >= 3) {
-
             distributionText +=
                 ` Tiga kemantren teratas mencakup ` +
                 `<b>${fmt(top3Pct, 1)}%</b> data.`;
         }
-
         ins.push([
             '',
             distributionText
         ]);
     }
 
-
-    // =========================================================
-    // 3. KARAKTERISTIK BANGUNAN
-    // Menggunakan field ar_bgn_dg
-    // =========================================================
+    // 3. KARAKTERISTIK BANGUNAN // 
     const areaRows = state.visible
         .map(r => {
-
             const p = r.p || {};
-
             const value = Number(
                 p.ar_bgn_dg
             );
-
             return Number.isFinite(value) && value > 0
                 ? value
                 : null;
@@ -1459,34 +1307,27 @@ if (!s.n) {
         .filter(
             value => value !== null
         );
-
     const areaCoverage = pct(
         areaRows.length,
         s.n
     );
-
     if (areaRows.length) {
-
         const avgArea =
             areaRows.reduce(
                 (sum, value) => sum + value,
                 0
             ) / areaRows.length;
-
         const areaText =
             `Data luas bangunan tersedia pada ` +
             `<b>${fmt(areaCoverage, 1)}%</b> ` +
             `bangunan yang tampil, dengan rata-rata ` +
             `<b>${fmt(avgArea, 1)} m²</b> ` +
             `dari ${fmt(areaRows.length)} bangunan yang memiliki nilai luas.`;
-
         ins.push([
             '',
             areaText
         ]);
-
     } else {
-
         ins.push([
             'warn',
             `Data luas bangunan belum tersedia pada ` +
@@ -1494,77 +1335,57 @@ if (!s.n) {
         ]);
     }
 
-
-    // =========================================================
-    // 4. KUALITAS & KELENGKAPAN DATA
-    // Menggunakan field pemilik dan alamat
-    // =========================================================
+    // 4. KUALITAS & KELENGKAPAN DATA // 
     let ownerCount = 0;
     let addressCount = 0;
     let identityComplete = 0;
-
     for (const r of state.visible) {
-
         const p = r.p || {};
-
         const owner =
             p.pemilik != null &&
             String(p.pemilik).trim() !== '';
-
         const address =
             p.alamat != null &&
             String(p.alamat).trim() !== '';
-
         if (owner) {
             ownerCount++;
         }
-
         if (address) {
             addressCount++;
         }
-
         if (owner && address) {
             identityComplete++;
         }
     }
-
     const identityCoverage = pct(
         identityComplete,
         s.n
     );
-
     const ownerCoverage = pct(
         ownerCount,
         s.n
     );
-
     const addressCoverage = pct(
         addressCount,
         s.n
     );
-
     let identityText =
         `Kelengkapan identitas pemilik dan alamat ` +
         `mencapai <b>${fmt(identityCoverage, 1)}%</b> ` +
         `dari data yang tampil`;
-
     if (
         ownerCount > 0 ||
         addressCount > 0
     ) {
-
         identityText +=
             `; data pemilik terisi ` +
             `<b>${fmt(ownerCoverage, 1)}%</b> ` +
             `dan alamat ` +
             `<b>${fmt(addressCoverage, 1)}%</b>.`;
-
     } else {
-
         identityText +=
             `. Data identitas masih belum tersedia.`;
     }
-
     ins.push([
         identityCoverage < 50
             ? 'warn'
@@ -1572,88 +1393,53 @@ if (!s.n) {
         identityText
     ]);
 
-
-    // =========================================================
-    // 5. STATUS PERIZINAN
-    // =========================================================
+    // 5. STATUS PERIZINAN // 
     const knownPermit =
         ok + no;
-
     const permitCoverage = pct(
         knownPermit,
         s.n
     );
-
-
-    // ---------------------------------------------------------
-    // PBG
-    // ---------------------------------------------------------
     const pbgRows = state.visible.filter(
         r =>
             r.p &&
             r.p.no_pbg != null &&
             String(r.p.no_pbg).trim() !== ''
     );
-
-
-    // ---------------------------------------------------------
-    // SLF
-    // ---------------------------------------------------------
     const slfRows = state.visible.filter(
         r =>
             r.p &&
             r.p.no_slf != null &&
             String(r.p.no_slf).trim() !== ''
     );
-
-
     const pbgCount =
         pbgRows.length;
-
     const slfCount =
         slfRows.length;
-
-
     let permitText = '';
-
-
-    // ---------------------------------------------------------
-    // Status izin tersedia
-    // ---------------------------------------------------------
     if (knownPermit > 0) {
-
         const permitRate = pct(
             ok,
             knownPermit
         );
-
         permitText =
             `Status izin tersedia pada ` +
             `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
             `dari data tersebut ` +
             `<b>${fmt(permitRate, 1)}%</b> ` +
             `tercatat Berizin.`;
-
     }
-
-    // ---------------------------------------------------------
-    // Status izin belum tersedia
-    // ---------------------------------------------------------
     else {
 
         permitText =
             `Status izin belum tersedia pada data bangunan ` +
             `yang tampil.`;
     }
-
-
     permitText +=
         ` PBG terdokumentasi ` +
         `<b>${fmt(pbgCount)}</b> ` +
         `dan SLF ` +
         `<b>${fmt(slfCount)}</b>.`;
-
-
     ins.push([
         knownPermit === 0
             ? 'warn'
@@ -1662,10 +1448,7 @@ if (!s.n) {
     ]);
 }
 
-
-// =============================================================
-// RENDER ANALISIS
-// =============================================================
+// RENDER ANALISIS // 
 $('#analysis').innerHTML = ins
     .map(
         ([c, t], i) =>
@@ -1682,10 +1465,8 @@ $('#analysis').innerHTML = ins
         setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
         const top10 = lArr.slice(0, 10);
         setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#F28C00');
-        // =============================================================
-// 6. KARAKTERISTIK LUAS BANGUNAN
-// =============================================================
-
+        
+// 6. KARAKTERISTIK LUAS BANGUNAN//
 const areaClass = {
     '< 100 m²': 0,
     '100–300 m²': 0,
@@ -1693,16 +1474,12 @@ const areaClass = {
     '500–1.000 m²': 0,
     '> 1.000 m²': 0
 };
-
 for (const r of state.visible) {
-
     const p = r.p || {};
     const area = Number(p.ar_bgn_dg);
-
     if (!Number.isFinite(area) || area <= 0) {
         continue;
     }
-
     if (area < 100) {
         areaClass['< 100 m²']++;
     } else if (area < 300) {
@@ -1715,14 +1492,12 @@ for (const r of state.visible) {
         areaClass['> 1.000 m²']++;
     }
 }
-
 setChart(
     charts.luas,
     Object.keys(areaClass),
     Object.values(areaClass),
     '#F28C00'
 );
-
     }
     function setChart(ch, labels, data, colors) {
         ch.data.labels = labels; ch.data.datasets[0].data = data; ch.data.datasets[0].backgroundColor = colors; ch.update();
@@ -1761,44 +1536,33 @@ setChart(
         charts.kel = hbar($('#chKel'), { onClick: (e, els) => { if (els.length) setFilter('kel', [charts.kel.data.labels[els[0].index]]); } });
         charts.luas = hbar($('#chLuas'), {suffix: '',onClick: null});
     }
-
-    /* ------------------------------------------------------------------
-       10. UI: SIDEBAR, TAB, TOOLS
-       ------------------------------------------------------------------ */
+    /* 10. UI: SIDEBAR, TAB, TOOLS */
     function toggleSidebar(force) {
     const hide = force !== undefined
         ? force
         : !document.body.classList.contains('sb-hidden');
-
     document.body.classList.toggle('sb-hidden', hide);
-
     const btn = $('#btnMenu');
     if (btn) {
         btn.title = hide
             ? 'Tampilkan Panel'
             : 'Sembunyikan Panel';
     }
-
     setTimeout(() => map.invalidateSize(), 320);
 }
     function closeSidebarMobile() { if (window.innerWidth <= 768) toggleSidebar(true); }
-
     function bindUI() {
         $('#btnMenu').addEventListener('click', () => toggleSidebar());
         if (window.innerWidth <= 768) toggleSidebar(true);
-
         $$('.tabs button').forEach(b => b.addEventListener('click', () => {
             $$('.tabs button').forEach(x => x.classList.toggle('active', x === b));
             $$('.tab-pane').forEach(p => p.classList.toggle('active', p.id === b.dataset.tab));
             if (b.dataset.tab === 'tabStat' && state.statsDirty) setTimeout(updateStats, 30);
         }));
-
         $$('#searchModes button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
         $('#btnSearch').addEventListener('click', doSearch);
         $('#searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-
         $$('#bmGrid .bm').forEach(b => b.addEventListener('click', () => setBase(b.dataset.bm)));
-
         $('#tgBld').addEventListener('change', e => { e.target.checked ? bldLayer.addTo(map) : map.removeLayer(bldLayer); });
         $('#tgKel').addEventListener('change', e => { if (kelLayer) e.target.checked ? kelLayer.addTo(map) : map.removeLayer(kelLayer); });
         $('#tgKem')?.addEventListener('change', e => {if (!kemLayer) return; if (e.target.checked) {if (!map.hasLayer(kemLayer)) {kemLayer.addTo(map);}} else {if (map.hasLayer(kemLayer)) {map.removeLayer(kemLayer);}}});
@@ -1825,7 +1589,6 @@ setChart(
             else document.exitFullscreen?.();
         });
         document.addEventListener('fullscreenchange', () => setTimeout(() => map.invalidateSize(), 200));
-        // Geolokasi (hanya saat tombol ditekan, bukan otomatis)
         let meLayer = L.layerGroup().addTo(map);
         $('#tLocate').addEventListener('click', () => { toast('Mencari lokasi Anda…'); map.locate({ setView: true, maxZoom: 18 }); });
         map.on('locationfound', e => {
@@ -1835,7 +1598,6 @@ setChart(
                 .bindPopup('Anda berada di sekitar ' + e.accuracy.toFixed(0) + ' meter dari titik ini').addTo(meLayer).openPopup();
         });
         map.on('locationerror', e => toast('Lokasi tidak tersedia: ' + e.message));
-        // Label kelurahan disembunyikan saat zoom kecil
         const lbl = () => map.getContainer().classList.toggle('hide-kel-labels', map.getZoom() < 14.5);
         map.on('zoomend', lbl); lbl();
     }
@@ -1843,12 +1605,9 @@ function createKemantrenLayer(d) {
     if (!d || !d.features) {
         throw new Error('Data batas Kemantren tidak valid');
     }
-
     return L.geoJSON(d, {
         pane: 'boundaryPane',
         interactive: false,
-
-        // Batas Kemantren = abu-abu / kehitaman
         style: {
             color: '#3f3f3f',
             weight: 2.2,
@@ -1856,11 +1615,9 @@ function createKemantrenLayer(d) {
             fill: false,
             fillOpacity: 0
         },
-
         onEachFeature: (feature, layer) => {
             const p = feature.properties || {};
             const nama = p.kemantren || '';
-
             layer.bindTooltip(
                 esc(nama),
                 {
@@ -1870,7 +1627,6 @@ function createKemantrenLayer(d) {
                     opacity: 1
                 }
             );
-
             layer.bindPopup(`
                 <div class="pp-h">
                     <small>Batas Administrasi</small>
@@ -1895,9 +1651,7 @@ function createKemantrenLayer(d) {
         }
     });
 }
-    /* ------------------------------------------------------------------
-       11. PEMUATAN DATA
-       ------------------------------------------------------------------ */
+    /* 11. PEMUATAN DATA */
     async function ensureJalan() {
         if (roadLayer) return roadLayer;
         if (!roadLoading) {
@@ -1916,12 +1670,10 @@ function createKemantrenLayer(d) {
         }
         return roadLoading;
     }
-
     async function init() {
         bindUI();
         const steps = 2 + CFG.kemantren.length;
         let done = 0;
-        // 1) Batas kelurahan (dibutuhkan untuk memetakan bangunan -> kelurahan)
         setLoad(3, 'Memuat batas administrasi kelurahan…');
         try {
             await loadScript(CFG.kelurahanFile);
@@ -1940,47 +1692,36 @@ function createKemantrenLayer(d) {
             }
         } catch (err) { console.warn(err); toast('Batas kelurahan gagal dimuat'); }
         done++; setLoad(Math.round(done / steps * 100));
-
     setLoad(Math.round(done / steps * 100),'Memuat batas administrasi Kemantren…');
     try {
         await loadScript(CFG.kemantrenFile);
         const kd = typeof kemantren !== 'undefined'
             ? kemantren
             : null;
-
         if (!kd || !kd.features) {
             throw new Error(
                 'Variabel kemantren tidak ditemukan di ' +
                 CFG.kemantrenFile
             );
         }
-
         kemLayer = createKemantrenLayer(kd);
-
         if (kemLayer) {
             kemLayer.addTo(map);
         }
-
     } catch (err) {
-
         console.error(
             'Gagal memuat batas Kemantren:',
             err
         );
-
         toast(
             'Batas Kemantren gagal dimuat'
         );
     }
-
     done++;
-
     setLoad(
         Math.round(done / steps * 100)
     );
-
     await tick();
-        // 2) Bangunan per kemantren, bertahap agar UI tetap responsif
         const failed = [];
         for (const k of CFG.kemantren) {
             setLoad(Math.round(done / steps * 100), `Memuat bangunan Kemantren ${k.nama}… (${done}/${steps - 1})`);
@@ -1994,7 +1735,6 @@ function createKemantrenLayer(d) {
             done++; setLoad(Math.round(done / steps * 100));
             await tick();
         }
-        // 3) Lengkapi kelurahan yang belum terpetakan via mayoritas id_kel
         setLoad(100, 'Menyusun indeks & statistik…'); await tick();
         const vote = new Map();
         for (const r of state.records) if (r.kel && r.p.id_kel != null) {
@@ -2025,12 +1765,6 @@ function createKemantrenLayer(d) {
     </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 
