@@ -1,2 +1,2 @@
 # Projek Digitasi Data Bangunan Kota Yogyakarta
-Access this site at https://total-geo-survey.github.io/SIBANGJO-Web/
+Access this site at https://total-geo-survey.github.io/SIBANGJO-Web/ or https://sibangjo.vercel.app/
