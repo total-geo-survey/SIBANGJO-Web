@@ -1392,33 +1392,7 @@ const PBG_REKAP = {
             kpi('Berizin', na === s.n && s.n > 0 ? 'Belum Ada Data' : fmt(ok), na === s.n && s.n > 0 ? 'Status izin belum tersedia' : fmt(pct(ok, s.n), 1) + '% dari yang tampil') +
             kpi('Belum Berizin', na === s.n && s.n > 0 ? 'Belum Ada Data' : fmt(no), na === s.n && s.n > 0 ? 'Status izin belum tersedia' : fmt(pct(no, s.n), 1) + '%' + (na ? ' · ' + fmt(na) + ' tanpa data' : '')) +
             kpi('Kemantren Terbanyak', topK ? esc(topK[0]) : '-', topK ? fmt(topK[1]) + ' bangunan' : '', false, true) +
-            kpi('Kelurahan Tercakup', fmt(lArr.length), fmt(s.byK.size) + ' kemantren') +
-            kpi(
-                'PBG Terdokumentasi',
-                state.visible.filter(r => r.p && r.p.no_pbg != null && String(r.p.no_pbg).trim() !== '').length
-                    ? fmt(state.visible.filter(r => r.p && r.p.no_pbg != null && String(r.p.no_pbg).trim() !== '').length)
-                    : 'Belum Ada Data',
-                state.visible.filter(r => r.p && r.p.no_pbg != null && String(r.p.no_pbg).trim() !== '')
-                    .length
-                    ? fmt(pct(
-                        state.visible.filter(r => r.p && r.p.no_pbg != null && String(r.p.no_pbg).trim() !== '').length,
-                        s.n
-                    ), 1) + '% dari yang tampil'
-                    : 'Nomor PBG belum tersedia'
-            ) +
-            kpi(
-                'SLF Terdokumentasi',
-                state.visible.filter(r => r.p && r.p.no_slf != null && String(r.p.no_slf).trim() !== '').length
-                    ? fmt(state.visible.filter(r => r.p && r.p.no_slf != null && String(r.p.no_slf).trim() !== '').length)
-                    : 'Belum Ada Data',
-                state.visible.filter(r => r.p && r.p.no_slf != null && String(r.p.no_slf).trim() !== '')
-                    .length
-                    ? fmt(pct(
-                        state.visible.filter(r => r.p && r.p.no_slf != null && String(r.p.no_slf).trim() !== '').length,
-                        s.n
-                    ), 1) + '% dari yang tampil'
-                    : 'Nomor SLF belum tersedia'
-            );
+            kpi('Kelurahan Tercakup', fmt(lArr.length), fmt(s.byK.size) + ' kemantren');
 // ANALISIS OTOMATIS // 
 const ins = [];
 if (!s.n) {
