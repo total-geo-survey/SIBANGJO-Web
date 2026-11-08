@@ -258,71 +258,63 @@
     .loader-foot{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:17px;color:rgba(255,255,255,.48);font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase}
     .loader-pulse{width:6px;height:6px;border-radius:50%;background:var(--ye);box-shadow:0 0 0 0 rgba(252,183,21,.55);animation:pulseLoader 1.6s infinite}
     @keyframes pulseLoader{70%{box-shadow:0 0 0 7px rgba(252,183,21,0)}100%{box-shadow:0 0 0 0 rgba(252,183,21,0)}}
-    /* PBG ANALYTICS */
-.pbg-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 12px;
-    background: linear-gradient(
-        135deg,
-        #f5f8fc,
-        #ffffff
-    );
-    border: 1px solid #e5eaf1;
-    border-radius: 12px;
-}
-
-.pbg-summary > div:first-child {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.pbg-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-}
-
-.pbg-summary strong {
-    font-size: 27px;
-    font-weight: 800;
-    color: #24364b;
-}
-
-.pbg-summary small {
-    font-size: 11px;
-    color: #8491a2;
-}
-
-.pbg-badge {
-    padding: 9px 12px;
-    border-radius: 9px;
-    background: #eaf0f7;
-    color: #24364b;
-    text-align: center;
-    font-size: 10px;
-}
-
-.pbg-badge strong {
-    display: block;
-    font-size: 13px;
-    margin-top: 3px;
-}
-
-.pbg-footnote {
-    padding: 9px 11px;
-    border-left: 3px solid #64748b;
-    background: #f8fafc;
-    color: #64748b;
-    font-size: 10px;
-    line-height: 1.6;
-    border-radius: 4px;
-}
+    .pbg-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 12px;
+        background: linear-gradient(
+            135deg,
+            #f5f8fc,
+            #ffffff
+        );
+        border: 1px solid #e5eaf1;
+        border-radius: 12px;
+    }
+    .pbg-summary > div:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .pbg-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+    .pbg-summary strong {
+        font-size: 27px;
+        font-weight: 800;
+        color: #24364b;
+    }
+    .pbg-summary small {
+        font-size: 11px;
+        color: #8491a2;
+    }
+    .pbg-badge {
+        padding: 9px 12px;
+        border-radius: 9px;
+        background: #eaf0f7;
+        color: #24364b;
+        text-align: center;
+        font-size: 10px;
+    }
+    .pbg-badge strong {
+        display: block;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+    .pbg-footnote {
+        padding: 9px 11px;
+        border-left: 3px solid #64748b;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 10px;
+        line-height: 1.6;
+        border-radius: 4px;
+    }
     @media(max-width:520px){.loader-shell{padding:25px 18px;border-radius:21px}.loader-logos{gap:10px;margin-bottom:23px}.loader-logo{width:76px;height:76px;border-radius:16px}.loader-visual{height:72px;gap:6px}.loader-building:nth-child(3){height:65px}.loader-building:nth-child(5){height:57px}.loader-divider{margin:19px 0 15px}.loader-kicker{font-size:8px;letter-spacing:1.5px}}
     @media(prefers-reduced-motion:reduce){.loader-building,.loader-pulse{animation:none!important}#loader,.bar i{transition:none!important}}
     #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:4000;background:var(--bk);color:#fff;border-left:4px solid var(--ye);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--sh);transition:.25s;pointer-events:none;max-width:90vw}
@@ -1349,7 +1341,6 @@ const sortDesc = m =>
     [...m.entries()]
         .sort((a, b) => b[1] - a[1]);
 const charts = {};
-    // REKAPITULASI PENERBITAN PBG 2022–2026
 const PBG_REKAP = {
     tahunan: [
         { tahun: '2022', jumlah: 7 },
@@ -1575,22 +1566,6 @@ if (!s.n) {
         knownPermit,
         s.n
     );
-    const pbgRows = state.visible.filter(
-        r =>
-            r.p &&
-            r.p.no_pbg != null &&
-            String(r.p.no_pbg).trim() !== ''
-    );
-    const slfRows = state.visible.filter(
-        r =>
-            r.p &&
-            r.p.no_slf != null &&
-            String(r.p.no_slf).trim() !== ''
-    );
-    const pbgCount =
-        pbgRows.length;
-    const slfCount =
-        slfRows.length;
     let permitText = '';
     if (knownPermit > 0) {
         const permitRate = pct(
@@ -1610,11 +1585,6 @@ if (!s.n) {
             `Status izin belum tersedia pada data bangunan ` +
             `yang tampil.`;
     }
-    permitText +=
-        ` PBG terdokumentasi ` +
-        `<b>${fmt(pbgCount)}</b> ` +
-        `dan SLF ` +
-        `<b>${fmt(slfCount)}</b>.`;
     ins.push([
         knownPermit === 0
             ? 'warn'
@@ -1622,101 +1592,86 @@ if (!s.n) {
         permitText
     ]);
     // 6. ANALISIS PENERBITAN PBG
-
-const pbgData = PBG_REKAP.tahunan;
-const totalPBG = PBG_REKAP.total;
-
-const pbgFirst = pbgData[0];
-const pbgLast = pbgData[pbgData.length - 1];
-
-const growthRows = pbgData.slice(1).map(
-    (item, index) => {
-        const previous = pbgData[index].jumlah;
-
-        return {
-            tahun: item.tahun,
-            pertumbuhan: (
-                (item.jumlah - previous) /
-                previous
-            ) * 100
-        };
+    const pbgData = PBG_REKAP.tahunan;
+    const totalPBG = PBG_REKAP.total;
+    const pbgFirst = pbgData[0];
+    const pbgLast = pbgData[pbgData.length - 1];
+    const growthRows = pbgData.slice(1).map(
+        (item, index) => {
+            const previous = pbgData[index].jumlah;
+    
+            return {
+                tahun: item.tahun,
+                pertumbuhan: (
+                    (item.jumlah - previous) /
+                    previous
+                ) * 100
+            };
+        }
+    );
+    const averagePBG = totalPBG / pbgData.length;
+    const growth2026 = growthRows[
+        growthRows.length - 1
+    ];
+    ins.push([
+        '',
+        `<b>Rekapitulasi penerbitan PBG 2022–2026</b> ` +
+        `mencatat total <b>${fmt(totalPBG)}</b> penerbitan. ` +
+        `Jumlah meningkat dari ${fmt(pbgFirst.jumlah)} ` +
+        `pada 2022 menjadi <b>${fmt(pbgLast.jumlah)}</b> ` +
+        `pada 2026.`
+    ]);
+    ins.push([
+        '',
+        `Rata-rata penerbitan selama lima tahun ` +
+        `mencapai <b>${fmt(averagePBG, 1)} PBG per tahun</b>. ` +
+        `Pada 2026, jumlah penerbitan meningkat ` +
+        `<b>${fmt(growth2026.pertumbuhan, 1)}%</b> ` +
+        `dibandingkan 2025.`
+    ]);
+    const jenis2022 = PBG_REKAP.jenis['2022'];
+    const jenis2023 = PBG_REKAP.jenis['2023'];
+    const hunian23 = jenis2023['Hunian'];
+    const usaha23 = jenis2023['Usaha'];
+    ins.push([
+        '',
+        `Pada 2023, PBG kategori <b>Hunian</b> ` +
+        `mencapai ${fmt(hunian23)} penerbitan ` +
+        `(${fmt(pct(hunian23, 100), 1)}%), ` +
+        `sedangkan kategori <b>Usaha</b> ` +
+        `mencapai ${fmt(usaha23)} penerbitan ` +
+        `(${fmt(pct(usaha23, 100), 1)}%). ` +
+        `Rincian jenis tahun 2024–2026 belum tersedia.`
+    ]);
     }
-);
-
-const averagePBG = totalPBG / pbgData.length;
-
-const growth2026 = growthRows[
-    growthRows.length - 1
-];
-
-ins.push([
-    '',
-    `<b>Rekapitulasi penerbitan PBG 2022–2026</b> ` +
-    `mencatat total <b>${fmt(totalPBG)}</b> penerbitan. ` +
-    `Jumlah meningkat dari ${fmt(pbgFirst.jumlah)} ` +
-    `pada 2022 menjadi <b>${fmt(pbgLast.jumlah)}</b> ` +
-    `pada 2026.`
-]);
-
-ins.push([
-    '',
-    `Rata-rata penerbitan selama lima tahun ` +
-    `mencapai <b>${fmt(averagePBG, 1)} PBG per tahun</b>. ` +
-    `Pada 2026, jumlah penerbitan meningkat ` +
-    `<b>${fmt(growth2026.pertumbuhan, 1)}%</b> ` +
-    `dibandingkan 2025.`
-]);
-
-// KOMPOSISI JENIS PBG 2022–2023
-
-const jenis2022 = PBG_REKAP.jenis['2022'];
-const jenis2023 = PBG_REKAP.jenis['2023'];
-
-const hunian23 = jenis2023['Hunian'];
-const usaha23 = jenis2023['Usaha'];
-
-ins.push([
-    '',
-    `Pada 2023, PBG kategori <b>Hunian</b> ` +
-    `mencapai ${fmt(hunian23)} penerbitan ` +
-    `(${fmt(pct(hunian23, 100), 1)}%), ` +
-    `sedangkan kategori <b>Usaha</b> ` +
-    `mencapai ${fmt(usaha23)} penerbitan ` +
-    `(${fmt(pct(usaha23, 100), 1)}%). ` +
-    `Rincian jenis tahun 2024–2026 belum tersedia.`
-]);
-}
-
-// RENDER ANALISIS // 
-$('#analysis').innerHTML = ins
-    .map(
-        ([c, t], i) =>
-            `<li class="${c}" data-i="${i + 1}">${t}</li>`
-    )
-    .join('');
-        if (typeof Chart === 'undefined') return;
-        if (!charts.fungsi) makeCharts();
-        setChart(charts.fungsi, fArr.map(x => x[0]), fArr.map(x => x[1]), fArr.map(x => colorFungsi(x[0])));
-        const iArr = sortDesc(s.byI);
-        setChart(charts.izin, iArr.map(x => x[0]), iArr.map(x => x[1]), iArr.map(x => colorIzin(x[0])));
-        setChart(charts.kem, kArr.map(x => x[0]), kArr.map(x => x[1]), '#F28C00');
-        const zr = [...s.izinK.entries()].map(([k, z]) => [k, z.d ? +pct(z.y, z.d).toFixed(1) : 0]).sort((a, b) => b[1] - a[1]);
-        setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
-        const top10 = lArr.slice(0, 10);
-        setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#F28C00');
-        // UPDATE GRAFIK PBG
-setChart(
-    charts.pbgTahunan,
-    PBG_REKAP.tahunan.map(x => x.tahun),
-    PBG_REKAP.tahunan.map(x => x.jumlah),
-    [
-        '#94A3B8',
-        '#64748B',
-        '#475569',
-        '#334155',
-        '#24364B'
-    ]
-);
+    $('#analysis').innerHTML = ins
+        .map(
+            ([c, t], i) =>
+                `<li class="${c}" data-i="${i + 1}">${t}</li>`
+        )
+        .join('');
+            if (typeof Chart === 'undefined') return;
+            if (!charts.fungsi) makeCharts();
+            setChart(charts.fungsi, fArr.map(x => x[0]), fArr.map(x => x[1]), fArr.map(x => colorFungsi(x[0])));
+            const iArr = sortDesc(s.byI);
+            setChart(charts.izin, iArr.map(x => x[0]), iArr.map(x => x[1]), iArr.map(x => colorIzin(x[0])));
+            setChart(charts.kem, kArr.map(x => x[0]), kArr.map(x => x[1]), '#F28C00');
+            const zr = [...s.izinK.entries()].map(([k, z]) => [k, z.d ? +pct(z.y, z.d).toFixed(1) : 0]).sort((a, b) => b[1] - a[1]);
+            setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
+            const top10 = lArr.slice(0, 10);
+            setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#F28C00');
+    setChart(
+        charts.pbgTahunan,
+        PBG_REKAP.tahunan.map(x => x.tahun),
+        PBG_REKAP.tahunan.map(x => x.jumlah),
+        [
+            '#94A3B8',
+            '#64748B',
+            '#475569',
+            '#334155',
+            '#24364B'
+        ]
+    );
 // 6. KARAKTERISTIK LUAS BANGUNAN//
 const areaClass = {
     '< 100 m²': 0,
