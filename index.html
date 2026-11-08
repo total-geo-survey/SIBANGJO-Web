@@ -258,6 +258,71 @@
     .loader-foot{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:17px;color:rgba(255,255,255,.48);font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase}
     .loader-pulse{width:6px;height:6px;border-radius:50%;background:var(--ye);box-shadow:0 0 0 0 rgba(252,183,21,.55);animation:pulseLoader 1.6s infinite}
     @keyframes pulseLoader{70%{box-shadow:0 0 0 7px rgba(252,183,21,0)}100%{box-shadow:0 0 0 0 rgba(252,183,21,0)}}
+    /* PBG ANALYTICS */
+.pbg-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 12px;
+    background: linear-gradient(
+        135deg,
+        #f5f8fc,
+        #ffffff
+    );
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+}
+
+.pbg-summary > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pbg-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.pbg-summary strong {
+    font-size: 27px;
+    font-weight: 800;
+    color: #24364b;
+}
+
+.pbg-summary small {
+    font-size: 11px;
+    color: #8491a2;
+}
+
+.pbg-badge {
+    padding: 9px 12px;
+    border-radius: 9px;
+    background: #eaf0f7;
+    color: #24364b;
+    text-align: center;
+    font-size: 10px;
+}
+
+.pbg-badge strong {
+    display: block;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.pbg-footnote {
+    padding: 9px 11px;
+    border-left: 3px solid #64748b;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 10px;
+    line-height: 1.6;
+    border-radius: 4px;
+}
     @media(max-width:520px){.loader-shell{padding:25px 18px;border-radius:21px}.loader-logos{gap:10px;margin-bottom:23px}.loader-logo{width:76px;height:76px;border-radius:16px}.loader-visual{height:72px;gap:6px}.loader-building:nth-child(3){height:65px}.loader-building:nth-child(5){height:57px}.loader-divider{margin:19px 0 15px}.loader-kicker{font-size:8px;letter-spacing:1.5px}}
     @media(prefers-reduced-motion:reduce){.loader-building,.loader-pulse{animation:none!important}#loader,.bar i{transition:none!important}}
     #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:4000;background:var(--bk);color:#fff;border-left:4px solid var(--ye);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--sh);transition:.25s;pointer-events:none;max-width:90vw}
@@ -489,6 +554,41 @@
             <canvas id="chIzin"></canvas>
         </div>
     </div>
+    <!-- 3. TREN PENERBITAN PBG -->
+<div class="card pbg-card">
+    <div class="card-t">
+        <svg width="15" height="15"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2.4">
+            <path d="M3 3v18h18"/>
+            <path d="m7 14 4-4 4 3 6-7"/>
+        </svg>
+        Tren Penerbitan PBG 2022–2026
+    </div>
+
+    <div class="pbg-summary">
+        <div>
+            <span class="pbg-label">Total PBG Terbit</span>
+            <strong id="pbgTotal">897</strong>
+            <small>Akumulasi 2022–2026</small>
+        </div>
+        <div class="pbg-badge">
+            <span>5 Tahun</span>
+            <strong>2022–2026</strong>
+        </div>
+    </div>
+
+    <div class="chart-box tall">
+        <canvas id="chPbgTahunan"></canvas>
+    </div>
+
+    <div class="pbg-footnote">
+        Data berdasarkan rekapitulasi penerbitan PBG.
+        Tahun 2026 merupakan data berjalan.
+    </div>
+</div>
     <!-- 3. JUMLAH BANGUNAN PER KEMANTREN -->
     <div class="card">
         <div class="card-t">
@@ -1249,6 +1349,34 @@ const sortDesc = m =>
     [...m.entries()]
         .sort((a, b) => b[1] - a[1]);
 const charts = {};
+    // REKAPITULASI PENERBITAN PBG 2022–2026
+const PBG_REKAP = {
+    tahunan: [
+        { tahun: '2022', jumlah: 7 },
+        { tahun: '2023', jumlah: 100 },
+        { tahun: '2024', jumlah: 169 },
+        { tahun: '2025', jumlah: 280 },
+        { tahun: '2026', jumlah: 341 }
+    ],
+
+    jenis: {
+        '2022': {
+            'Hunian': 6,
+            'Pagar': 1
+        },
+        '2023': {
+            'Hunian': 65,
+            'Usaha': 28,
+            'Reklame': 1,
+            'Sosial Budaya': 1,
+            'Lapangan Olahraga': 1,
+            'Rumah Dinas': 3,
+            'Asrama': 1
+        }
+    },
+
+    total: 897
+};
     function kpi(label, value, sub, dark, small) {
         return `<div class="kpi${dark ? ' k-dark' : ''}"><div class="kl">${label}</div><div class="kv${small ? ' sm' : ''}">${value}</div>${sub ? `<div class="ks">${sub}</div>` : ''}</div>`;
     }
@@ -1519,6 +1647,70 @@ if (!s.n) {
             : '',
         permitText
     ]);
+    // 6. ANALISIS PENERBITAN PBG
+
+const pbgData = PBG_REKAP.tahunan;
+const totalPBG = PBG_REKAP.total;
+
+const pbgFirst = pbgData[0];
+const pbgLast = pbgData[pbgData.length - 1];
+
+const growthRows = pbgData.slice(1).map(
+    (item, index) => {
+        const previous = pbgData[index].jumlah;
+
+        return {
+            tahun: item.tahun,
+            pertumbuhan: (
+                (item.jumlah - previous) /
+                previous
+            ) * 100
+        };
+    }
+);
+
+const averagePBG = totalPBG / pbgData.length;
+
+const growth2026 = growthRows[
+    growthRows.length - 1
+];
+
+ins.push([
+    '',
+    `<b>Rekapitulasi penerbitan PBG 2022–2026</b> ` +
+    `mencatat total <b>${fmt(totalPBG)}</b> penerbitan. ` +
+    `Jumlah meningkat dari ${fmt(pbgFirst.jumlah)} ` +
+    `pada 2022 menjadi <b>${fmt(pbgLast.jumlah)}</b> ` +
+    `pada 2026.`
+]);
+
+ins.push([
+    '',
+    `Rata-rata penerbitan selama lima tahun ` +
+    `mencapai <b>${fmt(averagePBG, 1)} PBG per tahun</b>. ` +
+    `Pada 2026, jumlah penerbitan meningkat ` +
+    `<b>${fmt(growth2026.pertumbuhan, 1)}%</b> ` +
+    `dibandingkan 2025.`
+]);
+
+// KOMPOSISI JENIS PBG 2022–2023
+
+const jenis2022 = PBG_REKAP.jenis['2022'];
+const jenis2023 = PBG_REKAP.jenis['2023'];
+
+const hunian23 = jenis2023['Hunian'];
+const usaha23 = jenis2023['Usaha'];
+
+ins.push([
+    '',
+    `Pada 2023, PBG kategori <b>Hunian</b> ` +
+    `mencapai ${fmt(hunian23)} penerbitan ` +
+    `(${fmt(pct(hunian23, 100), 1)}%), ` +
+    `sedangkan kategori <b>Usaha</b> ` +
+    `mencapai ${fmt(usaha23)} penerbitan ` +
+    `(${fmt(pct(usaha23, 100), 1)}%). ` +
+    `Rincian jenis tahun 2024–2026 belum tersedia.`
+]);
 }
 
 // RENDER ANALISIS // 
@@ -1538,7 +1730,19 @@ $('#analysis').innerHTML = ins
         setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
         const top10 = lArr.slice(0, 10);
         setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#F28C00');
-        
+        // UPDATE GRAFIK PBG
+setChart(
+    charts.pbgTahunan,
+    PBG_REKAP.tahunan.map(x => x.tahun),
+    PBG_REKAP.tahunan.map(x => x.jumlah),
+    [
+        '#94A3B8',
+        '#64748B',
+        '#475569',
+        '#334155',
+        '#24364B'
+    ]
+);
 // 6. KARAKTERISTIK LUAS BANGUNAN//
 const areaClass = {
     '< 100 m²': 0,
@@ -1608,6 +1812,72 @@ setChart(
         charts.izinKem = hbar($('#chIzinKem'), { suffix: '%', max: 100 });
         charts.kel = hbar($('#chKel'), { onClick: (e, els) => { if (els.length) setFilter('kel', [charts.kel.data.labels[els[0].index]]); } });
         charts.luas = hbar($('#chLuas'), {suffix: '',onClick: null});
+        // GRAFIK TREN PENERBITAN PBG
+charts.pbgTahunan = new Chart(
+    $('#chPbgTahunan'),
+    {
+        type: 'bar',
+
+        data: {
+            labels: PBG_REKAP.tahunan.map(
+                x => x.tahun
+            ),
+
+            datasets: [{
+                label: 'PBG Terbit',
+                data: PBG_REKAP.tahunan.map(
+                    x => x.jumlah
+                ),
+
+                backgroundColor: [
+                    '#94A3B8',
+                    '#64748B',
+                    '#475569',
+                    '#334155',
+                    '#24364B'
+                ],
+
+                borderRadius: 7,
+                maxBarThickness: 35
+            }]
+        },
+
+        options: {
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: c =>
+                            ' ' + fmt(c.raw) + ' PBG terbit'
+                    }
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#edf1f5'
+                    },
+                    ticks: {
+                        callback: v => fmt(v)
+                    }
+                },
+
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    }
+);
     }
     /* 10. UI: SIDEBAR, TAB, TOOLS */
     function toggleSidebar(force) {
