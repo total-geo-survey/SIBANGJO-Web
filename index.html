@@ -543,11 +543,10 @@
         </svg>
         Tren Penerbitan PBG 2022–2026
     </div>
-
     <div class="pbg-summary">
         <div>
             <span class="pbg-label">Total PBG Terbit</span>
-            <strong id="pbgTotal">897</strong>
+            <strong id="pbgTotal">1011</strong>
             <small>Akumulasi 2022–2026</small>
         </div>
         <div class="pbg-badge">
@@ -555,15 +554,30 @@
             <strong>2022–2026</strong>
         </div>
     </div>
-
     <div class="chart-box tall">
         <canvas id="chPbgTahunan"></canvas>
     </div>
+    <div class="pbg-footnote">
+        Rekapitulasi catatan tahun 2022–2026.
+        Data 2026 merupakan data berjalan per 30 Oktober 2026.
+        Jumlah merupakan catatan rekap, bukan jumlah bangunan atau dokumen unik.
+    </div>
+    <!-- KOMPOSISI FUNGSI BANGUNAN PBG/SLF -->
+<div class="card">
+    <div class="card-t">
+        Komposisi Fungsi Bangunan pada Catatan PBG/SLF 2024–2026
+    </div>
+
+    <div class="chart-box tall">
+        <canvas id="chPbgFungsi"></canvas>
+    </div>
 
     <div class="pbg-footnote">
-        Data berdasarkan rekapitulasi penerbitan PBG.
-        Tahun 2026 merupakan data berjalan.
+        Sumber: Rekapitulasi Excel PBG/SLF 2024–2026.
+        Kategori berdasarkan kolom FUNGSI.
+        Tahun 2026 merupakan data berjalan per 30 Oktober 2026.
     </div>
+</div>
 </div>
     <!-- 3. JUMLAH BANGUNAN PER KEMANTREN -->
     <div class="card">
@@ -1130,7 +1144,7 @@ function match(r) {
         const ms = { fungsi: msFungsi, kem: msKem, kel: msKel, izin: msIzin }[key];
         ms.set(values); F[key] = new Set(values);
         if (key === 'kem' && msKel.setOptions(kelOptions())) F.kel = msKel.get();
-        applyFilters({ fit: true });
+        applyFilters();
         toast('Filter diterapkan: ' + values.join(', '));
     }
     function resetFilters() {
@@ -1214,14 +1228,21 @@ function match(r) {
             <div class="acts"><button class="btn btn-or btn-sm" id="resApply">Terapkan sebagai filter</button>
               <button class="btn btn-ghost btn-sm" id="resClear">Hapus sorotan</button></div></div>`;
         $('#resApply').onclick = () => setFilter(filterKey, [filterVal]);
-        $('#resClear').onclick = () => { hlGroup.clearLayers(); selGroup.clearLayers(); $('#searchResults').innerHTML = ''; };
+        $('#resClear').onclick = () => {
+            hlGroup.clearLayers();
+            selGroup.clearLayers();
+            resetFilters();
+            map.closePopup();
+            map.setView(CFG.center, CFG.zoom);
+            $('#searchResults').innerHTML = '';
+        };
     }
     function notFound(msg) { $('#searchResults').innerHTML = `<div class="res-empty">${esc(msg)}</div>`; }
     function parseCoord(q) {
         const m = q.replace(/[°]/g, '').match(/(-?\d+(?:[.,]\d+)?)\s*[,;\s]\s*(-?\d+(?:[.,]\d+)?)/);
         if (!m) return null;
         let a = parseFloat(m[1].replace(',', '.')), b = parseFloat(m[2].replace(',', '.'));
-        if (Math.abs(a) > 90 && Math.abs(b) <= 90) [a, b] = [b, a]; // input lng, lat
+        if (Math.abs(a) > 90 && Math.abs(b) <= 90) [a, b] = [b, a]; 
         if (Math.abs(a) > 90 || Math.abs(b) > 180) return null;
         return [a, b];
     }
@@ -1264,14 +1285,9 @@ function match(r) {
         if (searchMode === 'kemantren') {
     const name = findName([...new Set(recs.map(r => r.kem))], q);
     if (!name) return notFound('Kemantren "' + q + '" tidak ditemukan.');
-
     const list = recs.filter(r => r.kem === name);
-
     highlightKel([...new Set(list.map(r => r.kelRef))]);
-
-    // Zoom berdasarkan batas administrasi, bukan geometri bangunan
     fitKemantren(name, 17);
-
     summaryCard(
         'Kemantren ' + name,
         'Data bangunan seluruh kelurahan di kemantren ini',
@@ -1360,10 +1376,9 @@ const PBG_REKAP = {
         { tahun: '2022', jumlah: 7 },
         { tahun: '2023', jumlah: 100 },
         { tahun: '2024', jumlah: 169 },
-        { tahun: '2025', jumlah: 280 },
-        { tahun: '2026', jumlah: 341 }
+        { tahun: '2025', jumlah: 281 },
+        { tahun: '2026', jumlah: 454 }
     ],
-
     jenis: {
         '2022': {
             'Hunian': 6,
@@ -1377,10 +1392,39 @@ const PBG_REKAP = {
             'Lapangan Olahraga': 1,
             'Rumah Dinas': 3,
             'Asrama': 1
+        },
+        '2024': {
+            'Hunian': 96,
+            'Usaha': 29,
+            'Campuran hunian/usaha': 21,
+            'Telekomunikasi': 0,
+            'Reklame': 9,
+            'Sosial budaya/pelayanan umum': 9,
+            'Prasarana': 3,
+            'Lainnya/perlu verifikasi': 2
+        },
+        '2025': {
+            'Hunian': 143,
+            'Usaha': 45,
+            'Campuran hunian/usaha': 21,
+            'Telekomunikasi': 31,
+            'Reklame': 14,
+            'Sosial budaya/pelayanan umum': 15,
+            'Prasarana': 4,
+            'Lainnya/perlu verifikasi': 8
+        },
+        '2026': {
+            'Hunian': 230,
+            'Usaha': 110,
+            'Campuran hunian/usaha': 25,
+            'Telekomunikasi': 40,
+            'Reklame': 26,
+            'Sosial budaya/pelayanan umum': 16,
+            'Prasarana': 1,
+            'Lainnya/perlu verifikasi': 6
         }
     },
-
-    total: 897
+    total: 1011
 };
     function kpi(label, value, sub, dark, small) {
         return `<div class="kpi${dark ? ' k-dark' : ''}"><div class="kl">${label}</div><div class="kv${small ? ' sm' : ''}">${value}</div>${sub ? `<div class="ks">${sub}</div>` : ''}</div>`;
@@ -1643,20 +1687,43 @@ if (!s.n) {
         `<b>${fmt(growth2026.pertumbuhan, 1)}%</b> ` +
         `dibandingkan 2025.`
     ]);
-    const jenis2022 = PBG_REKAP.jenis['2022'];
-    const jenis2023 = PBG_REKAP.jenis['2023'];
-    const hunian23 = jenis2023['Hunian'];
-    const usaha23 = jenis2023['Usaha'];
-    ins.push([
-        '',
-        `Pada 2023, PBG kategori <b>Hunian</b> ` +
-        `mencapai ${fmt(hunian23)} penerbitan ` +
-        `(${fmt(pct(hunian23, 100), 1)}%), ` +
-        `sedangkan kategori <b>Usaha</b> ` +
-        `mencapai ${fmt(usaha23)} penerbitan ` +
-        `(${fmt(pct(usaha23, 100), 1)}%). ` +
-        `Rincian jenis tahun 2024–2026 belum tersedia.`
-    ]);
+// ANALISIS KOMPOSISI FUNGSI PBG/SLF 2024–2026
+const jenis2024 = PBG_REKAP.jenis['2024'];
+const jenis2025 = PBG_REKAP.jenis['2025'];
+const jenis2026 = PBG_REKAP.jenis['2026'];
+
+const totalJenis2026 = Object.values(jenis2026)
+    .reduce((sum, value) => sum + value, 0);
+
+const topJenis2026 = Object.entries(jenis2026)
+    .sort((a, b) => b[1] - a[1])[0];
+
+const hunian2026 = jenis2026['Hunian'];
+const usaha2026 = jenis2026['Usaha'];
+
+ins.push([
+    '',
+    `Pada 2026, fungsi bangunan yang paling banyak tercatat ` +
+    `adalah <b>${esc(topJenis2026[0])}</b> sebanyak ` +
+    `<b>${fmt(topJenis2026[1])}</b> catatan ` +
+    `(${fmt(pct(topJenis2026[1], totalJenis2026), 1)}%).`
+]);
+
+ins.push([
+    '',
+    `Kategori <b>Hunian</b> dan <b>Usaha</b> pada 2026 ` +
+    `mencapai ${fmt(hunian2026 + usaha2026)} catatan ` +
+    `atau <b>${fmt(pct(hunian2026 + usaha2026, totalJenis2026), 1)}%</b> ` +
+    `dari seluruh catatan tahun tersebut.`
+]);
+
+ins.push([
+    '',
+    `Kategori Hunian meningkat dari ` +
+    `${fmt(jenis2024['Hunian'])} catatan pada 2024, ` +
+    `${fmt(jenis2025['Hunian'])} pada 2025, ` +
+    `menjadi <b>${fmt(jenis2026['Hunian'])}</b> pada 2026.`
+]);
     }
     $('#analysis').innerHTML = ins
         .map(
@@ -1686,7 +1753,7 @@ if (!s.n) {
             '#24364B'
         ]
     );
-// 6. KARAKTERISTIK LUAS BANGUNAN//
+// 7. KARAKTERISTIK LUAS BANGUNAN//
 const areaClass = {
     '< 100 m²': 0,
     '100–300 m²': 0,
@@ -1755,7 +1822,7 @@ setChart(
         charts.izinKem = hbar($('#chIzinKem'), { suffix: '%', max: 100 });
         charts.kel = hbar($('#chKel'), { onClick: (e, els) => { if (els.length) setFilter('kel', [charts.kel.data.labels[els[0].index]]); } });
         charts.luas = hbar($('#chLuas'), {suffix: '',onClick: null});
-        // GRAFIK TREN PENERBITAN PBG
+        // 8. GRAFIK TREN PENERBITAN PBG
 charts.pbgTahunan = new Chart(
     $('#chPbgTahunan'),
     {
@@ -1815,6 +1882,94 @@ charts.pbgTahunan = new Chart(
                 x: {
                     grid: {
                         display: false
+                    }
+                }
+            }
+        }
+    }
+    // GRAFIK KOMPOSISI FUNGSI PBG/SLF 2024–2026
+const kategoriPBG = [
+    'Hunian',
+    'Usaha',
+    'Campuran hunian/usaha',
+    'Telekomunikasi',
+    'Reklame',
+    'Sosial budaya/pelayanan umum',
+    'Prasarana',
+    'Lainnya/perlu verifikasi'
+];
+
+charts.pbgFungsi = new Chart(
+    $('#chPbgFungsi'),
+    {
+        type: 'bar',
+
+        data: {
+            labels: kategoriPBG,
+
+            datasets: [
+                {
+                    label: '2024',
+                    data: kategoriPBG.map(
+                        k => PBG_REKAP.jenis['2024'][k]
+                    ),
+                    backgroundColor: '#94A3B8',
+                    borderRadius: 5
+                },
+                {
+                    label: '2025',
+                    data: kategoriPBG.map(
+                        k => PBG_REKAP.jenis['2025'][k]
+                    ),
+                    backgroundColor: '#64748B',
+                    borderRadius: 5
+                },
+                {
+                    label: '2026',
+                    data: kategoriPBG.map(
+                        k => PBG_REKAP.jenis['2026'][k]
+                    ),
+                    backgroundColor: '#24364B',
+                    borderRadius: 5
+                }
+            ]
+        },
+
+        options: {
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: c =>
+                            ` ${c.dataset.label}: ${fmt(c.raw)} catatan`
+                    }
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: v => fmt(v)
+                    },
+                    grid: {
+                        color: '#edf1f5'
+                    }
+                },
+
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        autoSkip: false,
+                        maxRotation: 35,
+                        minRotation: 0
                     }
                 }
             }
