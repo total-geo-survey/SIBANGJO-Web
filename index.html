@@ -561,22 +561,6 @@
         Data 2026 merupakan data berjalan per 30 Oktober 2026.
         Jumlah merupakan catatan rekap, bukan jumlah bangunan atau dokumen unik.
     </div>
-    <!-- KOMPOSISI FUNGSI BANGUNAN PBG/SLF -->
-<div class="card">
-    <div class="card-t">
-        Komposisi Fungsi Bangunan pada Catatan PBG/SLF 2024–2026
-    </div>
-
-    <div class="chart-box tall">
-        <canvas id="chPbgFungsi"></canvas>
-    </div>
-
-    <div class="pbg-footnote">
-        Sumber: Rekapitulasi Excel PBG/SLF 2024–2026.
-        Kategori berdasarkan kolom FUNGSI.
-        Tahun 2026 merupakan data berjalan per 30 Oktober 2026.
-    </div>
-</div>
 </div>
     <!-- 3. JUMLAH BANGUNAN PER KEMANTREN -->
     <div class="card">
@@ -1731,15 +1715,30 @@ ins.push([
         )
         .join('');
             if (typeof Chart === 'undefined') return;
-            if (!charts.fungsi) makeCharts();
-            setChart(charts.fungsi, fArr.map(x => x[0]), fArr.map(x => x[1]), fArr.map(x => colorFungsi(x[0])));
-            const iArr = sortDesc(s.byI);
-            setChart(charts.izin, iArr.map(x => x[0]), iArr.map(x => x[1]), iArr.map(x => colorIzin(x[0])));
-            setChart(charts.kem, kArr.map(x => x[0]), kArr.map(x => x[1]), '#263B53');
-            const zr = [...s.izinK.entries()].map(([k, z]) => [k, z.d ? +pct(z.y, z.d).toFixed(1) : 0]).sort((a, b) => b[1] - a[1]);
-            setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
-            const top10 = lArr.slice(0, 10);
-            setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#263B53');
+if (!charts.fungsi) makeCharts();
+
+setChart(
+    charts.fungsi,
+    fArr.map(x => x[0]),
+    fArr.map(x => x[1]),
+    fArr.map(x => colorFungsi(x[0]))
+);
+
+setChart(
+    charts.kem,
+    kArr.map(x => x[0]),
+    kArr.map(x => x[1]),
+    '#263B53'
+);
+
+const top10 = lArr.slice(0, 10);
+
+setChart(
+    charts.kel,
+    top10.map(x => x[0]),
+    top10.map(x => x[1]),
+    '#263B53'
+);
     setChart(
         charts.pbgTahunan,
         PBG_REKAP.tahunan.map(x => x.tahun),
@@ -1815,12 +1814,40 @@ setChart(
                 onClick
             }
         });
-        charts.fungsi = hbar($('#chFungsi'), {onClick: (e, els) => {if (els.length) {setFilter('fungsi', [charts.fungsi.data.labels[els[0].index]]);}}});
-        charts.izin = donut($('#chIzin'), (e, els) => { if (els.length) setFilter('izin', [charts.izin.data.labels[els[0].index]]); });
-        charts.kem = hbar($('#chKem'), { onClick: (e, els) => { if (els.length) setFilter('kem', [charts.kem.data.labels[els[0].index]]); } });
-        charts.izinKem = hbar($('#chIzinKem'), { suffix: '%', max: 100 });
-        charts.kel = hbar($('#chKel'), { onClick: (e, els) => { if (els.length) setFilter('kel', [charts.kel.data.labels[els[0].index]]); } });
-        charts.luas = hbar($('#chLuas'), {suffix: '',onClick: null});
+        charts.fungsi = hbar($('#chFungsi'), {
+    onClick: (e, els) => {
+        if (els.length) {
+            setFilter('fungsi', [
+                charts.fungsi.data.labels[els[0].index]
+            ]);
+        }
+    }
+});
+
+charts.kem = hbar($('#chKem'), {
+    onClick: (e, els) => {
+        if (els.length) {
+            setFilter('kem', [
+                charts.kem.data.labels[els[0].index]
+            ]);
+        }
+    }
+});
+
+charts.kel = hbar($('#chKel'), {
+    onClick: (e, els) => {
+        if (els.length) {
+            setFilter('kel', [
+                charts.kel.data.labels[els[0].index]
+            ]);
+        }
+    }
+});
+
+charts.luas = hbar($('#chLuas'), {
+    suffix: '',
+    onClick: null
+});
         // 8. GRAFIK TREN PENERBITAN PBG
 charts.pbgTahunan = new Chart(
     $('#chPbgTahunan'),
@@ -1887,95 +1914,7 @@ charts.pbgTahunan = new Chart(
         }
     }
     );
-    // GRAFIK KOMPOSISI FUNGSI PBG/SLF 2024–2026
-const kategoriPBG = [
-    'Hunian',
-    'Usaha',
-    'Campuran hunian/usaha',
-    'Telekomunikasi',
-    'Reklame',
-    'Sosial budaya/pelayanan umum',
-    'Prasarana',
-    'Lainnya/perlu verifikasi'
-];
 
-charts.pbgFungsi = new Chart(
-    $('#chPbgFungsi'),
-    {
-        type: 'bar',
-
-        data: {
-            labels: kategoriPBG,
-
-            datasets: [
-                {
-                    label: '2024',
-                    data: kategoriPBG.map(
-                        k => PBG_REKAP.jenis['2024'][k]
-                    ),
-                    backgroundColor: '#94A3B8',
-                    borderRadius: 5
-                },
-                {
-                    label: '2025',
-                    data: kategoriPBG.map(
-                        k => PBG_REKAP.jenis['2025'][k]
-                    ),
-                    backgroundColor: '#64748B',
-                    borderRadius: 5
-                },
-                {
-                    label: '2026',
-                    data: kategoriPBG.map(
-                        k => PBG_REKAP.jenis['2026'][k]
-                    ),
-                    backgroundColor: '#24364B',
-                    borderRadius: 5
-                }
-            ]
-        },
-
-        options: {
-            maintainAspectRatio: false,
-
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-
-                tooltip: {
-                    callbacks: {
-                        label: c =>
-                            ` ${c.dataset.label}: ${fmt(c.raw)} catatan`
-                    }
-                }
-            },
-
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: v => fmt(v)
-                    },
-                    grid: {
-                        color: '#edf1f5'
-                    }
-                },
-
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        autoSkip: false,
-                        maxRotation: 35,
-                        minRotation: 0
-                    }
-                }
-            }
-        }
-    }
-);
     }
     /* 10. UI: SIDEBAR, TAB, TOOLS */
     function toggleSidebar(force) {
