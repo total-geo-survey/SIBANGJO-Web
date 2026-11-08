@@ -1,4 +1,4 @@
-var pakualaman: {
+var pakualaman = {
 "type": "FeatureCollection",
 "name": "Pakulaman",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
