@@ -678,6 +678,8 @@
     const CFG = {
         center: [-7.80329119, 110.37435397],
         zoom: 14,
+        minZoom: 12,
+        maxZoom: 22,
         ortho: {
             url: 'https://live.staticflickr.com/65535/54161015045_9d5178a233_o.png',
             bounds: [[-7.7650351972, 110.3410364607], [-7.8418421839, 110.4099212895]]
@@ -818,8 +820,13 @@
 
     /* 3. PETA & BASEMAP */
     const map = L.map('map', {
-        center: CFG.center, zoom: CFG.zoom, zoomControl: false,
-        maxZoom: 22, minZoom: 10, zoomSnap: 0.5, zoomDelta: 0.5,
+        center: CFG.center,
+        zoom: CFG.zoom,
+        zoomControl: false,
+        maxZoom: CFG.maxZoom,
+        minZoom: CFG.minZoom,
+        zoomSnap: 0.5,
+        zoomDelta: 0.5,
         preferCanvas: true,
         attributionControl: false
     });
