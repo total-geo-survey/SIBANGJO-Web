@@ -1600,38 +1600,6 @@ if (!s.n) {
         identityText
     ]);
 
-    // 5. STATUS PERIZINAN // 
-    const knownPermit =
-        ok + no;
-    const permitCoverage = pct(
-        knownPermit,
-        s.n
-    );
-    let permitText = '';
-    if (knownPermit > 0) {
-        const permitRate = pct(
-            ok,
-            knownPermit
-        );
-        permitText =
-            `Status izin tersedia pada ` +
-            `<b>${fmt(permitCoverage, 1)}%</b> bangunan; ` +
-            `dari data tersebut ` +
-            `<b>${fmt(permitRate, 1)}%</b> ` +
-            `tercatat Berizin.`;
-    }
-    else {
-
-        permitText =
-            `Status izin belum tersedia pada data bangunan ` +
-            `yang tampil.`;
-    }
-    ins.push([
-        knownPermit === 0
-            ? 'warn'
-            : '',
-        permitText
-    ]);
     // 6. ANALISIS PENERBITAN PBG
     const pbgData = PBG_REKAP.tahunan;
     const totalPBG = PBG_REKAP.total;
@@ -1656,57 +1624,16 @@ if (!s.n) {
     ];
     ins.push([
         '',
-        `<b>Rekapitulasi penerbitan PBG 2022–2026</b> ` +
-        `mencatat total <b>${fmt(totalPBG)}</b> penerbitan. ` +
-        `Jumlah meningkat dari ${fmt(pbgFirst.jumlah)} ` +
-        `pada 2022 menjadi <b>${fmt(pbgLast.jumlah)}</b> ` +
-        `pada 2026.`
-    ]);
-    ins.push([
-        '',
-        `Rata-rata penerbitan selama lima tahun ` +
-        `mencapai <b>${fmt(averagePBG, 1)} PBG per tahun</b>. ` +
-        `Pada 2026, jumlah penerbitan meningkat ` +
+        `<b>Perkembangan penerbitan PBG 2022–2026:</b> ` +
+        `tercatat sebanyak <b>${fmt(totalPBG)}</b> penerbitan, ` +
+        `meningkat dari ${fmt(pbgFirst.jumlah)} pada 2022 ` +
+        `menjadi <b>${fmt(pbgLast.jumlah)}</b> pada 2026. ` +
+        `Rata-rata penerbitan mencapai ` +
+        `<b>${fmt(averagePBG, 1)} per tahun</b>, ` +
+        `dengan pertumbuhan 2026 sebesar ` +
         `<b>${fmt(growth2026.pertumbuhan, 1)}%</b> ` +
         `dibandingkan 2025.`
     ]);
-// ANALISIS KOMPOSISI FUNGSI PBG/SLF 2024–2026
-const jenis2024 = PBG_REKAP.jenis['2024'];
-const jenis2025 = PBG_REKAP.jenis['2025'];
-const jenis2026 = PBG_REKAP.jenis['2026'];
-
-const totalJenis2026 = Object.values(jenis2026)
-    .reduce((sum, value) => sum + value, 0);
-
-const topJenis2026 = Object.entries(jenis2026)
-    .sort((a, b) => b[1] - a[1])[0];
-
-const hunian2026 = jenis2026['Hunian'];
-const usaha2026 = jenis2026['Usaha'];
-
-ins.push([
-    '',
-    `Pada 2026, fungsi bangunan yang paling banyak tercatat ` +
-    `adalah <b>${esc(topJenis2026[0])}</b> sebanyak ` +
-    `<b>${fmt(topJenis2026[1])}</b> catatan ` +
-    `(${fmt(pct(topJenis2026[1], totalJenis2026), 1)}%).`
-]);
-
-ins.push([
-    '',
-    `Kategori <b>Hunian</b> dan <b>Usaha</b> pada 2026 ` +
-    `mencapai ${fmt(hunian2026 + usaha2026)} catatan ` +
-    `atau <b>${fmt(pct(hunian2026 + usaha2026, totalJenis2026), 1)}%</b> ` +
-    `dari seluruh catatan tahun tersebut.`
-]);
-
-ins.push([
-    '',
-    `Kategori Hunian meningkat dari ` +
-    `${fmt(jenis2024['Hunian'])} catatan pada 2024, ` +
-    `${fmt(jenis2025['Hunian'])} pada 2025, ` +
-    `menjadi <b>${fmt(jenis2026['Hunian'])}</b> pada 2026.`
-]);
     }
     $('#analysis').innerHTML = ins
         .map(
