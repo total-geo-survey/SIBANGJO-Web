@@ -143,7 +143,7 @@
     .kpi .ks{margin-top:4px; font-size:10px; line-height:1.3;color:#85817A;white-space:normal;}
     .kpi-grid .kpi:first-child{background:#FFF9EF;border-color:#E9D8B7;}
     .kpi-grid .kpi:first-child::before{width:4px; background:#263B53;}
-    .kpi-grid .kpi:first-child .kv{color:#C96F00;font-size:20px;font-weight:800;}
+    .kpi-grid .kpi:first-child .kv{color:#262626;font-size:20px;font-weight:800;}
     .chart-box{position:relative;height:230px;width:100%;}
     .chart-box.tall{height:300px;}
     .chart-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--mut);pointer-events:none;}
@@ -741,7 +741,7 @@
         if (!FUNGSI_COLOR[f]) FUNGSI_COLOR[f] = EXTRA_COLORS[extraIdx++ % EXTRA_COLORS.length];
         return FUNGSI_COLOR[f];
     }
-    function colorIzin(c) { return IZIN_COLOR[c] || '#F28C00'; }
+    function colorIzin(c) { return IZIN_COLOR[c] || '#263B53'; }
     function fungsiOf(p) { const v = p && p.fungsi != null ? String(p.fungsi).trim() : ''; return v || 'Tidak Terdefinisi'; }
     function izinCat(v) {
         const s = String(v ?? '').trim().toLowerCase();
@@ -935,7 +935,7 @@
         selGroup.clearLayers();
         L.geoJSON(r.layer.feature, {
             pane: 'hlPane', interactive: false,
-            style: { color: '#F28C00', weight: 3.5, opacity: 1, fill: true, fillColor: '#FCB715', fillOpacity: 0.25 }
+            style: { color: '#263B53', weight: 3.5, opacity: 1, fill: true, fillColor: '#FCB715', fillOpacity: 0.25 }
         }).addTo(selGroup);
     }
     function openBld(r, latlng, msg) {
@@ -1195,7 +1195,7 @@ function match(r) {
         if (!feats.length) return;
         L.geoJSON({ type: 'FeatureCollection', features: feats }, {
             pane: 'hlPane', interactive: false,
-            style: { color: '#F28C00', weight: 3.5, dashArray: '8 5', fill: true, fillColor: '#FCB715', fillOpacity: 0.08 }
+            style: { color: '#263B53', weight: 3.5, dashArray: '8 5', fill: true, fillColor: '#FCB715', fillOpacity: 0.08 }
         }).addTo(hlGroup);
     }
     function summaryCard(title, sub, recs, filterKey, filterVal) {
@@ -1655,11 +1655,11 @@ if (!s.n) {
             setChart(charts.fungsi, fArr.map(x => x[0]), fArr.map(x => x[1]), fArr.map(x => colorFungsi(x[0])));
             const iArr = sortDesc(s.byI);
             setChart(charts.izin, iArr.map(x => x[0]), iArr.map(x => x[1]), iArr.map(x => colorIzin(x[0])));
-            setChart(charts.kem, kArr.map(x => x[0]), kArr.map(x => x[1]), '#F28C00');
+            setChart(charts.kem, kArr.map(x => x[0]), kArr.map(x => x[1]), '#263B53');
             const zr = [...s.izinK.entries()].map(([k, z]) => [k, z.d ? +pct(z.y, z.d).toFixed(1) : 0]).sort((a, b) => b[1] - a[1]);
             setChart(charts.izinKem, zr.map(x => x[0]), zr.map(x => x[1]), zr.map(x => x[1] >= 75 ? '#1E9E4A' : x[1] >= 50 ? '#FCB715' : '#E53935'));
             const top10 = lArr.slice(0, 10);
-            setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#F28C00');
+            setChart(charts.kel, top10.map(x => x[0]), top10.map(x => x[1]), '#263B53');
     setChart(
         charts.pbgTahunan,
         PBG_REKAP.tahunan.map(x => x.tahun),
@@ -1702,7 +1702,7 @@ setChart(
     charts.luas,
     Object.keys(areaClass),
     Object.values(areaClass),
-    '#F28C00'
+    '#263B53'
 );
     }
     function setChart(ch, labels, data, colors) {
@@ -1727,7 +1727,7 @@ setChart(
         });
         const hbar = (el, { onClick, suffix = '', max } = {}) => new Chart(el, {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: '#F28C00', borderRadius: 5, barThickness: 'flex', maxBarThickness: 18 }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: '#263B53', borderRadius: 5, barThickness: 'flex', maxBarThickness: 18 }] },
             options: {
                 indexAxis: 'y', maintainAspectRatio: false,
                 plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + fmt(c.raw, suffix ? 1 : 0) + suffix } } },
