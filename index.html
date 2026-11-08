@@ -817,7 +817,34 @@
         if (!bb) return;
         map.fitBounds([[bb[1], bb[0]], [bb[3], bb[2]]], { padding: [40, 40], maxZoom });
     }
+function fitKemantren(name, maxZoom = 17) {
+    if (!kemLayer) return;
 
+    let bounds = null;
+
+    kemLayer.eachLayer(layer => {
+        const props = layer.feature?.properties || {};
+        const nama = props.kemantren || '';
+
+        if (norm(nama) === norm(name)) {
+            const b = layer.getBounds();
+
+            if (b.isValid()) {
+                bounds = b;
+            }
+        }
+    });
+
+    if (bounds) {
+        map.fitBounds(bounds, {
+            padding: [35, 35],
+            maxZoom: maxZoom,
+            animate: true
+        });
+    } else {
+        console.warn('Batas Kemantren tidak ditemukan:', name);
+    }
+}
     /* 3. PETA & BASEMAP */
     const map = L.map('map', {
         center: CFG.center,
@@ -1266,13 +1293,24 @@ function match(r) {
         const recs = state.records;
         selGroup.clearLayers();
         if (searchMode === 'kemantren') {
-            const name = findName([...new Set(recs.map(r => r.kem))], q);
-            if (!name) return notFound('Kemantren "' + q + '" tidak ditemukan.');
-            const list = recs.filter(r => r.kem === name);
-            highlightKel([...new Set(list.map(r => r.kelRef))]);
-            fitBB(bbOf(list), 17);
-            summaryCard('Kemantren ' + name, 'Data bangunan seluruh kelurahan di kemantren ini', list, 'kem', name);
-        } else if (searchMode === 'kelurahan') {
+    const name = findName([...new Set(recs.map(r => r.kem))], q);
+    if (!name) return notFound('Kemantren "' + q + '" tidak ditemukan.');
+
+    const list = recs.filter(r => r.kem === name);
+
+    highlightKel([...new Set(list.map(r => r.kelRef))]);
+
+    // Zoom berdasarkan batas administrasi, bukan geometri bangunan
+    fitKemantren(name, 17);
+
+    summaryCard(
+        'Kemantren ' + name,
+        'Data bangunan seluruh kelurahan di kemantren ini',
+        list,
+        'kem',
+        name
+    );
+} else if (searchMode === 'kelurahan') {
             const name = findName([...new Set(recs.map(r => r.kel).filter(Boolean))], q);
             if (!name) return notFound('Kelurahan "' + q + '" tidak ditemukan.');
             const list = recs.filter(r => r.kel === name);
