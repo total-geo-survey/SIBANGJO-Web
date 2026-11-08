@@ -420,7 +420,6 @@
                         <div class="seg" id="searchModes">
                             <button data-mode="kemantren" class="active">Kemantren</button>
                             <button data-mode="kelurahan">Kelurahan</button>
-                            <button data-mode="fungsi">Fungsi</button>
                             <button data-mode="koordinat">Koordinat</button>
                             <button data-mode="teks">ID / Alamat</button>
                         </div>
@@ -1013,7 +1012,6 @@ function match(r) {
         updateLegend();
         state.statsDirty = true;
         if ($('#tabStat').classList.contains('active')) updateStats();
-        if (opt.fit && vis.length) fitBB(bbOf(vis), 18);
     }
     function activeFilterCount() { return F.fungsi.size + F.kem.size + F.kel.size + F.izin.size; }
     function updateCounts() {
@@ -1099,18 +1097,24 @@ function match(r) {
     function buildFilters() {
         const recs = state.records;
         const fc = countBy(recs, 'fungsi');
-        msFungsi = MultiSelect($('#msFungsi'), { allText: 'Semua Fungsi', onChange: s => { F.fungsi = s; applyFilters({ fit: true }); } });
+        msFungsi = MultiSelect($('#msFungsi'), {
+            allText: 'Semua Fungsi',
+            onChange: s => {
+                F.fungsi = s;
+                applyFilters();
+            }
+        });
         msFungsi.setOptions([...fc.entries()].sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ value: k, label: k, count: n, color: colorFungsi(k) })));
         const kc = countBy(recs, 'kem');
         msKem = MultiSelect($('#msKem'), {
             allText: 'Semua Kemantren', onChange: s => {
                 F.kem = s;
                 if (msKel.setOptions(kelOptions())) F.kel = msKel.get();
-                applyFilters({ fit: true });
+                applyFilters();
             }
         });
         msKem.setOptions(CFG.kemantren.filter(k => kc.has(k.nama)).map(k => ({ value: k.nama, label: k.nama, count: kc.get(k.nama) })));
-        msKel = MultiSelect($('#msKel'), { allText: 'Semua Kelurahan', onChange: s => { F.kel = s; applyFilters({ fit: true }); } });
+        msKel = MultiSelect($('#msKel'), { allText: 'Semua Kelurahan', onChange: s => { F.kel = s; applyFilters(); } });
         msKel.setOptions(kelOptions());
         const ic = countBy(recs, 'izin');
         msIzin = MultiSelect($('#msIzin'), {
@@ -1123,7 +1127,7 @@ function match(r) {
             [...new Set(state.records.map(r => izinCat(r.izin)))]
         );
         F.izin = s;
-        applyFilters({ fit: true });
+        applyFilters();
         console.log(
             'Jumlah terlihat:',
             state.visible.length,
@@ -1185,7 +1189,6 @@ function match(r) {
     const MODE_INFO = {
         kemantren: ['Ketik nama kemantren…', 'Pilih kemantren untuk zoom ke wilayah dan melihat ringkasannya.'],
         kelurahan: ['Ketik nama kelurahan…', 'Pilih kelurahan untuk zoom ke batas wilayah dan melihat ringkasannya.'],
-        fungsi: ['Ketik fungsi bangunan…', 'Zoom ke sebaran bangunan dengan fungsi tertentu.'],
         koordinat: ['-7.801234, 110.364567', 'Format "lat, lng" (desimal). Peta otomatis menemukan bangunan pada titik tsb, atau bangunan terdekat.'],
         teks: ['ID / alamat / keterangan…', 'Cari berdasarkan ID bangunan (id_kel.id_fungsi.id_objek), alamat, atau keterangan.']
     };
@@ -1199,7 +1202,6 @@ function match(r) {
         let opts = [];
         if (m === 'kemantren') opts = [...new Set(state.records.map(r => r.kem))];
         if (m === 'kelurahan') opts = [...new Set(state.records.map(r => r.kel).filter(Boolean))].sort();
-        if (m === 'fungsi') opts = [...new Set(state.records.map(r => r.fungsi))].sort();
         $('#dlSearch').innerHTML = opts.map(o => `<option value="${esc(o)}">`).join('');
     }
     function findName(list, q) {
@@ -1301,15 +1303,12 @@ function match(r) {
             const list = recs.filter(r => r.kel === name);
             const ref = state.kelIndex.find(k => k.name === name);
             highlightKel([ref]);
-            if (ref) fitBB(ref.bb, 18); else fitBB(bbOf(list), 18);
+            if (ref) {
+                fitBB(ref.bb, 18);
+            } else {
+                map.setView(CFG.center, CFG.zoom);
+            }
             summaryCard('Kelurahan ' + name, 'Kemantren ' + (ref ? ref.kem : (list[0] && list[0].kem) || '-') + (ref && ref.luas != null ? ' · Luas ' + fmt(ref.luas, 2) + ' km²' : ''), list, 'kel', name);
-        } else if (searchMode === 'fungsi') {
-            const name = findName([...new Set(recs.map(r => r.fungsi))], q);
-            if (!name) return notFound('Fungsi "' + q + '" tidak ditemukan.');
-            const list = recs.filter(r => r.fungsi === name);
-            hlGroup.clearLayers();
-            fitBB(bbOf(list), 17);
-            summaryCard(name, 'Sebaran di seluruh Kota Yogyakarta', list, 'fungsi', name);
         } else if (searchMode === 'koordinat') {
             const c = parseCoord(q);
             if (!c) return notFound('Format koordinat tidak valid. Contoh: -7.801234, 110.364567');
